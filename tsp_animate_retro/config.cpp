@@ -232,9 +232,9 @@ class CfgGesturesMale {
 		class tsp_animate_tactical_retro_portchill_wrfl_lhig: tsp_animate_tactical_portchill_wrfl_lhig {};
 		class tsp_animate_tactical_retro_portchill_wrfl_llow: tsp_animate_tactical_portchill_wrfl_llow {};
 
-		class tsp_animate_tactical_retro_sprint_wrfl_lhig_in: tsp_animate_tactical_sprint_wrfl_lhig_in {};
-		class tsp_animate_tactical_retro_sprint_wrfl_lhig_out: tsp_animate_tactical_sprint_wrfl_lhig_out {};
-		class tsp_animate_tactical_retro_sprint_wrfl_lhig: tsp_animate_tactical_sprint_wrfl_lhig {};
+		class tsp_animate_tactical_retro_sprint_wrfl_lhig_in: tsp_animate_tactical_sprint_wrfl_lhig_in {file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};
+		class tsp_animate_tactical_retro_sprint_wrfl_lhig_out: tsp_animate_tactical_sprint_wrfl_lhig_out {file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};
+		class tsp_animate_tactical_retro_sprint_wrfl_lhig: tsp_animate_tactical_sprint_wrfl_lhig {file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};
 		class tsp_animate_tactical_retro_sprint_wrfl_llow_in: tsp_animate_tactical_sprint_wrfl_llow_in {mask = "weaponLeftArm"; file = "tsp_animate_retro\anim\sprint_wrfl_llow_loop.rtm"; leftHandIKCurve[] = {0,1,1,0};};
 		class tsp_animate_tactical_retro_sprint_wrfl_llow_out: tsp_animate_tactical_sprint_wrfl_llow_out {mask = "weaponLeftArm"; file = "tsp_animate_retro\anim\sprint_wrfl_llow_loop.rtm"; leftHandIKCurve[] = {0,0,1,1};};
 		class tsp_animate_tactical_retro_sprint_wrfl_llow: tsp_animate_tactical_sprint_wrfl_llow {mask = "weaponLeftArm"; file = "tsp_animate_retro\anim\sprint_wrfl_llow_loop.rtm"; leftHandIKCurve[] = {0};};

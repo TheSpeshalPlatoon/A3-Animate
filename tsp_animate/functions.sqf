@@ -156,6 +156,7 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
         tsp_future pushBack [time + 0.3 + _time, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {
             params ["_unit", "_unarmed"];
             _rifle = (getUnitLoadout _unit)#0; _holder = [_unit, primaryWeapon _unit, true, false] call tsp_fnc_throw; _holder setDamage 1; 
+            [_holder, "lockInventory", "tsp_animate_sling", true] call ace_common_fnc_statusEffect_set;
             _holder attachTo [_unit, tsp_cba_animate_sling_pos#0, "Spine3", true]; [_holder, tsp_cba_animate_sling_pos#1] call BIS_fnc_setObjectRotation;
             if (_unarmed) then {_unit action ["SWITCHWEAPON", _unit, _unit, -1]};
             if (_unarmed && vehicle _unit == _unit) then {[_unit, animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"]] remoteExec ["switchMove"]};

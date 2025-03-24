@@ -1,4 +1,4 @@
-[Licensing, bug reporting and contact information.]([https://github.com/TheSpeshalPlatoon/A3-Core](https://github.com/TheSpeshalPlatoon)) 
+[Licensing, bug reporting and contact information.](https://github.com/TheSpeshalPlatoon) 
 
 This addons relies on components from tsp_core which can be found in the [Core Repository](https://github.com/TheSpeshalPlatoon/A3-Core).
 

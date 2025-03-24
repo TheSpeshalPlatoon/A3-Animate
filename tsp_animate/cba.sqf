@@ -4,8 +4,8 @@
 ["tsp_cba_animate_tactical", "CHECKBOX", ["Tactical Stance System", "Enable/Disable tactical stance system."], ["TSP Animate", "Tactical"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_style", "LIST", ["Tactical Style", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 0]] call CBA_fnc_addSetting;
 ["tsp_cba_animate_style_autorifle", "LIST", ["Tactical Style (Autorifle)", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 1]] call CBA_fnc_addSetting;
-["tsp_cba_animate_style_sniper", "LIST", ["Tactical Style (Sniper)", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 1]] call CBA_fnc_addSetting;
 ["tsp_cba_animate_style_shotgun", "LIST", ["Tactical Style (Shotgun)", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 2]] call CBA_fnc_addSetting;
+["tsp_cba_animate_style_sniper", "LIST", ["Tactical Style (Sniper)", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 1]] call CBA_fnc_addSetting;
 
 ["tsp_cba_animate_tap", "CHECKBOX", ["Tap/Squeeze Animation", "Enable/disable animation leg/shoulder queeze."], ["TSP Animate", "Tactical"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_door", "CHECKBOX", ["Door Opening Animation", "Enable/disable animation when opening doors."], ["TSP Animate", "Tactical"], true] call CBA_fnc_addSetting;

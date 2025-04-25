@@ -4,7 +4,7 @@ if ("ThrowGrenade" in _animation && "tsp_animate_grenade" in gestureState _unit)
 	_unit spawn {
 		_unit = _this;
 		_previous = _unit getVariable ["tsp_gestureReturn", []];
-		_unit playActionNow ([_unit, "tsp_animate_grenade_wnon_" + (if (tsp_ace_throwType == "normal") then {"over"} else {"under"})] call tsp_fnc_gesture_variant); sleep 1;
+		_unit playActionNow ([_unit, "tsp_animate_grenade_wnon_" + (if (tsp_ace_throwType == "normal") then {"over"} else {"under"})] call tsp_fnc_gesture_variant); sleep 0.9;
 		if (count _previous == 0) exitWith {};
 		if (count (["ready","readyalt","readycombat","compress","cant","friend","over","port","portchill","portmove"] select {_x in _previous#2}) > 0) then {_previous spawn tsp_fnc_gesture_play};
 	};

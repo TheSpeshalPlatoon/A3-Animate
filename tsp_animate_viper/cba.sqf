@@ -7,7 +7,7 @@
     ["Shotgun", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_shotgun'"],
     ["Ready", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_ready'"],
     ["Peek", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_peek'"],
-    ["Danger", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_danger'"],
+    ["Abort", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_abort'"],
     ["Halt", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_formations'>>'tsp_animate_halt'"],
     ["Column", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_formations'>>'tsp_animate_column'"],
     ["Line", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_formations'>>'tsp_animate_line'"],

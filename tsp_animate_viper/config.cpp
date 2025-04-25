@@ -19,7 +19,7 @@ class CfgVehicles {
 					class tsp_animate_shotgun {displayName = "Shotgun"; condition = "tsp_cba_animate_shotgun"; statement = "[playa, 'Shotgun breach!', 5] call tsp_fnc_notify; [playa] call tsp_fnc_animate_effect; [playa, '', 'tsp_animate_shotgun', '', true, true, true] spawn tsp_fnc_gesture_play"; exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"}; showDisabled = 1;};
 					class tsp_animate_ready {displayName = "Ready"; condition = "tsp_cba_animate_ready"; statement = "[playa, 'I am ready!', 5] call tsp_fnc_notify; [playa] call tsp_fnc_animate_effect; [playa, '', 'tsp_animate_ready', '', true, true, true] spawn tsp_fnc_gesture_play"; exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"}; showDisabled = 1;};
 					class tsp_animate_peek {displayName = "Peek"; condition = "tsp_cba_animate_peek"; statement = "[playa, 'Peek it!', 5] call tsp_fnc_notify; [playa] call tsp_fnc_animate_effect; [playa, '', 'tsp_animate_peek', '', true, true, true] spawn tsp_fnc_gesture_play"; exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"}; showDisabled = 1;};
-					class tsp_animate_danger {displayName = "Abort"; condition = "tsp_cba_animate_danger"; statement = "[playa, 'Abort!', 5] call tsp_fnc_notify; [playa] call tsp_fnc_animate_effect; [playa, '', 'tsp_animate_danger', '', true, true, true] spawn tsp_fnc_gesture_play"; exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"}; showDisabled = 1;};
+					class tsp_animate_abort {displayName = "Abort"; condition = "tsp_cba_animate_abort"; statement = "[playa, 'Abort!', 5] call tsp_fnc_notify; [playa] call tsp_fnc_animate_effect; [playa, '', 'tsp_animate_abort', '', true, true, true] spawn tsp_fnc_gesture_play"; exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"}; showDisabled = 1;};
 				};
 				class tsp_animate_formations {
 					class tsp_animate_halt {displayName = "Halt"; condition = "tsp_cba_animate_halt"; statement = "[playa, 'Halt!', 5] call tsp_fnc_notify; [playa] call tsp_fnc_animate_effect; [playa, '', 'tsp_animate_halt', '', true, true, true] spawn tsp_fnc_gesture_play"; exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"}; showDisabled = 1;};
@@ -38,7 +38,7 @@ class CfgMovesBasic {
     class DefaultDie;
     class ManActions {
 		tsp_animate_column[] = {"tsp_animate_column", "Gesture"};
-		tsp_animate_danger[] = {"tsp_animate_danger", "Gesture"};
+		tsp_animate_abort[] = {"tsp_animate_abort", "Gesture"};
 		tsp_animate_halt[] = {"tsp_animate_halt", "Gesture"};
 		tsp_animate_line[] = {"tsp_animate_line", "Gesture"};
 		tsp_animate_ready[] = {"tsp_animate_ready", "Gesture"};
@@ -54,8 +54,8 @@ class CfgGesturesMale {
 	class States {
 		class tsp_animate_knock;
 		class tsp_animate_column: tsp_animate_knock {file = "tsp_animate_viper\column.rtm"; speed = 0.5; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};
-		class tsp_animate_danger: tsp_animate_column {file = "tsp_animate_viper\danger.rtm"; speed = 1.0; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};
-		class tsp_animate_halt: tsp_animate_danger {file = "tsp_animate_viper\hold.rtm"; speed = 1.0; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};
+		class tsp_animate_abort: tsp_animate_column {file = "tsp_animate_viper\danger.rtm"; speed = 1.0; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};
+		class tsp_animate_halt: tsp_animate_abort {file = "tsp_animate_viper\hold.rtm"; speed = 1.0; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};
 		class tsp_animate_line: tsp_animate_halt {file = "tsp_animate_viper\line.rtm"; speed = 1.0; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};
 		class tsp_animate_ready: tsp_animate_line {file = "tsp_animate_viper\ready.rtm"; speed = 1.0; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};
 		class tsp_animate_wedge: tsp_animate_ready {file = "tsp_animate_viper\wedge.rtm"; speed = 1.0; cancel = true; interpolationSpeed = 3; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {1}; disableWeapons = false;};

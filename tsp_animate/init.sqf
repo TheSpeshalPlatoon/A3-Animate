@@ -64,6 +64,7 @@ player addEventHandler ["GestureChanged", {  //-- Signal Hints (Must be done thi
     if (_gesture == "ace_gestures_engage") exitWith {[playa, 'Engage!'] call tsp_fnc_notify};
     if (_gesture == "ace_gestures_hold") exitWith {[playa, 'Hold'] call tsp_fnc_notify};
     if (_gesture == "ace_gestures_warning") exitWith {[playa, 'Watch out!'] call tsp_fnc_notify};
+    if ("reload" in _gesture) then {_unit setVariable ["tsp_gestureReturn", ""]};  //-- Reload cancels all
 }];
 
 ["if (tsp_cba_animate_door && ['door', _this#4] call BIS_fnc_inString || ['gate', _this#4] call BIS_fnc_inString) then {[playa,'door'] call tsp_fnc_animate_tactical};"] spawn tsp_fnc_scroll;
@@ -77,7 +78,7 @@ addMissionEventHandler ["Draw3D", {
     [tsp_old, currentWeapon playa] params ["_old", "_new"]; tsp_old = _new;  //-- Exit if no switch or unarmed or no sling
 	if (
         vehicle playa != playa || currentWeapon playa == _old || _new == "" || !("tsp_sling" in items playa || !tsp_cba_animate_sling_required) || !tsp_cba_animate_sling || 
-        !(stance playa in ["CROUCH","STAND"]) || (playa getVariable ["tsp_slung", []]) isNotEqualTo []
+        !(stance playa in ["CROUCH","STAND"]) || (playa getVariable ["tsp_slung", []]) isNotEqualTo [] || !(isNil 'ace_arsenal_center' && isNil 'bis_fnc_arsenal_center')
     ) exitWith {};
     if (_new == secondaryWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, false, true] call tsp_fnc_animate_sling};  //-- Rifle > launcher
     if (_new == handgunWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, true] call tsp_fnc_animate_sling};          //-- Rifle > pistol

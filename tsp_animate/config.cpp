@@ -414,16 +414,16 @@ class CfgGesturesMale {
 		class tsp_animate_rockpaperscissors_scissors_loop: tsp_animate_rockpaperscissors_rock_loop {file = "tsp_animate\emotes\rockpaperscissors_scissors_loop.rtm";};
 
 		//-- Clackers
-		class tsp_animate_clacker: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate\gestures\clacker.rtm"; speed = 2;};
+		class tsp_animate_clacker: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate\gestures\clacker.rtm"; speed = 2; enableOptics = 0;};
 		class tsp_animate_shock_wnon: tsp_animate_clacker {speed = 0.7; mask = "bothArms"; file = "tsp_animate\gestures\shock.rtm";};
 		class tsp_animate_shock_loop_wnon: tsp_animate_shock_wnon {file = "tsp_animate\gestures\shock_loop.rtm"; looped = true;};
 		class tsp_animate_shock_wrfl: tsp_animate_clacker {mask = "handsWeapon"; speed = 0.7; rightHandIKCurve[] = {0}; file = "tsp_animate\gestures\shock.rtm";};
 		class tsp_animate_shock_loop_wrfl: tsp_animate_shock_wrfl {file = "tsp_animate\gestures\shock_loop.rtm"; looped = true;};
-		class tsp_animate_detonate: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate\gestures\detonate.rtm";};
+		class tsp_animate_detonate: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate\gestures\detonate.rtm"; enableOptics = 0;};
 		class tsp_animate_detonate_shock: tsp_animate_detonate {file = "tsp_animate\gestures\detonate_shock.rtm";};
 
 		//-- Grenades
-		class tsp_animate_grenade_wnon: tsp_animate_breach {leftHandIKCurve[] = {0}; mask = "leftArm"; looped = true; file = "tsp_animate\gestures\grenade.rtm"; speed = 2;};
+		class tsp_animate_grenade_wnon: tsp_animate_breach {leftHandIKCurve[] = {0}; mask = "leftArm"; looped = true; file = "tsp_animate\gestures\grenade.rtm"; speed = 2; enableOptics = 0;};
 		class tsp_animate_grenade_wnon_over: tsp_animate_grenade_wnon {looped = false; file = "tsp_animate\gestures\grenade_over.rtm";};
 		class tsp_animate_grenade_wnon_under: tsp_animate_grenade_wnon_over {file = "tsp_animate\gestures\grenade_under.rtm";};
 
@@ -436,7 +436,7 @@ class CfgGesturesMale {
 		class tsp_animate_grenade_wpst_under: tsp_animate_grenade_wpst_over {file = "tsp_animate\gestures\grenade_under.rtm";};
 
 		//-- Items
-		class tsp_animate_map_in: tsp_animate_breach {file = "tsp_animate\gestures\map_in.rtm"; speed = 2.5; leftHandIKCurve[] = {1}; mask = "leftArmHead"};
+		class tsp_animate_map_in: tsp_animate_breach {file = "tsp_animate\gestures\map_in.rtm"; speed = 2.5; leftHandIKCurve[] = {1}; mask = "leftArmHead"; enableOptics = 0;};
 		class tsp_animate_map_loop: tsp_animate_map_in {file = "tsp_animate\gestures\map_loop.rtm"; looped = true; leftHandIKCurve[] = {0};};
 		class tsp_animate_compass_in: tsp_animate_map_in {file = "tsp_animate\gestures\compass_in.rtm";};
 		class tsp_animate_compass_loop: tsp_animate_map_loop {file = "tsp_animate\gestures\compass_loop.rtm";};
@@ -444,8 +444,8 @@ class CfgGesturesMale {
 		class tsp_animate_watch_loop: tsp_animate_map_loop {file = "tsp_animate\gestures\watch_loop.rtm";};
 
 		//-- NVG
-		class tsp_animate_nightvision_up: tsp_animate_breach {file = "tsp_animate\gestures\nightvision_up.rtm";};
-		class tsp_animate_nightvision_down: tsp_animate_breach {file = "tsp_animate\gestures\nightvision_down.rtm";};
+		class tsp_animate_nightvision_up: tsp_animate_breach {file = "tsp_animate\gestures\nightvision_up.rtm"; speed = 1.4;};
+		class tsp_animate_nightvision_down: tsp_animate_nightvision_up {file = "tsp_animate\gestures\nightvision_down.rtm";};
 
 		//-- Captive
 		class tsp_animate_captive: tsp_animate_breach {mask = "HandsWeapon"; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {0}; looped = true; file = "tsp_animate\gestures\captive.rtm";};
@@ -464,7 +464,7 @@ class CfgGesturesMale {
 		class tsp_animate_inspect_wpst: tsp_animate_suicide_wpst_in {file = "tsp_animate\gestures\inspect_wpst.rtm";};
 		
 		//-- Throw
-		class tsp_animate_throw_wrfl: GestureNo {file = "tsp_animate\gestures\throw_wrfl.rtm"; speed = 0.5; mask="weaponSpine"; looped = true; cancel = true;};
+		class tsp_animate_throw_wrfl: GestureNo {file = "tsp_animate\gestures\throw_wrfl.rtm"; speed = 0.5; mask="weaponSpine"; looped = true; cancel = true; enableOptics = 0;};
 		class tsp_animate_throw_wrfl_wind: tsp_animate_throw_wrfl {file = "tsp_animate\gestures\throw_wrfl_wind.rtm";};
 		class tsp_animate_throw_wrfl_wound: tsp_animate_throw_wrfl {file = "tsp_animate\gestures\throw_wrfl_wound.rtm";};
 		class tsp_animate_throw_wrfl_out: tsp_animate_throw_wrfl {file = "tsp_animate\gestures\throw_wrfl_out.rtm"; speed = 1.5; mask="upperTorso"; looped = false;};
@@ -474,9 +474,9 @@ class CfgGesturesMale {
 		class tsp_animate_throw_wpst_out: tsp_animate_throw_wpst {file = "tsp_animate\gestures\throw_wrfl_out.rtm"; speed = 1.5; mask = "upperTorsoWeak"; looped = false;};
 
 		//-- None
-		class tsp_animate_tactical_shoulder_wnon_lnon: GestureNo {file = "tsp_animate\tactical\tap_wrfl_lhig.rtm"; mask = "leftArm"; leftHandIKCurve[] = {0,1,0.05,0,0.95,0,1,1}; speed = 0.8;};
+		class tsp_animate_tactical_shoulder_wnon_lnon: GestureNo {file = "tsp_animate\tactical\tap_wrfl_lhig.rtm"; mask = "leftArm"; leftHandIKCurve[] = {0,1,0.05,0,0.95,0,1,1}; speed = 0.8; enableOptics = 0;};
 		class tsp_animate_tactical_leg_wnon_lnon: tsp_animate_tactical_shoulder_wnon_lnon {file = "tsp_animate\tactical\squeeze_wrfl_lhig.rtm";};
-		class tsp_animate_tactical_door_wnon_lnon: tsp_animate_tactical_shoulder_wnon_lnon {file = "tsp_animate\tactical\door_wrfl_lhig.rtm"; speed = 1.2;};
+		class tsp_animate_tactical_door_wnon_lnon: tsp_animate_tactical_shoulder_wnon_lnon {file = "tsp_animate\tactical\door_wrfl_lhig.rtm"; speed = 1.2; enableOptics = 1;};
 		class tsp_animate_tactical_doorace_wnon_lnon: tsp_animate_tactical_door_wnon_lnon {file = "tsp_animate\tactical\doorACE_wrfl_lhig.rtm"; leftHandIKCurve[] = {0}; looped = true;};
 		
 		//-- Rifle
@@ -499,10 +499,10 @@ class CfgGesturesMale {
 		class tsp_animate_tactical_compress_wrfl_lhig: tsp_animate_tactical_ready_wrfl_lhig {file = "tsp_animate\tactical\compress_wrfl_llow.rtm"; mask = "handsWeapon"; disableWeapons = false; scrollUp[] = {"ready","lhig"}; scrollDown[] = {"cant","lnon"};};
 		class tsp_animate_tactical_compress_wrfl_llow: tsp_animate_tactical_compress_wrfl_lhig {file = "tsp_animate\tactical\compress_wrfl_lhig.rtm"; scrollUp[] = {"cant","lnon"}; scrollDown[] = {"ready","llow"};};
 		
-		class tsp_animate_tactical_shoulder_wrfl_lnon: tsp_animate_tactical_shoulder_wnon_lnon {};
-		class tsp_animate_tactical_shoulder_wrfl_lhig: tsp_animate_tactical_shoulder_wrfl_lnon {file = "tsp_animate\tactical\tap_wrfl_lhig.rtm"; mask = "handsWeapon"; disableWeapons = true;};
+		class tsp_animate_tactical_shoulder_wrfl_lnon: tsp_animate_tactical_shoulder_wnon_lnon {enableOptics = 1;};
+		class tsp_animate_tactical_shoulder_wrfl_lhig: tsp_animate_tactical_shoulder_wrfl_lnon {file = "tsp_animate\tactical\tap_wrfl_lhig.rtm"; mask = "handsWeapon"; disableWeapons = true; enableOptics = 0;};
 		class tsp_animate_tactical_shoulder_wrfl_llow: tsp_animate_tactical_shoulder_wrfl_lhig {file = "tsp_animate\tactical\tap_wrfl_llow.rtm";};
-		class tsp_animate_tactical_leg_wrfl_lnon: tsp_animate_tactical_leg_wnon_lnon {};
+		class tsp_animate_tactical_leg_wrfl_lnon: tsp_animate_tactical_leg_wnon_lnon {enableOptics = 0;};
 		class tsp_animate_tactical_leg_wrfl_lhig: tsp_animate_tactical_shoulder_wrfl_lhig {file = "tsp_animate\tactical\squeeze_wrfl_lhig.rtm";};
 		class tsp_animate_tactical_leg_wrfl_llow: tsp_animate_tactical_leg_wrfl_lhig {file = "tsp_animate\tactical\squeeze_wrfl_llow.rtm";};
 
@@ -521,12 +521,12 @@ class CfgGesturesMale {
 		class tsp_animate_tactical_sprint_wrfl_llow: tsp_animate_tactical_sprint_wrfl_lhig {file = "tsp_animate\tactical\sprint_wrfl_llow.rtm"; leftHandIKCurve[] = {1};};
 		
 		class tsp_animate_tactical_door_wrfl_lnon: tsp_animate_tactical_door_wnon_lnon {file = "tsp_animate\tactical\door_wrfl_llow.rtm"; mask = "leftArm"; disableWeapons = false;};
-		class tsp_animate_tactical_door_wrfl_lhig: tsp_animate_tactical_door_wrfl_lnon {file = "tsp_animate\tactical\door_wrfl_lhig.rtm"; mask = "handsWeapon"; disableWeapons = true;};
+		class tsp_animate_tactical_door_wrfl_lhig: tsp_animate_tactical_door_wrfl_lnon {file = "tsp_animate\tactical\door_wrfl_lhig.rtm"; mask = "handsWeapon"; disableWeapons = true; enableOptics = 0;};
 		class tsp_animate_tactical_door_wrfl_llow: tsp_animate_tactical_door_wrfl_lhig {file = "tsp_animate\tactical\door_wrfl_llow.rtm";};		
-		class tsp_animate_tactical_doorcompress_wrfl_lnon: tsp_animate_tactical_door_wnon_lnon {file = "tsp_animate\tactical\doorcompress_wrfl_llow.rtm"; mask = "handsWeapon"; disableWeapons = false;};
+		class tsp_animate_tactical_doorcompress_wrfl_lnon: tsp_animate_tactical_door_wnon_lnon {file = "tsp_animate\tactical\doorcompress_wrfl_llow.rtm"; mask = "handsWeapon"; disableWeapons = false; enableOptics = 0;};
 		class tsp_animate_tactical_doorcompress_wrfl_lhig: tsp_animate_tactical_doorcompress_wrfl_lnon {file = "tsp_animate\tactical\doorcompress_wrfl_llow.rtm";};
 		class tsp_animate_tactical_doorcompress_wrfl_llow: tsp_animate_tactical_doorcompress_wrfl_lhig {file = "tsp_animate\tactical\doorcompress_wrfl_lhig.rtm";};
-		class tsp_animate_tactical_doorace_wrfl_lnon: tsp_animate_tactical_doorcompress_wrfl_lhig {file = "tsp_animate\tactical\doorACE_wrfl_llow.rtm"; leftHandIKCurve[] = {0}; looped = true;};
+		class tsp_animate_tactical_doorace_wrfl_lnon: tsp_animate_tactical_doorcompress_wrfl_lhig {file = "tsp_animate\tactical\doorACE_wrfl_llow.rtm"; leftHandIKCurve[] = {0}; looped = true; enableOptics = 0;};
 		class tsp_animate_tactical_doorace_wrfl_lhig: tsp_animate_tactical_doorace_wrfl_lnon {file = "tsp_animate\tactical\doorACE_wrfl_llow.rtm";};
 		class tsp_animate_tactical_doorace_wrfl_llow: tsp_animate_tactical_doorace_wrfl_lnon {file = "tsp_animate\tactical\doorACE_wrfl_lhig.rtm";};
 
@@ -549,10 +549,10 @@ class CfgGesturesMale {
 		class tsp_animate_tactical_compress_wpst_lhig: tsp_animate_tactical_cant_wrfl_lnon {file = "tsp_animate\tactical\compress_wpst.rtm"; mask = "readyPistolSpine"; disableWeapons = false; scrollUp[] = {"ready","lhig"}; scrollDown[] = {"ready","llow"};};
 		class tsp_animate_tactical_compress_wpst_llow: tsp_animate_tactical_compress_wpst_lhig {};
 		
-		class tsp_animate_tactical_shoulder_wpst_lnon: tsp_animate_tactical_shoulder_wnon_lnon {};
-		class tsp_animate_tactical_shoulder_wpst_lhig: tsp_animate_tactical_shoulder_wnon_lnon {file = "tsp_animate\tactical\tap_wpst_lhig.rtm"; mask = "readyPistolSpine"; disableWeapons = true;};
+		class tsp_animate_tactical_shoulder_wpst_lnon: tsp_animate_tactical_shoulder_wnon_lnon {enableOptics = 1;};
+		class tsp_animate_tactical_shoulder_wpst_lhig: tsp_animate_tactical_shoulder_wnon_lnon {file = "tsp_animate\tactical\tap_wpst_lhig.rtm"; mask = "readyPistolSpine"; disableWeapons = true; enableOptics = 0;};
 		class tsp_animate_tactical_shoulder_wpst_llow: tsp_animate_tactical_shoulder_wpst_lhig {file = "tsp_animate\tactical\tap_wpst_llow.rtm";};
-		class tsp_animate_tactical_leg_wpst_lnon: tsp_animate_tactical_leg_wnon_lnon {};
+		class tsp_animate_tactical_leg_wpst_lnon: tsp_animate_tactical_leg_wnon_lnon {enableOptics = 0;};
 		class tsp_animate_tactical_leg_wpst_lhig: tsp_animate_tactical_shoulder_wpst_lhig {file = "tsp_animate\tactical\squeeze_wpst_lhig.rtm";};
 		class tsp_animate_tactical_leg_wpst_llow: tsp_animate_tactical_leg_wpst_lhig {file = "tsp_animate\tactical\squeeze_wpst_llow.rtm";};
 
@@ -571,12 +571,12 @@ class CfgGesturesMale {
 		class tsp_animate_tactical_sprint_wpst_llow: tsp_animate_tactical_sprint_wpst_lhig {file = "tsp_animate\tactical\sprint_wrfl_lhig.rtm";};
 		
 		class tsp_animate_tactical_door_wpst_lnon: tsp_animate_tactical_door_wnon_lnon {file = "tsp_animate\tactical\door_wpst_llow.rtm"; mask = "leftArm"; disableWeapons = false;};
-		class tsp_animate_tactical_door_wpst_lhig: tsp_animate_tactical_door_wpst_lnon {file = "tsp_animate\tactical\door_wpst_lhig.rtm"; mask = "readyPistol"; disableWeapons = true;};
+		class tsp_animate_tactical_door_wpst_lhig: tsp_animate_tactical_door_wpst_lnon {file = "tsp_animate\tactical\door_wpst_lhig.rtm"; mask = "readyPistol"; disableWeapons = true; enableOptics = 0;};
 		class tsp_animate_tactical_door_wpst_llow: tsp_animate_tactical_door_wpst_lhig {file = "tsp_animate\tactical\door_wpst_llow.rtm";};		
-		class tsp_animate_tactical_doorcompress_wpst_lnon: tsp_animate_tactical_door_wpst_lhig {file = "tsp_animate\tactical\doorcompress_wpst.rtm"; mask = "readyPistolSpine"; disableWeapons = false;};
+		class tsp_animate_tactical_doorcompress_wpst_lnon: tsp_animate_tactical_door_wpst_lhig {file = "tsp_animate\tactical\doorcompress_wpst.rtm"; mask = "readyPistolSpine"; disableWeapons = false; enableOptics = 0;};
 		class tsp_animate_tactical_doorcompress_wpst_lhig: tsp_animate_tactical_doorcompress_wpst_lnon {file = "tsp_animate\tactical\doorcompress_wpst.rtm";};
 		class tsp_animate_tactical_doorcompress_wpst_llow: tsp_animate_tactical_doorcompress_wpst_lhig {};
-		class tsp_animate_tactical_doorace_wpst_lnon: tsp_animate_tactical_doorcompress_wpst_lhig {file = "tsp_animate\tactical\doorACE_wpst.rtm"; leftHandIKCurve[] = {0}; looped = true;};
+		class tsp_animate_tactical_doorace_wpst_lnon: tsp_animate_tactical_doorcompress_wpst_lhig {file = "tsp_animate\tactical\doorACE_wpst.rtm"; leftHandIKCurve[] = {0}; looped = true; enableOptics = 0;};
 		class tsp_animate_tactical_doorace_wpst_lhig: tsp_animate_tactical_doorace_wpst_lnon {};
 		class tsp_animate_tactical_doorace_wpst_llow: tsp_animate_tactical_doorace_wpst_lnon {};
 

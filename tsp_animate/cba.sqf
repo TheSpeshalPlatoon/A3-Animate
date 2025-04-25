@@ -19,7 +19,7 @@
 
 ["tsp_cba_animate_walk", "CHECKBOX", ["Adjustable Walking Speed", "Enable/Disable adjustable walking speed."], ["TSP Animate", "Walk"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_walk_default", "SLIDER", ["Default Walking Speed", "Default walking speed."], ["TSP Animate", "Walk"], [0.5, 2, 1], false] call CBA_fnc_addSetting;
-["tsp_cba_animate_walk_max", "SLIDER", ["Max Walking Speed", "Maximum walking speed."], ["TSP Animate", "Walk"], [1, 2, 1.6], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_walk_max", "SLIDER", ["Max Walking Speed", "Maximum walking speed."], ["TSP Animate", "Walk"], [1, 3, 1.6], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_walk_lower", "SLIDER", ["Lowered Walking Speed", "Walking speed while swag walking."], ["TSP Animate", "Walk"], [0.5, 2, 1], false] call CBA_fnc_addSetting;
 
 ["tsp_cba_animate_sling", "CHECKBOX", ["Sling System", "Enable/Disable sling system."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
@@ -47,13 +47,14 @@
 ["TSP Animate", "tsp_animate_walk_scrollUp", "Walking Speed Up", {[playa, animationState playa, 0.2] call tsp_fnc_animate_walk}, {}, [0xF8, [false, true, false]]] call CBA_fnc_addKeybind;
 ["TSP Animate", "tsp_animate_walk_scrollDown", "Walking Speed Down", {[playa, animationState playa, -0.2] call tsp_fnc_animate_walk}, {}, [0xF9, [false, true, false]]] call CBA_fnc_addKeybind;
 
+//-- tsp_animate_key exists so that it only activates on release
 ["TSP Animate", "tsp_animate_tactical_cancel", "Tactical Cancel (Ready)", {[playa, false, true] call tsp_fnc_animate_tactical_stop}, {}, [0xF0, [false, false, false]]] call CBA_fnc_addKeybind;
-["TSP Animate", "tsp_animate_tactical_cancel_compress", "Tactical Cancel (Ready, Compress)", {[] spawn {tsp_animate_key = gestureState playa; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, false, true, true, false, false, tsp_animate_key] call tsp_fnc_animate_tactical_stop}}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-["TSP Animate", "tsp_animate_tactical_cancel_keyup", "Tactical Cancel (Cant, Over)", {[] spawn {tsp_animate_key = gestureState playa; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, false, false, false, true, true, tsp_animate_key] call tsp_fnc_animate_tactical_stop}}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
+["TSP Animate", "tsp_animate_tactical_cancel_compress", "Tactical Cancel (Ready, Compress)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, false, true, true, false, false] call tsp_fnc_animate_tactical_stop}}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
+["TSP Animate", "tsp_animate_tactical_cancel_keyup", "Tactical Cancel (Cant, Over)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, false, false, false, true, true] call tsp_fnc_animate_tactical_stop}}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 
 ["TSP Animate", "tsp_animate_tactical_cancel_aim", "Tactical Cancel (Ready - Aim)", {[playa, true, true] call tsp_fnc_animate_tactical_stop}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-["TSP Animate", "tsp_animate_tactical_cancel_compress_aim", "Tactical Cancel (Ready, Compress - Aim)", {[] spawn {tsp_animate_key = gestureState playa; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, true, true, false, false, tsp_animate_key] call tsp_fnc_animate_tactical_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
-["TSP Animate", "tsp_animate_tactical_cancel_keyup_aim", "Tactical Cancel (Cant, Over - Key Up - Aim)", {[] spawn {tsp_animate_key = gestureState playa; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, false, false, true, true, tsp_animate_key] call tsp_fnc_animate_tactical_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
+["TSP Animate", "tsp_animate_tactical_cancel_compress_aim", "Tactical Cancel (Ready, Compress - Aim)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, true, true, false, false] call tsp_fnc_animate_tactical_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
+["TSP Animate", "tsp_animate_tactical_cancel_keyup_aim", "Tactical Cancel (Cant, Over - Key Up - Aim)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, false, false, true, true] call tsp_fnc_animate_tactical_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
 
 ["TSP Animate", "tsp_animate_tactical_scrollUp", "Tactical Up", {[playa, "scrollUp"] spawn tsp_fnc_animate_tactical}, {}, [0, [false, true, false]]] call CBA_fnc_addKeybind;
 ["TSP Animate", "tsp_animate_tactical_scrollDown", "Tactical Down", {[playa, "scrollDown"] spawn tsp_fnc_animate_tactical}, {}, [0, [false, true, false]]] call CBA_fnc_addKeybind;
@@ -74,19 +75,19 @@
 
 ["TSP Animate", "tsp_animate_sling_sling", "Sling/Unsling/Swap", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (_current == _primary && _primary != "" && count _slung > 1 && stance playa in ["STAND","CROUCH"] && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true, false, false, false, true] call tsp_fnc_animate_sling};  //-- Swap
-    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa in ["STAND","CROUCH"] && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
-    if (count _slung > 1 && stance playa in ["STAND","CROUCH"] && primaryWeapon playa == "") exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
+    if (_current == _primary && _primary != "" && count _slung > 1 && stance playa != "PRONE" && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true, false, false, false, true] call tsp_fnc_animate_sling};  //-- Swap
+    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
+    if (count _slung > 1 && stance playa != "PRONE" && primaryWeapon playa == "") exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
 }, {}, [2, [false, false, false]]] call CBA_fnc_addKeybind;
 
 ["TSP Animate", "tsp_animate_sling_slingo", "Sling", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa in ["STAND","CROUCH"] && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
+    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
 }, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 
 ["TSP Animate", "tsp_animate_sling_unslingo", "Unsling", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (count _slung > 1 && stance playa in ["STAND","CROUCH"]) exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
+    if (count _slung > 1 && stance playa != "PRONE") exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
 }, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
   
 ["TSP Animate", "tsp_animate_throw", "Throw Weapon", {if (tsp_cba_animate_throw) then {[playa, true] spawn tsp_fnc_animate_throw}}, {}, [20, [false, false, true]]] call CBA_fnc_addKeybind;

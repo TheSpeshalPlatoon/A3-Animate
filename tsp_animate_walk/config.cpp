@@ -96,16 +96,6 @@ class CfgMovesMaleSdr: CfgMovesBasic {
 	};
 };
 
-/*class CfgGesturesMale {
-	skeletonName = "OFP2_ManSkeleton";
-	class Default {};
-	class States {
-		class tsp_animate_tactical_port_wrfl_lhig;
-		class tsp_animate_tactical_portmove_wrfl_lhig: tsp_animate_tactical_port_wrfl_lhig {leftHandIKCurve[] = {0};};
-		class tsp_animate_tactical_portmove_wrfl_llow: tsp_animate_tactical_portmove_wrfl_lhig {leftHandIKCurve[] = {0};};
-	};
-};*/
-
 //class CfgMovesMaleSdr: CfgMovesBasic {
     //class States {
 		//class AmovPercMstpSrasWrflDnon;

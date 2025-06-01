@@ -45,9 +45,9 @@ tsp_fnc_radio = {
 		case (_mode == "Vest" && _hasVest): {[_unit, "tsp_animate_radio_vest_wnon_laut_in" + _aim, "tsp_animate_radio_vest_wnon_laut" + _aim, "tsp_common_stop", _interupt, true, true] spawn tsp_fnc_gesture_play};
 		case (_mode == "Handset"): {
 			(["Others"] call tsp_fnc_radio_data) params ["_radioClass", "_radioObject", "_radioAttach", "_radioRotation", "_defaultPreference"];
-			[_unit, "tsp_animate_radio_hand_wnon_laut_in" + _aim, "tsp_animate_radio_hand_wnon_laut" + _aim, _radioObject, _radioAttach, _radioRotation, {!isNil "tsp_animate_radio_stop"}, false] spawn tsp_fnc_gesture_item;
+			[_unit, "tsp_animate_radio_hand_wnon_laut_in" + _aim, "tsp_animate_radio_hand_wnon_laut" + _aim, _radioObject, "leftHand", _radioAttach, _radioRotation, {!isNil "tsp_animate_radio_stop"}, false] spawn tsp_fnc_gesture_item;
 		};	
-		default {[_unit, "tsp_animate_radio_hand_wnon_laut_in" + _aim, "tsp_animate_radio_hand_wnon_laut" + _aim, _radioObject, _radioAttach, _radioRotation, {!isNil "tsp_animate_radio_stop"}, false] spawn tsp_fnc_gesture_item};
+		default {[_unit, "tsp_animate_radio_hand_wnon_laut_in" + _aim, "tsp_animate_radio_hand_wnon_laut" + _aim, _radioObject, "leftHand", _radioAttach, _radioRotation, {!isNil "tsp_animate_radio_stop"}, false] spawn tsp_fnc_gesture_item};
 	};
 
 	//-- Exit

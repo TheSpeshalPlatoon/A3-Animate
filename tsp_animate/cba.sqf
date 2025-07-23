@@ -4,6 +4,7 @@
 ["tsp_cba_animate_sound", "SLIDER", ["Sound Volume", "Sound effect volume."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_shake", "SLIDER", ["Shake Intensity", "Camera shake intensity."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_ladder", "CHECKBOX", ["Shooting from Ladders", "Enable/Disable shooting from ladders."], "TSP Animate", true] call CBA_fnc_addSetting;
+["tsp_cba_animate_commands", "CHECKBOX", ["Command Gestures", "Enable/Disable AI command gestures."], "TSP Animate", true] call CBA_fnc_addSetting;
 
 ["tsp_cba_animate_tactical", "CHECKBOX", ["Tactical Stance System", "Enable/Disable tactical stance system."], ["TSP Animate", "Tactical"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_style", "LIST", ["Tactical Style", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 0]] call CBA_fnc_addSetting;
@@ -91,11 +92,11 @@
 
 [["TSP Animate", "Items"], "tsp_animate_chemlight_green", "Drop Green Chemlight", {[playa, "Chemlight_green"] spawn tsp_fnc_animate_chemlight}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Items"], "tsp_animate_chemlight_red", "Drop Red Chemlight", {[playa, "Chemlight_red"] spawn tsp_fnc_animate_chemlight}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Items"], "tsp_animate_chemlight_green", "Drop Green Chemlight (Double Tap)", {
+[["TSP Animate", "Items"], "tsp_animate_chemlight_green_double", "Drop Green Chemlight (Double Tap)", {
 	if (isNil "tsp_animate_firstTap") exitWith {[] spawn {tsp_animate_firstTap = true; sleep 0.3; tsp_animate_firstTap = nil}};  //-- Double tap
     [playa, "Chemlight_green"] spawn tsp_fnc_animate_chemlight;
 }, {}, [46, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Items"], "tsp_animate_chemlight_red", "Drop Red Chemlight (Double Tap)", {
+[["TSP Animate", "Items"], "tsp_animate_chemlight_red_double", "Drop Red Chemlight (Double Tap)", {
 	if (isNil "tsp_animate_firstTap") exitWith {[] spawn {tsp_animate_firstTap = true; sleep 0.3; tsp_animate_firstTap = nil}};  //-- Double tap
     [playa, "Chemlight_red"] spawn tsp_fnc_animate_chemlight;
 }, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
@@ -113,8 +114,7 @@
 [["TSP Animate", "Tap/Squeeze"], "tsp_animate_leg", "Leg", {if (tsp_cba_animate_tap) then {[playa,objNull,-1,"leg"] spawn tsp_fnc_animate_tap}}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 
 {
-    _x params ["_name", "_path", ["_key", 0]];
-    [getText (call compile (_path + " >> 'condition'")), getText (call compile (_path + " >> 'statement'"))] params ["_condition", "_statement"];
+    _x params ["_name", "_path", ["_key", 0]]; [getText (call compile (_path + " >> 'condition'")), getText (call compile (_path + " >> 'statement'"))] params ["_condition", "_statement"];
     ["tsp_cba_animate_" + _name, "CHECKBOX", [_name, "Enable/disable this animation."], ["TSP Animate", "Animations"], true, false] call CBA_fnc_addSetting;
     [["TSP Animate", "Animations"], "tsp_" + _name, _name, compile ("if (" + _condition + ") then {" + _statement + "}"), {}, [_key, [false, false, false]]] call CBA_fnc_addKeybind;
 } forEach [

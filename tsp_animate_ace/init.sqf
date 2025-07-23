@@ -42,20 +42,5 @@ player addEventHandler ["AnimStateChanged", {  //-- No dropping with slings
     if (!("tsp_sling" in items _unit) && !(isNil "tsp_ace_sling")) then {ace_medical_dropWeaponUnconsciousChance = tsp_ace_sling; tsp_ace_sling = nil};
 }];
 
-player addEventHandler ["GestureChanged", {  //-- Must be done this way for ACE keybinds to activate them
-    params ["_unit", "_gesture"];
-    if (_gesture == "gestureAdvance") exitWith {[playa, 'Advance!'] call tsp_fnc_notify};
-    if (_gesture == "gestureGo") exitWith {[playa, 'Go Go Go!'] call tsp_fnc_notify};
-    if (_gesture == "gestureFollow") exitWith {[playa, 'Follow me!'] call tsp_fnc_notify};
-    if (_gesture == "gestureUp") exitWith {[playa, 'Up there!'] call tsp_fnc_notify};
-    if (_gesture == "gestureCeaseFire") exitWith {[playa, 'Oi!'] call tsp_fnc_notify};
-    if (_gesture == "gestureFreeze") exitWith {[playa, 'Freeze!'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_forward") exitWith {[playa, 'Forward!'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_regroup") exitWith {[playa, 'Regroup!'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_freeze") exitWith {[playa, 'Freeze!'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_cover") exitWith {[playa, 'Cover me!'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_point") exitWith {[playa, 'Over there!'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_engage") exitWith {[playa, 'Engage!'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_hold") exitWith {[playa, 'Hold'] call tsp_fnc_notify};
-    if (_gesture == "ace_gestures_warning") exitWith {[playa, 'Watch out!'] call tsp_fnc_notify};
-}];
+["ace_dragging_startedCarry", {params ["_unit", "_target"];	if (tsp_cba_animate_lift && !(_target isKindOf "Man")) then {_unit spawn {sleep 1; [_this, "", "tsp_animate_lift", "tsp_common_stop", true, true] spawn tsp_fnc_gesture_play}}}] call CBA_fnc_addEventHandler;
+["ace_dragging_stoppedCarry", {params ["_unit", "_target"]; if ("carry" in gestureState _unit) exitWith {[_unit] call tsp_fnc_gesture_stop}}] call CBA_fnc_addEventHandler;

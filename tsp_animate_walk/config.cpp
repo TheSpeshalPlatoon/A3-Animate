@@ -1,6 +1,6 @@
 class CfgPatches {
-	class A3_Anims_F_Config_Sdr {
-		addonRootClass = "A3_Anims_F";
+	class tsp_animate_walk {
+		//addonRootClass = "A3_Anims_F";
 		requiredAddons[] = {
 			"A3_Anims_F",
 			"A3_Anims_F_AoW",

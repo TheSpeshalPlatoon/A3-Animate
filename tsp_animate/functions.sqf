@@ -80,13 +80,18 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
             params ["_unit"];
             [_unit, primaryWeapon _unit] remoteExec ["selectWeapon"];
             [_unit, "tsp_animate_sling_sling"] remoteExec ["playActionNow"];
+            _holder = [_unit, primaryWeapon _unit, true, false] call tsp_fnc_throw;
+            _holder attachTo [_unit, tsp_cba_animate_sling_pos#0, "Spine3", true]; 
+            [_holder, tsp_cba_animate_sling_pos#1] call BIS_fnc_setObjectRotation;
+            _holder hideObjectGlobal true; _holder setDamage 1;
+            _unit setVariable ["tsp_holder", _holder];
         }];
-        tsp_future pushBack [time + 0.3 + _time, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {
+        tsp_future pushBack [time + _time + 0.3, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {
             params ["_unit", "_unarmed"];
-            _rifle = (getUnitLoadout _unit)#0; _holder = [_unit, primaryWeapon _unit, true, false] call tsp_fnc_throw; _holder setDamage 1; 
-            _holder attachTo [_unit, tsp_cba_animate_sling_pos#0, "Spine3", true]; [_holder, tsp_cba_animate_sling_pos#1] call BIS_fnc_setObjectRotation;
+            _rifle = (getUnitLoadout _unit)#0; _unit removeWeapon (primaryWeapon _unit);
+            _holder = _unit getVariable "tsp_holder"; _holder hideObjectGlobal false;
             if (_unarmed) then {_unit action ["SWITCHWEAPON", _unit, _unit, -1]};
-            if (_unarmed && vehicle _unit == _unit) then {[_unit, animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"]] remoteExec ["switchMove"]};
+            if (_unarmed && vehicle _unit == _unit) then {[_unit, [animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"], 0, 0, false]] remoteExec ["switchMove"]};
             if (_unarmed) then {[_unit, "tsp_common_stop"] remoteExec ["playActionNow"]};
             _unit setVariable ["tsp_slung", [_holder, _rifle]];
         }];
@@ -101,7 +106,7 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
     if (_drawPistol) then {
         tsp_future pushBack [time + _time, [_unit], {
             params ["_unit"];
-            if (vehicle _unit == _unit) then {[_unit, animationState _unit regexReplace ["wrfl", "wpst"]] remoteExec ["switchMove"]};
+            if (vehicle _unit == _unit) then {[_unit, [animationState _unit regexReplace ["wrfl", "wpst"], 0, 0, false]] remoteExec ["switchMove"]};
             [_unit, handgunWeapon _unit] remoteExec ["selectWeapon"];
             if (_knife) exitWith {[_unit, "ready"] spawn tsp_fnc_melee_action};
             [_unit, "tsp_animate_sling_draw" + (if (tsp_cba_animate_sling_style == "israeli") then {"_israeli"} else {""})] remoteExec ["playActionNow"];
@@ -111,7 +116,7 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
     if (_drawLauncher) then {
         tsp_future pushBack [time + _time, [_unit], {
             params ["_unit"];
-            if (vehicle _unit == _unit) then {[_unit, animationState _unit regexReplace ["wrfl", "wlnr"]] remoteExec ["switchMove"]};
+            if (vehicle _unit == _unit) then {[_unit, [animationState _unit regexReplace ["wrfl", "wlnr"], 0, 0, false]] remoteExec ["switchMove"]};
             [_unit, secondaryWeapon _unit] remoteExec ["selectWeapon"];
             [_unit, "tsp_animate_sling_unlaunch"] remoteExec ["playActionNow"];
         }];
@@ -126,7 +131,8 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
             {if (count _x > 0) then {_unit addWeaponItem [_class, [_x#0, _x#1], true]}} forEach [_magazine1, _magazine2];   //-- Load correct magazine into weapon
             {if (count _x == 0) then {_unit removePrimaryWeaponItem ((getUnitLoadout _unit#0#(4+_forEachIndex)))#0}} forEach [_magazine1, _magazine2]; //-- If mag is empty, remove auto loaded magazine
             {if (count _x > 0) then {_unit addMagazine [_x#0, _x#1]}} forEach [_weaponItems#4, _weaponItems#5];           //-- Return auto-loaded magazine to inventory
-            if (vehicle _unit == _unit) then {[_unit, (if (stance _unit == "CROUCH") then {"amovpknlmstpslowwrfldnon_amovpknlmstpsraswrfldnon"} else {"amovpercmstpslowwrfldnon_amovpercmstpsraswrfldnon"})] remoteExec ["switchMove"]};
+            if (vehicle _unit == _unit && stance _unit == "CROUCH") then {[_unit, "amovpknlmstpslowwrfldnon_amovpknlmstpsraswrfldnon"] remoteExec ["switchMove"]};
+            if (vehicle _unit == _unit && stance _unit != "CROUCH") then {[_unit, "amovpercmstpslowwrfldnon_amovpercmstpsraswrfldnon"] remoteExec ["switchMove"]};
             [_unit, primaryWeapon _unit] remoteExec ["selectWeapon"];
             if (_sling) then {[_unit, "tsp_animate_sling_swap"] remoteExec ["playActionNow"]} else {_unit setVariable ["tsp_slung", []]};  //-- Dont overwrite if we slung a rifle beforehand
         }]
@@ -147,7 +153,7 @@ tsp_fnc_animate_chemlight = {
     [_unit, "", "tsp_animate_chemlight_wnon_laut", "", _interupt, true, true] spawn tsp_fnc_gesture_play;
     _unit removeMagazine _class; _chemlight = _class createVehicle position _unit; 
     sleep 0.2; _chemlight attachTo [_unit, [0,0,0], "LeftHand", true]; 
-    sleep 0.1; [_unit, 5, "tsp_animate\snd\chemlight.ogg", 0.5] call tsp_fnc_animate_effect; 
+    sleep 0.1; [_unit, 1, "tsp_animate\snd\chemlight.ogg", 0.5] call tsp_fnc_animate_effect; 
     sleep 0.4; detach _chemlight;
 };
 
@@ -166,13 +172,15 @@ tsp_fnc_animate_tap = {
 tsp_fnc_animate_door = {
     params ["_unit", ["_mode", "door"]];
     if (_mode == "door" && ("compress" in gestureState _unit || "object" in gestureState _unit || "cant" in gestureState _unit)) then {_mode = "doorcompress"};
-    [_unit, "", "tsp_animate_"+_mode+"_wnon_laut", "", "tsp" in gestureState _unit, true, true] spawn tsp_fnc_gesture_play; [_unit] call tsp_fnc_animate_effect;
+    [_unit, "", "tsp_animate_"+_mode+"_wnon_laut", "tsp_common_stop", "tsp" in gestureState _unit, true, true] spawn tsp_fnc_gesture_play; [_unit] call tsp_fnc_animate_effect;
 };
 
 tsp_fnc_animate_scroll = {
     params ["_unit", ["_mode", "scrollUp"]]; if (!isNil "tsp_tactical_delay") exitWith {};
-    getArray (configFile >> "CfgGesturesMale" >> "States" >> gestureState _unit >> _mode) params [["_nextMode", ""], ["_nextLevel", ""]]; 
-    if (_nextMode != "") then {[_unit, "", "tsp_animate_tactical_"+_nextMode+"_wnon_"+_nextLevel, "tsp_common_stop", true, true, true] spawn tsp_fnc_gesture_play};
+    getArray (configFile >> "CfgGesturesMale" >> "States" >> gestureState _unit >> _mode) params [["_nextMode", ""], ["_nextLevel", ""]];
+    if ("ready" in _nextMode && tsp_animate_combat && stance _unit == "STAND") then {_nextMode = "readycombat"};
+    if ("ready" in _nextMode && !tsp_animate_combat && tsp_animate_walk && stance _unit == "STAND") then {_nextMode = "readyalt"};
+    if (_nextMode != "") then {[_unit, "", "tsp_animate_tactical_"+_nextMode+"_wnon_"+_nextLevel, "tsp_common_stop", true, true, false] spawn tsp_fnc_gesture_play};
     tsp_tactical_delay = true; sleep 0.08; tsp_tactical_delay = nil; 
 };
 
@@ -189,7 +197,7 @@ tsp_fnc_animate_gate = {
     ("tactical" in gestureState _this || "melee" in gestureState _this || [gestureState _this] call tsp_fnc_gesture_sanitize == "") &&
     !("melee" in currentWeapon _this) && !(currentWeapon _this in [binocular _this, secondaryWeapon _this]) &&
     !(cameraView == "GUNNER" && ([_this] call tsp_fnc_vision || count (primaryWeaponItems _this select {_x in tsp_cba_animate_black}) > 0)) &&
-    vehicle _this == _this && stance _this in ["STAND","CROUCH"]
+    vehicle _this == _this && stance _this in ["STAND","CROUCH"] && tsp_cba_animate_tactical
 };
 
 tsp_fnc_animate_tactical = {
@@ -198,16 +206,17 @@ tsp_fnc_animate_tactical = {
     
     if (tsp_cba_animate_sprint && "sprint" in gestureState _unit && !("percmeva" in animationState _unit)) exitWith {[_unit] call tsp_fnc_gesture_stop};
     if (tsp_cba_animate_sprint && "tactical" in gestureState _unit && !("sprint" in gestureState _unit) && "percmeva" in animationState _unit) then {_mode = "sprint"; _return = true};
-    if (tsp_cba_animate_sprint && _mode == "sprint" && "lhig" in gestureState _unit && !("slow" in animationState _unit)) then {_out = "tsp_animate_tactical_sprint_wnon_laut_out"};
+    if (tsp_cba_animate_sprint && _mode == "sprint" && "lhig" in gestureState _unit && !("slow" in animationState _unit)) then {_out = "tsp_animate_tactical_"+_style+"sprint_wnon_laut_out"};
 
     if (_mode == "ready" || (_mode == "" && "tactical" in gestureState _unit && ("ready" in gestureState _unit || "port" in gestureState _unit))) then {
         _mode = "readybase";
         if (tsp_animate_combat && stance _unit == "STAND") then {_mode = "readycombat"};
         if (!tsp_animate_combat && tsp_animate_walk && stance _unit == "STAND") then {_mode = "readyalt"};
-        if ("slow" in animationState _unit && "mtac" in animationState _unit) then {_mode = "portmove"};
-        if ("slow" in animationState _unit && "mwlk" in animationState _unit) then {_mode = "portmove"};
-        if ("slow" in animationState _unit && "mrun" in animationState _unit) then {_mode = "portchill"};
-        if ("slow" in animationState _unit && "mstp" in animationState _unit) then {_mode = if (tsp_animate_combat) then {"portbase"} else {"portchill"}};
+        _port = "slow" in animationState _unit && (stance _unit == "STAND" || speed _unit == 0);
+        if (_port && "mtac" in animationState _unit) then {_mode = "portmove"};
+        if (_port && "mwlk" in animationState _unit) then {_mode = "portmove"};
+        if (_port && "mstp" in animationState _unit) then {_mode = if (tsp_animate_combat) then {"portbase"} else {"portchill"}};
+        if (_port && ("mrun" in animationState _unit || "_ver2" in animationState _unit)) then {_mode = "portchill"};
     };
 
     //-- Toggles, decide whether stop or obstruct later
@@ -235,4 +244,37 @@ tsp_fnc_animate_tactical = {
     //_returnable = _mode in ["ready","readycombat","readyalt","compress", "cant","friend","over","port","portchill","portmove"];
     //_return = _mode in ["tap","leg","shoulder","door","doorcompress","sprint","over"] || (_mode in ["readybase","readycombat","readyalt","compress"] && "cant" in gestureState _unit);
     [_unit, "", "tsp_animate_tactical_"+_style+_mode+"_wnon_"+_level, _out, true, true, _return, if ("ready" in _mode) then {true} else {!_return}] spawn tsp_fnc_gesture_play;
+};
+
+tsp_fnc_animate_commands = {  //gestureFreeze//tsp_animate_halt
+    if (_this getVariable ["commandeded", false]) exitWith {};
+    _this getVariable ["commandeded", true];
+    _this addEventHandler ["CommandChanged", {
+        params ["_group", "_cmd"]; if (stance (leader _group) == "PRONE" || commandingMenu == "" || [gestureState (leader _group)] call tsp_fnc_gesture_sanitize != "") exitWith {};
+        if (_cmd in ["MOVE"]) exitWith {(leader _group) playActionNow (selectRandom ["gestureGo","ace_gestures_forward"])};
+        if (_cmd in ["ATTACK","ATTACK AND FIRE"]) exitWith {(leader _group) playActionNow (selectRandom ["gestureGo","ace_gestures_forward"])};
+        if (_cmd in ["SUPPORT"]) exitWith {(leader _group) playActionNow (selectRandom ["gestureUp","ace_gestures_point"])};
+        if (_cmd in ["DISMISS"]) exitWith {(leader _group) playActionNow "gestureCeaseFire"};
+        if (_cmd in ["JOIN"]) exitWith {(leader _group) playActionNow "ace_gestures_regroup"};
+        if (_cmd in ["STOP"]) exitWith {(leader _group) playActionNow (selectRandom ["ace_gestures_freeze"])};
+        if (_cmd in ["FIRE","Suppress"]) exitWith {(leader _group) playActionNow "gestureAdvance"};
+        if (_cmd in ["EXPECT"]) exitWith {(leader _group) playActionNow "ace_gestures_cover"};
+        if (_cmd in ["ACTION","FIRE AT POSITION"]) exitWith {(leader _group) playActionNow "ace_gestures_engage"};
+        if (_cmd in ["WAIT"]) exitWith {(leader _group) playActionNow "ace_gestures_hold"};
+        if (_cmd in ["HIDE"]) exitWith {(leader _group) playActionNow "ace_gestures_warning"};
+        if (_cmd in ["DISASSEMBLE","DROP BAG","DISABLE MINE","UNLOAD FROM"]) exitWith {(leader _group) playActionNow (selectRandom ["gestureFollow", "tsp_animate_abort"])};
+        if (_cmd in ["GET IN","GET OUT"]) exitWith {(leader _group) playActionNow (selectRandom ["tsp_animate_ready","gestureUp"])};
+        if (_cmd in ["HEAL","HEAL SOLDIER","PATCH SOLDIER","FIRST AID","HEAL SELF","CARRY SOLDIER","DROP CARRIED"]) exitWith {(leader _group) playActionNow "tsp_animate_wedge"};
+        if (_cmd in ["REPAIR VEHICLE","REPAIR","REFUEL","REARM","TAKE BAG","ASSEMBLE","OPEN BAG","PUT IN","ACTIVATE MINE"]) exitWith {(leader _group) playActionNow "tsp_animate_peek"};
+    }];
+    _this addEventHandler ["FormationChanged", {
+        params ["_group", "_formation"]; if (stance (leader _group) == "PRONE" || commandingMenu == "" || [gestureState (leader _group)] call tsp_fnc_gesture_sanitize != "") exitWith {};
+        if (_formation == formation _group) then {(leader _group) playActionNow "ace_gestures_regroup"};
+        if (_formation in ["COLUMN","STAG COLUMN"]) exitWith {(leader _group) playActionNow "tsp_animate_column"};
+        if (_formation in ["ECH LEFT"]) exitWith {(leader _group) playActionNow "ace_gestures_cover"};
+        if (_formation in ["ECH RIGHT"]) exitWith {(leader _group) playActionNow "gestureUp"};
+        if (_formation in ["LINE","FILE","ECH RIGHT"]) exitWith {(leader _group) playActionNow "tsp_animate_line"};
+        if (_formation in ["VEE","WEDGE"]) exitWith {(leader _group) playActionNow "tsp_animate_wedge"};
+        if (_formation in ["DIAMOND"]) exitWith {(leader _group) playActionNow "ace_gestures_freeze"};
+    }];
 };

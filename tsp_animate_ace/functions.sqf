@@ -41,5 +41,5 @@ tsp_fnc_animate_grenade = {
     if (isNil "tsp_animate_throwing" || tsp_animate_grenade_flag) exitWith {};
     _unit playActionNow ([_unit, "tsp_animate_grenade_"+_mode+"_wnon_laut_"+tsp_ace_throwType] call tsp_fnc_gesture_variant); 
     tsp_animate_throwing = nil; sleep 0.7;
-    if (count (_unit getVariable ["tsp_gestureReturn", []]) > 0) then {(_unit getVariable ["tsp_gestureReturn", []]) spawn tsp_fnc_gesture_play};
+    if (count (_unit getVariable ["tsp_gestureReturn", []]) > 0 && "grenade" in gestureState _unit) then {(_unit getVariable ["tsp_gestureReturn", []]) spawn tsp_fnc_gesture_play};
 };

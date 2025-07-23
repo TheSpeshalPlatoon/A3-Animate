@@ -1,6 +1,6 @@
 params ["_unit", "_newAnimation"];
 if (_unit == (vehicle _unit)) then {
-    if ((_newAnimation != "ACE_AmovPercMstpSsurWnonDnon") && {_unit call ace_common_fnc_isAwake} && isNull attachedTo _unit) then {  //-- Dont do if being escorted
+    if ((_newAnimation != "ACE_AmovPercMstpSsurWnonDnon") && {_unit call ace_common_fnc_isAwake} && isNull attachedTo _unit) then {  //-- Dont do ACE_ animation if being escorted cause we want to play our own animations
         [_unit, "ACE_AmovPercMstpScapWnonDnon", 1] call ace_common_fnc_doAnimation;
     };
 } else {

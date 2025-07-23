@@ -12,7 +12,7 @@ tsp_animate_radio_library = [  //-- Library containing all info required to crea
 		if (isClass(configFile >> "CfgPatches" >> "rhsusf_c_radio")) then {[0.015,0.23,0]} else {[0.03,0,0.01]}, [-90,-90,0], 0, "ACRE"
 	],
 	["acre_prc148", "idi\acre\addons\sys_prc148\Data\Models\PRC148.p3d", [0.02,0.25,0], [-90,-90,0], 2, "ACRE"], 
-	["acre_sem52SL", "idi\acre\addons\sys_sem52sl\Data\model\sem52sl.p3d", [0.02,0.25,0], [-90,-90,0], 0, "ACRE"], 
+	["acre_sem52sl", "idi\acre\addons\sys_sem52sl\Data\model\sem52sl.p3d", [0.04,0.05,0], [-90,-90,0], 0, "ACRE"], 
 	["acre_bf888s", "idi\acre\addons\sys_bf888s\Data\models\acre_bf888s_model.p3d", [-0.07,0.06,0], [-90,-90,0], 2, "ACRE"], 
 	["ACRE_PRC117F", "tsp_h189", [0.03,0.05,0], [0,260,180], 3, "ACRE"], 
 	["ACRE_PRC77", "tsp_h189", [0.03,0.05,0], [0,260,180], 3, "ACRE"], 
@@ -28,6 +28,7 @@ tsp_animate_radio_library = [  //-- Library containing all info required to crea
 	["Others", "tsp_h189", [0.03,0.05,0], [0,260,180], 3, "Radio"]
 ];
 //tsp_object attachto [player, [0.03,0.05,0], "leftHand", true]; [tsp_object, [0,260,180]] remoteExec ["tsp_fnc_rotate", 0];
+
 //-- SETTINGS	
 	["tsp_cba_radio", "CHECKBOX", ["Radio Animations", "Enables radio animation."], "TSP Animate - Radio", true, true] call CBA_fnc_addSetting;  //-- Main
 	["tsp_cba_radio_aiming", "CHECKBOX", ["Aiming", "If enabled, players will be able to aim while using a radio."], "TSP Animate - Radio", true, false] call CBA_fnc_addSetting;  //-- Aiming Down Sights

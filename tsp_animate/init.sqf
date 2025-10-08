@@ -10,12 +10,11 @@ player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; [_unit, 
 player addEventHandler ["InventoryOpened", {tsp_animate_attach = [currentWeapon player, primaryWeaponItems player, secondaryWeaponItems player, handgunItems player]}];
 player addEventhandler ["Take", {if (tsp_cba_animate_attachment) then {[_this#0, _this#2, "mount"] call tsp_fnc_animate_attachment}}];
 player addEventhandler ["Put",  {if (tsp_cba_animate_attachment) then {[_this#0, _this#2, "dismount"] call tsp_fnc_animate_attachment}}];
-//["ace_interactMenuClosed", {[player] spawn tsp_fnc_breach_stick_anim}] call CBA_fnc_addEventHandler; 
 
-player addEventHandler ["InventoryOpened", {playSound3D ["tsp_animate\snd\inventory_open.ogg", player, false, getPosASL player, 5, 1, 20]}];
-player addEventHandler ["InventoryClosed", {playSound3D ["tsp_animate\snd\inventory_close.ogg", player, false, getPosASL player, 5, 1, 20]}];
-player addEventHandler ["Take", {if (!isNull (findDisplay 602)) then {playSound3D ["tsp_animate\snd\take.ogg", player, false, getPosASL player, 5, 1, 20]}}];
-player addEventHandler ["Put", {if (!isNull (findDisplay 602)) then {playSound3D ["tsp_animate\snd\put.ogg", player, false, getPosASL player, 5, 1, 20]}}];
+player addEventHandler ["InventoryOpened", {[playa, 0.5, "tsp_animate\snd\inventory_open.ogg", 5] call tsp_fnc_animate_effect}];
+player addEventHandler ["InventoryClosed", {[playa, 0.5, "tsp_animate\snd\inventory_close.ogg", 5] call tsp_fnc_animate_effect}];
+player addEventHandler ["Take", {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\take.ogg", 5] call tsp_fnc_animate_effect}}];
+player addEventHandler ["Put", {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\put.ogg", 5] call tsp_fnc_animate_effect}}];
 
 player addEventHandler ["GestureChanged", {params ["_unit", "_gesture"]; if ("reload" in _gesture) then {_unit setVariable ["tsp_gestureReturn", ""]}}];  //-- Reload clears return gesture memory
 
@@ -27,8 +26,8 @@ player addEventHandler ["AnimStateChanged", {
 
 if (tsp_cba_animate_commands) then {(group player) call tsp_fnc_animate_commands; addMissionEventHandler ["GroupCreated", {_this call tsp_fnc_animate_commands}]};
 
-["if (tsp_cba_animate_uav && 'Open UAV' in (_this#4)) then {[playa,0.5,'A3\Missions_F_Oldman\Data\sound\beep.ogg',0.1] call tsp_fnc_animate_effect; [playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.07,0.01,-0.05], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item};"] spawn tsp_fnc_scroll;
-addMissionEventHandler ["PlayerViewChanged", {if (_this#5 isNotEqualTo objNull) then {[playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.07,0.01,-0.05], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item}}];
+["if (tsp_cba_animate_uav && 'Open UAV' in (_this#4)) then {[playa,0.5,'A3\Missions_F_Oldman\Data\sound\beep.ogg',0.1] call tsp_fnc_animate_effect; [playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.04,0.02,-0.07], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item};"] spawn tsp_fnc_scroll;
+addMissionEventHandler ["PlayerViewChanged", {if (_this#5 isNotEqualTo objNull && tsp_cba_animate_uav) then {[playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.04,0.02,-0.07], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item}}];
 
 addUserActionEventHandler ["NightVision", "Activate", {if (tsp_cba_animate_nvg) then {[playa] spawn tsp_fnc_animate_nvg; [playa] call tsp_fnc_animate_effect}}];
 addUserActionEventHandler ["Compass", "Activate", {[] spawn {sleep 0.01; if (tsp_cba_animate_compass && visibleCompass) then {

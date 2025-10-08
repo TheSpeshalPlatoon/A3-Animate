@@ -60,8 +60,8 @@ tsp_fnc_animate_nvg = {
 };
 
 tsp_fnc_animate_walk = {
-    params ["_unit", "_anim", ["_speed", -1]]; if (!tsp_cba_animate_walk) exitWith {};
-    if (_speed != -1) then {tsp_cba_animate_walk_default = (tsp_cba_animate_walk_default + _speed) min tsp_cba_animate_walk_max max 0.5};  //-- Adjuster
+    params ["_unit", "_anim", ["_speed", -1], ["_min", 0.5]]; if (!tsp_cba_animate_walk) exitWith {};
+    if (_speed != -1) then {tsp_cba_animate_walk_default = (tsp_cba_animate_walk_default + _speed) min tsp_cba_animate_walk_max max _min};  //-- Adjuster
     if ("mwlksras" in _anim) exitWith {tsp_walk_set = true; _unit setAnimSpeedCoef tsp_cba_animate_walk_default};
     if ("mwlkslow" in _anim) exitWith {tsp_walk_set = true; _unit setAnimSpeedCoef tsp_cba_animate_walk_lower};
     if (!("mwlksras" in _anim) && !("mwlkslow" in _anim) && !(isNil "tsp_walk_set")) then {tsp_walk_set = nil; _unit setAnimSpeedCoef 1};
@@ -70,30 +70,33 @@ tsp_fnc_animate_walk = {
 tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AWAY
     params ["_unit", ["_sling", false], ["_holster", false], ["_drawPistol", false], ["_drawLauncher", false], ["_unsling", false], ["_time", 0], ["_slung", (_this#0) getVariable ["tsp_slung", []]]];
     _knife = if (!isNil "tsp_fnc_melee_weapon") then {!([_unit, handGunWeapon _unit] call tsp_fnc_melee_weapon in ["", "pistol"])} else {false};
+    if ("sling" in gestureState _unit) exitWith {};
     if (_sling) then {
-        if (_drawPistol && !_knife && tsp_cba_animate_sling_style == "adhd") then {
+        if (_drawPistol && !_knife && tsp_cba_animate_sling_style == "adhd") then {  //-- Chamber check
             [_unit, "tsp_animate_sling_check"] remoteExec ["playActionNow"];
             playSound3D ["A3\Sounds_F\weapons\Other\dry5-rifle.wss", _unit, false, getPosASL _unit, 5, 1, 10];
             _time = 0.2;
         };
-        tsp_future pushBack [time + _time, [_unit], {
+        tsp_future pushBack [time + _time, [_unit], {  //-- Play animation, throw weapon, hide it
             params ["_unit"];
-            [_unit, primaryWeapon _unit] remoteExec ["selectWeapon"];
-            [_unit, "tsp_animate_sling_sling"] remoteExec ["playActionNow"];
-            _holder = [_unit, primaryWeapon _unit, true, false] call tsp_fnc_throw;
-            _holder attachTo [_unit, tsp_cba_animate_sling_pos#0, "Spine3", true]; 
-            [_holder, tsp_cba_animate_sling_pos#1] call BIS_fnc_setObjectRotation;
-            _holder hideObjectGlobal true; _holder setDamage 1;
+            [_unit, primaryWeapon _unit] remoteExec ["selectWeapon"]; [_unit, "tsp_animate_sling_sling"] remoteExec ["playActionNow"];
+            _holder = [_unit, primaryWeapon _unit, true, false] call tsp_fnc_throw; [_holder, true] remoteExec ["hideObjectGlobal"]; 
             _unit setVariable ["tsp_holder", _holder];
         }];
-        tsp_future pushBack [time + _time + 0.3, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {
+        tsp_future pushBack [time + _time + 0.1, [_unit], {  //-- Attach it, orient it
+            params ["_unit"]; 
+            (_unit getVariable "tsp_holder") setDamage 1;
+            (_unit getVariable "tsp_holder") attachTo [_unit, tsp_cba_animate_sling_pos#0, "Spine3", true]; 
+            [_unit getVariable "tsp_holder", tsp_cba_animate_sling_pos#1] call BIS_fnc_setObjectRotation;
+        }];
+        tsp_future pushBack [time + _time + 0.3, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {  //-- Remove weapon and unhide chest weapon
             params ["_unit", "_unarmed"];
             _rifle = (getUnitLoadout _unit)#0; _unit removeWeapon (primaryWeapon _unit);
-            _holder = _unit getVariable "tsp_holder"; _holder hideObjectGlobal false;
+            [_unit getVariable "tsp_holder", false] remoteExec ["hideObjectGlobal"];
             if (_unarmed) then {_unit action ["SWITCHWEAPON", _unit, _unit, -1]};
             if (_unarmed && vehicle _unit == _unit) then {[_unit, [animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"], 0, 0, false]] remoteExec ["switchMove"]};
             if (_unarmed) then {[_unit, "tsp_common_stop"] remoteExec ["playActionNow"]};
-            _unit setVariable ["tsp_slung", [_holder, _rifle]];
+            _unit setVariable ["tsp_slung", [_unit getVariable "tsp_holder", _rifle]];
         }];
         _time = _time + 0.3;
     };
@@ -146,12 +149,13 @@ tsp_fnc_animate_sling_actions = {
     _unit addAction ["Swap Rifles", {[playa, true, false, false, false, true] spawn tsp_fnc_animate_sling}, nil, 0, false, true, "", (_common + "_current == _primary && _primary != '' && count _slung > 0 && 'tsp_sling' in items playa"), -.1];
 };
 
-tsp_fnc_animate_chemlight = {
+tsp_fnc_animate_drop = {
     params ["_unit", ["_class", "Chemlight_green"]];
-    if (!(_class in magazines _unit) || "chemlight" in gestureState _unit) exitWith {};
+    if !((_class in magazines _unit || tsp_cba_animate_drop_infinite) && !("chemlight" in gestureState _unit)) exitWith {};
     _interupt = [gestureState _unit] call tsp_fnc_gesture_sanitize == "" || ("tsp" in gestureState _unit && gestureState _unit call tsp_fnc_gesture_looped);
     [_unit, "", "tsp_animate_chemlight_wnon_laut", "", _interupt, true, true] spawn tsp_fnc_gesture_play;
-    _unit removeMagazine _class; _chemlight = _class createVehicle position _unit; 
+    if (!tsp_cba_animate_drop_infinite) then {_unit removeMagazine _class}; 
+    _chemlight = (if (_class == "ACE_Chemlight_IR") then {"ACE_Chemlight_IR_Dummy"} else {_class}) createVehicle [0,0,0]; 
     sleep 0.2; _chemlight attachTo [_unit, [0,0,0], "LeftHand", true]; 
     sleep 0.1; [_unit, 1, "tsp_animate\snd\chemlight.ogg", 0.5] call tsp_fnc_animate_effect; 
     sleep 0.4; detach _chemlight;
@@ -193,7 +197,7 @@ tsp_fnc_animate_stop = {
 };
 
 tsp_fnc_animate_gate = {
-    ("amov" in animationState _this || "aadj" in animationState _this || "aovr" in animationState _this) && 
+    ("amov" in animationState _this || "aadj" in animationState _this || "aovr" in animationState _this) && !("salute" in animationState _this) && 
     ("tactical" in gestureState _this || "melee" in gestureState _this || [gestureState _this] call tsp_fnc_gesture_sanitize == "") &&
     !("melee" in currentWeapon _this) && !(currentWeapon _this in [binocular _this, secondaryWeapon _this]) &&
     !(cameraView == "GUNNER" && ([_this] call tsp_fnc_vision || count (primaryWeaponItems _this select {_x in tsp_cba_animate_black}) > 0)) &&

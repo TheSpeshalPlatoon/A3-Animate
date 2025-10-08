@@ -52,7 +52,8 @@ if (isClass (configFile >> "CfgPatches" >> "acre_main")) then {
 };
 if (isClass (configFile >> "CfgPatches" >> "tfar_core")) then {
 	["TSP Animate", "tsp_animate_radio", "Listen to Radio", {
+		_lrRadio = call TFAR_fnc_activelRRadio;
 		if (tsp_cba_radio && call TFAR_fnc_haveSWRadio) then {[playa,true,call TFAR_fnc_activeSwRadio,"Model"] spawn tsp_fnc_radio};
-		if (tsp_cba_radio && call TFAR_fnc_activelRRadio) then {[playa,true,call TFAR_fnc_activelRRadio,"Model"] spawn tsp_fnc_radio};
+		if (tsp_cba_radio && !isNil "_lrRadio") then {[playa,true,call TFAR_fnc_activelRRadio,"Model"] spawn tsp_fnc_radio};
 	}, {tsp_animate_radio_stop = true}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 };

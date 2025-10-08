@@ -23,6 +23,7 @@ tsp_fnc_radio = {
 	if !(_onRadio) exitWith {};
 	if (isWeaponDeployed _unit) exitWith {};
 	if ("ainv" in animationState _unit) exitWith {};
+	if ("shock" in animationState _unit) exitWith {};
 	if (currentWeapon _unit == binocular _unit && binocular _unit != "") exitWith {};
 	if (!tsp_cba_radio_vehicle && vehicle _unit != _unit) exitWith {};                //-- No radio while in vehicle
     if (_unit getVariable ["ace_captives_handcuffAnimEHID", -1] != -1) exitWith {};  //-- No radio while handcuffed	

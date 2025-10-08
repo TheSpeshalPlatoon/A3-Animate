@@ -5,6 +5,7 @@
 ["tsp_cba_animate_grenade", "CHECKBOX", ["Grenade", "Enable/disable grenade throw animation."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_lift", "CHECKBOX", ["Lift", "Enable/disable ACE object lifting animation."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_carry", "SLIDER", ["Carry Speed", "How long it takes to carry someone."], ["TSP Animate", "ACE"], [0, 10, 2], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_drop_ace", "CHECKBOX", ["Droppable ACE actions", "Show droppable ACE actions."], ["TSP Animate", "ACE"], false] call CBA_fnc_addSetting;
 
 {
     _x params ["_name", "_path", ["_key", 0]]; [getText (call compile (_path + " >> 'condition'")), getText (call compile (_path + " >> 'statement'"))] params ["_condition", "_statement"];
@@ -26,3 +27,12 @@
     ["Hold", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'ace_gestures_cat_gestures'>>'ace_gestures_Hold'"], 
     ["Warning", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'ace_gestures_cat_gestures'>>'ace_gestures_Warning'"]
 ];
+
+{
+    _x params ["_name", "_class"];
+    _drop = [_class, "Drop " + _name, getText (configFile >> "CfgMagazines" >> _class >> "picture"), 
+        {params ["_source", "_player", "_params"]; _params params ["_class"]; [_player, _class] spawn tsp_fnc_animate_drop}, 
+        {params ["_source", "_player", "_params"]; _params params ["_class"]; (_class in magazines _player || tsp_cba_animate_drop_infinite) && tsp_cba_animate_drop_ace},
+    {},[_class],[0,0,0],5] call ace_interact_menu_fnc_createAction; 
+    ["CAManBase", 1, ["ACE_SelfActions", "tsp_animate_drop"], _drop, true] call ace_interact_menu_fnc_addActionToClass;
+} forEach (call compile tsp_cba_animate_drop);

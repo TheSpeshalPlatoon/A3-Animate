@@ -20,6 +20,11 @@ class CfgVehicles {
 	class Man;
 	class CAManBase: Man {
 		class ACE_SelfActions {
+			class tsp_animate_drop {
+				displayName = "Drop"; icon = "tsp_animate\gui\drop.paa"; 
+				condition = "tsp_cba_animate_drop_ace"; 
+				exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"};
+			};
 			class ACE_Animations {
 				displayName = "Animations";
 				icon = "\z\ace\addons\gestures\UI\gestures_ca.paa";
@@ -282,7 +287,7 @@ class CfgGesturesMale {
 		class tsp_animate_breach;
 
 		//-- Clackers
-		class tsp_animate_clacker: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate_ace\gestures\clacker.rtm"; speed = 2; enableOptics = 0;};
+		class tsp_animate_clacker: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate_ace\gestures\clacker.rtm"; speed = 2; enableOptics = 0; disableWeapons = false;};
 		class tsp_animate_shock_out_wnon: tsp_animate_clacker {speed = 0.7; mask = "bothArms"; file = "tsp_animate_ace\gestures\shock.rtm";};
 		class tsp_animate_shock_loop_wnon: tsp_animate_shock_out_wnon {file = "tsp_animate_ace\gestures\shock_loop.rtm"; looped = true;};
 		class tsp_animate_shock_out_wrfl: tsp_animate_clacker {mask = "handsWeapon"; speed = 0.7; rightHandIKCurve[] = {0}; file = "tsp_animate_ace\gestures\shock.rtm";};

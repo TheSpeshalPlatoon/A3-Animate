@@ -42,5 +42,9 @@ player addEventHandler ["AnimStateChanged", {  //-- No dropping with slings
     if (!("tsp_sling" in items _unit) && !(isNil "tsp_ace_sling")) then {ace_medical_dropWeaponUnconsciousChance = tsp_ace_sling; tsp_ace_sling = nil};
 }];
 
-["ace_dragging_startedCarry", {params ["_unit", "_target"];	if (tsp_cba_animate_lift && !(_target isKindOf "Man")) then {_unit spawn {sleep 1; [_this, "", "tsp_animate_lift", "tsp_common_stop", true, true] spawn tsp_fnc_gesture_play}}}] call CBA_fnc_addEventHandler;
-["ace_dragging_stoppedCarry", {params ["_unit", "_target"]; if ("carry" in gestureState _unit) exitWith {[_unit] call tsp_fnc_gesture_stop}}] call CBA_fnc_addEventHandler;
+["ace_dragging_startedCarry", {
+    params ["_unit", "_target"];	
+    if (!tsp_cba_animate_lift || _target isKindOf "Man") exitWith {};
+    _unit spawn {if (currentWeapon _this != "") then {sleep 1}; [_this, "", "tsp_animate_lift", "tsp_common_stop", true, true] spawn tsp_fnc_gesture_play};    
+}] call CBA_fnc_addEventHandler;
+["ace_dragging_stoppedCarry", {params ["_unit", "_target"]; if ("lift" in gestureState _unit) then {[_unit] call tsp_fnc_gesture_stop}}] call CBA_fnc_addEventHandler;

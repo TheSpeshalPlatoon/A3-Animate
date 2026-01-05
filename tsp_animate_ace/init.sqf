@@ -21,6 +21,7 @@ if (!isNil "ace_advanced_fatigue_setAnimExclusions") then {ace_advanced_fatigue_
 
 //-- Overwrite ACE throwing control
 ["ACE3 Weapons", "ace_advanced_throwing_prepare", "Prepare", {
+    if (currentThrowable ACE_player isEqualTo []) exitWith {false};
 	if (ace_common_isReloading || !([ACE_player] call ace_advanced_throwing_fnc_canPrepare)) exitWith {false};
 	[ACE_player] call ace_advanced_throwing_fnc_prepare; 
     if (tsp_cba_animate_grenade) then {[ACE_player] spawn tsp_fnc_animate_grenade};
@@ -36,7 +37,7 @@ if (!isNil "ace_advanced_fatigue_setAnimExclusions") then {ace_advanced_fatigue_
 	[ACE_player, cursorTarget, _shoulderNum] call ace_interaction_fnc_tapShoulder;
 }, {false}, [20, [true, false, false]], false] call CBA_fnc_addKeybind;
 
-player addEventHandler ["AnimStateChanged", {  //-- No dropping with slings
+player addEventHandler ["AnimStateChanged", {  //-- No ACE weapon dropping when uncon with slings
     params ["_unit", "_anim"]; 
     if ("tsp_sling" in items _unit && isNil "tsp_ace_sling") then {tsp_ace_sling = ace_medical_dropWeaponUnconsciousChance; ace_medical_dropWeaponUnconsciousChance = 0};
     if (!("tsp_sling" in items _unit) && !(isNil "tsp_ace_sling")) then {ace_medical_dropWeaponUnconsciousChance = tsp_ace_sling; tsp_ace_sling = nil};

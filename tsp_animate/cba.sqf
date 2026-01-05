@@ -30,7 +30,7 @@
 ["tsp_cba_animate_sling", "CHECKBOX", ["Sling System", "Enable/Disable sling system."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_style", "LIST", ["Sling Style", "What gesture set to use."], ["TSP Animate", "Sling"], [["","adhd","israeli"], ["Simpleton","ADHD","Israeli"], 1]] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_scroll", "CHECKBOX", ["Sling Scroll Menu", "Scroll menu actions for slings."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
-["tsp_cba_animate_sling_pos", "EDITBOX", ["Sling Position", "Attachment position and rotation for 2 point sling."], ["TSP Animate", "Sling"], '[[0.1, 0.8, 0.15], [-90, 40, 70]]', false, {tsp_cba_animate_sling_pos = call compile tsp_cba_animate_sling_pos}] call CBA_fnc_addSetting;
+["tsp_cba_animate_sling_pos", "EDITBOX", ["Sling Position", "Attachment position and rotation for 2 point sling."], ["TSP Animate", "Sling"], '[[-0.65, 0.85, 0.72], [-90, 40, 70]]', false, {tsp_cba_animate_sling_pos = call compile tsp_cba_animate_sling_pos}] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_add", "CHECKBOX", ["Add Slings", "Attempt to add slings to all units."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_required", "CHECKBOX", ["Require Sling", "Whether a sling is required to use sling system."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_sprint", "CHECKBOX", ["Enable Sprinting", "Disable sprinting with slung weapon."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
@@ -97,12 +97,12 @@
 {
     _x params ["_name", "_class"];
     [["TSP Animate", "Items"], "tsp_animate_drop_"+_class, "Drop "+_name, compile ("[playa, '"+_class+"'] spawn tsp_fnc_animate_drop"), {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-    [["TSP Animate", "Items"], "tsp_animate_drop_"+_class+"_hold", "Drop "+_name+" (Hold)",{[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, 
-    compile ("if (isNil 'tsp_animate_key') then {[playa, '"+_class+"'] spawn tsp_fnc_animate_drop}"), [0, [false, false, false]]] call CBA_fnc_addKeybind;
+    [["TSP Animate", "Items"], "tsp_animate_drop_"+_class+"_hold", "Drop "+_name+" (Hold)",{tsp_animate_keytime = time+0.4}, 
+    compile ("if (time > tsp_animate_keytime) then {[playa, '"+_class+"'] spawn tsp_fnc_animate_drop}"), [if ("green" in _class) then {46} else {0}, [false, false, false]]] call CBA_fnc_addKeybind;
     [["TSP Animate", "Items"], "tsp_animate_drop_"+_class+"_double", "Drop "+_name+" (Double Tap)", compile ("
         if (isNil 'tsp_animate_firstTap') exitWith {[] spawn {tsp_animate_firstTap = true; sleep 0.3; tsp_animate_firstTap = nil}};
         [playa, '"+_class+"'] spawn tsp_fnc_animate_drop
-    "), {}, [if ("green" in _class) then {46} else {0}, [false, false, false]]] call CBA_fnc_addKeybind;
+    "), {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 } forEach (call compile tsp_cba_animate_drop);
 
 [["TSP Animate", "Tap/Squeeze"], "tsp_animate_tap_double", "Shoulder/Leg (Double Tap)", {
@@ -114,9 +114,10 @@
 [["TSP Animate", "Tap/Squeeze"], "tsp_animate_leg", "Leg", {if (tsp_cba_animate_tap) then {[playa,objNull,-1,"leg"] spawn tsp_fnc_animate_tap}}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 
 {
-    _x params ["_name", "_path", ["_key", 0]]; [getText (call compile (_path + " >> 'condition'")), getText (call compile (_path + " >> 'statement'"))] params ["_condition", "_statement"];
+    _x params ["_name", "_path", ["_key", 0]]; 
+    [getText (call compile (_path + " >> 'condition'")), getText (call compile (_path + " >> 'statement'"))] params ["_condition", "_statement"];
     ["tsp_cba_animate_" + _name, "CHECKBOX", [_name, "Enable/disable this animation."], ["TSP Animate", "Animations"], true, false] call CBA_fnc_addSetting;
-    [["TSP Animate", "Animations"], "tsp_" + _name, _name, compile ("if (" + _condition + ") then {" + _statement + "}"), {}, [_key, [false, false, false]]] call CBA_fnc_addKeybind;
+    [["TSP Animate", "Animations"], "tsp_" + _name, _name, compile ("if (" + _condition + ") then {" + _statement + "};" + (if (_name == "Cancel") then {"false"} else {"true"})), {}, [_key, [false, false, false]]] call CBA_fnc_addKeybind;
 } forEach [
     ["Cancel", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_cancel'", 57], 
     ["Contact", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_dances'>>'tsp_animate_contact'"], 

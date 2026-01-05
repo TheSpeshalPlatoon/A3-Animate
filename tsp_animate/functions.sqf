@@ -1,6 +1,6 @@
 tsp_fnc_animate_effect = {
-    params ["_unit", ["_shake", 1], ["_sound", "A3\Sounds_F\characters\stances\adjust_short"+str(round random 5 max 1)+".wss"], ["_volume", 0.1]];
-    playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound, 1];  //concrete_adjust_stand_side//adjust_short//lift_rifle
+    params ["_unit", ["_shake", 1], ["_sound", "A3\Sounds_F\characters\stances\adjust_short"+str(round random 5 max 1)+".wss"], ["_volume", 0.1], ["_distance", 20]];
+    playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound, 1, _distance];  //concrete_adjust_stand_side//adjust_short//lift_rifle
     if (isPlayer _unit) then {[_shake*tsp_cba_animate_shake, 2, 5] remoteExec ["tsp_fnc_shake", _unit]};
 };
 
@@ -75,21 +75,17 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
         if (_drawPistol && !_knife && tsp_cba_animate_sling_style == "adhd") then {  //-- Chamber check
             [_unit, "tsp_animate_sling_check"] remoteExec ["playActionNow"];
             playSound3D ["A3\Sounds_F\weapons\Other\dry5-rifle.wss", _unit, false, getPosASL _unit, 5, 1, 10];
-            _time = 0.2;
+            _time = _time + 0.1;
         };
-        tsp_future pushBack [time + _time, [_unit], {  //-- Play animation, throw weapon, hide it
-            params ["_unit"];
-            [_unit, primaryWeapon _unit] remoteExec ["selectWeapon"]; [_unit, "tsp_animate_sling_sling"] remoteExec ["playActionNow"];
-            _holder = [_unit, primaryWeapon _unit, true, false] call tsp_fnc_throw; [_holder, true] remoteExec ["hideObjectGlobal"]; 
-            _unit setVariable ["tsp_holder", _holder];
-        }];
-        tsp_future pushBack [time + _time + 0.1, [_unit], {  //-- Attach it, orient it
+        tsp_future pushBack [time + _time, [_unit], {params ["_unit"]; [_unit, "tsp_animate_sling_sling"] remoteExec ["playActionNow"]}];  //-- Play animation
+        tsp_future pushBack [time + _time + 0.2, [_unit], {params ["_unit"]; _holder = [_unit, primaryWeapon _unit, true, false, "tsp_holder2"] call tsp_fnc_throw; _unit setVariable ["tsp_holder", _holder]}];  //-- Throw weapon, hide it
+        tsp_future pushBack [time + _time + 0.2, [_unit], {  //-- Attach it, orient it
             params ["_unit"]; 
             (_unit getVariable "tsp_holder") setDamage 1;
             (_unit getVariable "tsp_holder") attachTo [_unit, tsp_cba_animate_sling_pos#0, "Spine3", true]; 
             [_unit getVariable "tsp_holder", tsp_cba_animate_sling_pos#1] call BIS_fnc_setObjectRotation;
         }];
-        tsp_future pushBack [time + _time + 0.3, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {  //-- Remove weapon and unhide chest weapon
+        tsp_future pushBack [time + _time + 0.2, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {  //-- Remove weapon and unhide chest weapon
             params ["_unit", "_unarmed"];
             _rifle = (getUnitLoadout _unit)#0; _unit removeWeapon (primaryWeapon _unit);
             [_unit getVariable "tsp_holder", false] remoteExec ["hideObjectGlobal"];
@@ -98,7 +94,7 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
             if (_unarmed) then {[_unit, "tsp_common_stop"] remoteExec ["playActionNow"]};
             _unit setVariable ["tsp_slung", [_unit getVariable "tsp_holder", _rifle]];
         }];
-        _time = _time + 0.3;
+        _time = _time + 0.2;
     };
     if (_holster) then {
         [_unit, handgunWeapon _unit] remoteExec ["selectWeapon"];
@@ -109,12 +105,13 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
     if (_drawPistol) then {
         tsp_future pushBack [time + _time, [_unit], {
             params ["_unit"];
-            if (vehicle _unit == _unit) then {[_unit, [animationState _unit regexReplace ["wrfl", "wpst"], 0, 0, false]] remoteExec ["switchMove"]};
-            [_unit, handgunWeapon _unit] remoteExec ["selectWeapon"];
+            //if (vehicle _unit == _unit) then {[_unit, [animationState _unit regexReplace ["wrfl", "wpst"], 0, 0, false]] remoteExec ["switchMove"]};
+            if (vehicle _unit == _unit) then {[_unit, [animationState _unit regexReplace ["wrfl", "wpst"]]] remoteExec ["switchMove"]};
             if (_knife) exitWith {[_unit, "ready"] spawn tsp_fnc_melee_action};
             [_unit, "tsp_animate_sling_draw" + (if (tsp_cba_animate_sling_style == "israeli") then {"_israeli"} else {""})] remoteExec ["playActionNow"];
             if (tsp_cba_animate_sling_style == "israeli") then {playSound3D ["A3\Sounds_F\weapons\Other\reload_bolt_1.wss", _unit, false, getPosASL _unit, 5, 1, 10]};
         }];
+        //tsp_future pushBack [time + _time + 0.01, [_unit], {params ["_unit"]; if (vehicle _unit == _unit) then {[_unit, animationState _unit] remoteExec ["switchMove"]}}];
     };
     if (_drawLauncher) then {
         tsp_future pushBack [time + _time, [_unit], {

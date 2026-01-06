@@ -22,20 +22,20 @@ class CfgVehicles {
         class ACE_Actions {
 			class ACE_TapShoulderRight {
                 displayName = "Tap Shoulder"; selection = "rightshoulder"; distance = 2; condition = "[_player, _target] call ace_interaction_fnc_canTapShoulder"; 
-                statement = "if (tsp_cba_animate_tap) exitWith {[_player,objNull,0,'shoulder'] spawn tsp_fnc_animate_tap}; [_player, _target, 1] call ace_interaction_fnc_tapShoulder";
+                statement = "if (tsp_cba_animate_tap) exitWith {[_player,_target,0,'shoulder'] spawn tsp_fnc_animate_tap}; [_player, _target, 1] call ace_interaction_fnc_tapShoulder";
             };
             class ACE_TapShoulderLeft: ACE_TapShoulderRight {
                 selection = "leftshoulder"; 
-                statement = "if (tsp_cba_animate_tap) exitWith {[_player,objNull,1,'shoulder'] spawn tsp_fnc_animate_tap}; [_player, _target, 1] call ace_interaction_fnc_tapShoulder";
+                statement = "if (tsp_cba_animate_tap) exitWith {[_player,_target,1,'shoulder'] spawn tsp_fnc_animate_tap}; [_player, _target, 1] call ace_interaction_fnc_tapShoulder";
             };
 			class ACE_SqueezeLegRight: ACE_TapShoulderRight {
                 displayName = "Squeeze Leg"; selection = "rightupleg"; 
                 condition = "[_player, _target] call ace_interaction_fnc_canTapShoulder && tsp_cba_animate_tap"; 
-                statement = "[_player,objNull,0,'leg'] spawn tsp_fnc_animate_tap";
+                statement = "[_player,_target,0,'leg'] spawn tsp_fnc_animate_tap";
             };
             class ACE_SqueezeLegLeft: ACE_SqueezeLegRight {
                 displayName = "Squeeze Leg"; selection = "leftupleg"; 
-                statement = "[_player,objNull,1,'leg'] spawn tsp_fnc_animate_tap";
+                statement = "[_player,_target,1,'leg'] spawn tsp_fnc_animate_tap";
             };
             class ACE_MainActions {
                 class ACE_EscortCaptive {

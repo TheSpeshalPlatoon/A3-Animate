@@ -167,13 +167,13 @@ class CfgVehicles {
 				};
 				class tsp_animate_inspect {
 					displayName = "Inspect"; icon = "tsp_animate\gui\inspect.paa"; 
-					condition = "tsp_cba_animate_inspect && vehicle playa==playa && stance playa != 'PRONE' && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
+					condition = "tsp_cba_animate_inspect && (vehicle playa==playa || {_x in animationState playa} count ['_aim','_idle'] > 0) && stance playa != 'PRONE' && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
 					exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"};
 					statement = "[playa] call tsp_fnc_animate_effect; [playa] spawn tsp_fnc_animate_inspect";
 				};
 				class tsp_animate_suicide {
 					displayName = "Suicide"; icon = "tsp_animate\gui\suicide.paa";
-					condition = "tsp_cba_animate_suicide && vehicle playa==playa && stance playa != 'PRONE' && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
+					condition = "tsp_cba_animate_suicide && (vehicle playa==playa || {_x in animationState playa} count ['_aim','_idle'] > 0) && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
 					exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"};
 					statement = "[playa] call tsp_fnc_animate_effect; [playa] spawn tsp_fnc_animate_suicide";
 				};
@@ -393,7 +393,7 @@ class CfgGesturesMale {
 		class tsp_animate_jackoff_out: tsp_animate_bird_in {file = "tsp_animate\emotes\jackoff_out.rtm"; speed = 2;};
 		class tsp_animate_mahalo_loop: tsp_animate_bird_loop {file = "tsp_animate\emotes\mahalo_loop.rtm";};
 		class tsp_animate_loser_loop: tsp_animate_bird_loop {file = "tsp_animate\emotes\loser_loop.rtm";};
-		class tsp_animate_dab_loop: tsp_animate_bird_loop {file = "tsp_animate\emotes\dab_loop.rtm"; mask = "bothArms"; rightHandIKCurve[] = {1}; leftHandIKCurve[] = {1};};
+		class tsp_animate_dab_loop: tsp_animate_bird_loop {file = "tsp_animate\emotes\dab_loop.rtm"; mask = "bothArms"; rightHandIKCurve[] = {0}; leftHandIKCurve[] = {0};};
 		class tsp_animate_heart_loop: tsp_animate_dab_loop {file = "tsp_animate\emotes\heart_loop.rtm";};
 		class tsp_animate_rockpaperscissors_in: tsp_animate_dab_loop {file = "tsp_animate\emotes\rockpaperscissors_in.rtm";};
 		class tsp_animate_rockpaperscissors_rock_loop: tsp_animate_dab_loop {file = "tsp_animate\emotes\rockpaperscissors_rock_loop.rtm";};
@@ -413,7 +413,7 @@ class CfgGesturesMale {
 		class tsp_animate_nightvision_down: tsp_animate_nightvision_up {file = "tsp_animate\gestures\nightvision_down.rtm";};
 
 		//-- Suicide
-		class tsp_animate_suicide_wpst_in: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate\gestures\suicide_wpst_in.rtm"; mask = "upperTorsoWeak"; speed = 0.3; cancel = true;};
+		class tsp_animate_suicide_wpst_in: tsp_animate_breach {leftHandIKCurve[] = {0}; file = "tsp_animate\gestures\suicide_wpst_in.rtm"; mask = "upperTorsoWeak"; speed = 0.3; cancel = true; enableOptics = 0;};
 		class tsp_animate_suicide_wpst_loop: tsp_animate_suicide_wpst_in {file = "tsp_animate\gestures\suicide_wpst_loop.rtm"; looped = true;};
 		class tsp_animate_suicide_wrfl_in: tsp_animate_suicide_wpst_in {file = "tsp_animate\gestures\suicide_wrfl_in.rtm"; mask = "weaponSpine"; leftHandIKCurve[] = {1};};
 		class tsp_animate_suicide_wrfl_loop: tsp_animate_suicide_wrfl_in {file = "tsp_animate\gestures\suicide_wrfl_loop.rtm"; looped = true;};

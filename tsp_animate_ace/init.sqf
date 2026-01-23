@@ -37,15 +37,20 @@ if (!isNil "ace_advanced_fatigue_setAnimExclusions") then {ace_advanced_fatigue_
 	[ACE_player, cursorTarget, _shoulderNum] call ace_interaction_fnc_tapShoulder;
 }, {false}, [20, [true, false, false]], false] call CBA_fnc_addKeybind;
 
-player addEventHandler ["AnimStateChanged", {  //-- No ACE weapon dropping when uncon with slings
+//-- No ACE weapon dropping when uncon with slings
+player addEventHandler ["AnimStateChanged", {
     params ["_unit", "_anim"]; 
     if ("tsp_sling" in items _unit && isNil "tsp_ace_sling") then {tsp_ace_sling = ace_medical_dropWeaponUnconsciousChance; ace_medical_dropWeaponUnconsciousChance = 0};
     if (!("tsp_sling" in items _unit) && !(isNil "tsp_ace_sling")) then {ace_medical_dropWeaponUnconsciousChance = tsp_ace_sling; tsp_ace_sling = nil};
 }];
 
+//-- Carry item animation
 ["ace_dragging_startedCarry", {
     params ["_unit", "_target"];	
     if (!tsp_cba_animate_lift || _target isKindOf "Man") exitWith {};
     _unit spawn {if (currentWeapon _this != "") then {sleep 1}; [_this, "", "tsp_animate_lift", "tsp_common_stop", true, true] spawn tsp_fnc_gesture_play};    
 }] call CBA_fnc_addEventHandler;
 ["ace_dragging_stoppedCarry", {params ["_unit", "_target"]; if ("lift" in gestureState _unit) then {[_unit] call tsp_fnc_gesture_stop}}] call CBA_fnc_addEventHandler;
+
+//-- Faster carry animation
+player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; if (_anim == "acinpknlmstpsnonwnondnon_acinpercmrunsnonwnondnon") then {[_unit] spawn tsp_fnc_animate_carry}}];

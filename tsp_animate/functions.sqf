@@ -194,16 +194,17 @@ tsp_fnc_animate_stop = {
 };
 
 tsp_fnc_animate_gate = {
-    ("amov" in animationState _this || "aadj" in animationState _this || "aovr" in animationState _this) && !("salute" in animationState _this) && 
-    ("tactical" in gestureState _this || "melee" in gestureState _this || [gestureState _this] call tsp_fnc_gesture_sanitize == "") &&
-    !("melee" in currentWeapon _this) && !(currentWeapon _this in [binocular _this, secondaryWeapon _this]) &&
-    !(cameraView == "GUNNER" && ([_this] call tsp_fnc_vision || count (primaryWeaponItems _this select {_x in tsp_cba_animate_black}) > 0)) &&
-    vehicle _this == _this && stance _this in ["STAND","CROUCH"] && tsp_cba_animate_tactical
+    params ["_unit", ["_anims", ["amov", "aadj", "aovr", "_aim"]]];  //-- _aim is FFV, "_idle" also is
+    ({_x in animationState _unit} count _anims > 0) && !("salute" in animationState _unit) &&  //-- Aim is FFV
+    ("tactical" in gestureState _unit || "melee" in gestureState _unit || [gestureState _unit] call tsp_fnc_gesture_sanitize == "") &&  //-- Only if doing tactical, melee, or ""
+    !("melee" in currentWeapon _unit) && !(currentWeapon _unit in [binocular _unit, secondaryWeapon _unit]) &&  //-- Not with launchers or binoculars
+    !(cameraView == "GUNNER" && ([_unit] call tsp_fnc_vision || count (primaryWeaponItems _unit select {_x in tsp_cba_animate_black}) > 0)) &&  //-- Not while aiming with some weapons
+    stance _unit in ["STAND","CROUCH"] && tsp_cba_animate_tactical  //vehicle _unit == _unit && 
 };
 
 tsp_fnc_animate_tactical = {
     params ["_unit", ["_mode", ""], ["_level", "laut"], ["_return", false], ["_style", tsp_cba_animate_style], ["_weapon", currentWeapon (_this#0) call BIS_fnc_itemType], ["_modeO", _this#1], ["_out", "tsp_common_stop"]]; 
-    if !(_unit call tsp_fnc_animate_gate) exitWith {if ("tactical" in gestureState _unit) then {[_unit] call tsp_fnc_gesture_stop}};
+    if !([_unit] call tsp_fnc_animate_gate) exitWith {if ("tactical" in gestureState _unit) then {[_unit] call tsp_fnc_gesture_stop}};
     
     if (tsp_cba_animate_sprint && "sprint" in gestureState _unit && !("percmeva" in animationState _unit)) exitWith {[_unit] call tsp_fnc_gesture_stop};
     if (tsp_cba_animate_sprint && "tactical" in gestureState _unit && !("sprint" in gestureState _unit) && "percmeva" in animationState _unit) then {_mode = "sprint"; _return = true};
@@ -224,7 +225,7 @@ tsp_fnc_animate_tactical = {
     if (_modeO != "" && _modeO in gestureState _unit) then {_mode = "stop"}; 
     if (_modeO == "ready" && ("ready" in gestureState _unit || "port" in gestureState _unit)) then {_mode = "stop"};
        
-    if (_mode in ["", "stop"] && tsp_cba_animate_poll > 0) then {
+    if (_mode in ["", "stop"] && tsp_cba_animate_poll > 0 && vehicle _unit == _unit) then {
         _length = ([_unit] call tsp_fnc_length) max 0.7; if ("animate_tactical" in gestureState _unit) then {_length = _length + 0.2};
         _dir = _unit weaponDirection currentWeapon _unit; if ("animate_tactical" in gestureState _unit) then {_dir = if (freelook) then {vectorDirVisual _unit} else {getCameraViewDirection _unit}};
         _friends = [_unit, _unit modelToWorldWorld (_unit selectionPosition ["Neck", "Memory"]), [0,3,-5,-10], _length * tsp_cba_animate_friend, _dir] call tsp_fnc_obstruction;

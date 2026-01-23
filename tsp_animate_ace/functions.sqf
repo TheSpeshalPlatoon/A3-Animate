@@ -6,15 +6,29 @@ tsp_fnc_animate_captive = {
         {_anim = _anim regexReplace [_x, "wnon"]} forEach ["wrfl","wpst","wlnr","wbin"];
         {_anim = _anim regexReplace [_x, "snon"]} forEach ["sras","slow"];
         {_anim = _anim regexReplace [_x, "mrun"]} forEach ["mtac"];
-        [_unit getVariable "ace_captives_escortedUnit", _anim] remoteExec ["playMoveNow", 0];
+        [_unit getVariable "ace_captives_escortedUnit", [_anim, 0, 0, false]] remoteExec ["switchMove"];
     }];
-    {[_captive, _x] remoteExec ["disableAI", 0]} forEach ["ANIM", "MOVE"]; [_captive, "AmovPercMstpSnonWnonDnon"] remoteExec ["switchMove", 0];
-    [_captive, "tsp_animate_captive"] remoteExec ["playActionNow", 0]; _captive attachTo [_unit, [-0.15,0.7,0]];  
+    {[_captive, _x] remoteExec ["disableAI", 0]} forEach ["ANIM", "MOVE"];
+    [_captive, "tsp_animate_captive"] remoteExec ["playActionNow", 0]; 
+    _captive attachTo [_unit, [-0.15,0.7,0]];  
     waitUntil {isNull attachedTo _captive || stance _unit == "PRONE"};
     _unit allowSprint true; [_unit] call tsp_fnc_gesture_stop; 
     _unit removeEventHandler ["AnimStateChanged", _eh]; 
-    {[_captive, _x] remoteExec ["enableAI", 0]} forEach ["ANIM", "MOVE"]; [_captive, "ace_AmovPercMstpScapWnonDnon"] remoteExec ["switchMove", 0];
-    [_captive, "tsp_common_stop"] remoteExec ["playActionNow", 0]; _unit setVariable ["ace_captives_isEscorting", false, true];
+    {[_captive, _x] remoteExec ["enableAI", 0]} forEach ["ANIM", "MOVE"]; 
+    [_captive, ["ace_AmovPercMstpScapWnonDnon", 0, 0, false]] remoteExec ["switchMove"];
+    [_captive, "tsp_common_stop"] remoteExec ["playActionNow", 0]; 
+    _unit setVariable ["ace_captives_isEscorting", false, true];
+};
+
+tsp_fnc_animate_carry = {
+    params ["_unit", ["_duration", tsp_cba_animate_carry]];
+    _targets = (_unit nearEntities [["CAManBase"], 3]) select {animationState _x == "ainjpfalmstpsnonwrfldnon_carried_up"};
+    {[_x, 10/_duration] remoteExec ["setAnimSpeedCoef"]} forEach [_unit, _targets#0];
+    sleep _duration; {[_x, 1] remoteExec ["setAnimSpeedCoef"]} forEach [_unit, _targets#0];
+    [_unit, "blockThrow", "ace_dragging", true] call ace_common_fnc_statusEffect_set;
+    _unit setVariable ["ace_dragging_isCarrying", true, true];
+    _unit setVariable ["ace_dragging_carriedObject", _targets#0, true];
+    [ace_dragging_fnc_startCarryPFH, 0.2, [_unit, _targets#0, time]] call CBA_fnc_addPerFrameHandler;
 };
 
 tsp_fnc_animate_clacker = {

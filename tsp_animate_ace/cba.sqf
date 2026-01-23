@@ -4,7 +4,7 @@
 ["tsp_cba_animate_captive", "CHECKBOX", ["Captive", "Enable/disable animation when using escorting ACE Captive."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_grenade", "CHECKBOX", ["Grenade", "Enable/disable grenade throw animation."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_lift", "CHECKBOX", ["Lift", "Enable/disable ACE object lifting animation."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
-["tsp_cba_animate_carry", "SLIDER", ["Carry Speed", "How long it takes to carry someone."], ["TSP Animate", "ACE"], [0, 10, 2], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_carry", "SLIDER", ["Carry Duration", "How long it takes to carry someone."], ["TSP Animate", "ACE"], [0, 10, 5], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_drop_ace", "CHECKBOX", ["Droppable ACE actions", "Show droppable ACE actions."], ["TSP Animate", "ACE"], false] call CBA_fnc_addSetting;
 
 {

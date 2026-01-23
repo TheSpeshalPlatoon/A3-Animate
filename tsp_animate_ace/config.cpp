@@ -12,7 +12,6 @@ class CfgFunctions {
     class ace_common {class functions {class doGesture {file = "tsp_animate_ace\functions\gesture.sqf";};};};
     class ace_gestures {class functions {class playSignal {file = "tsp_animate_ace\functions\signal.sqf";};};};
     class ace_captives {class functions {class handleAnimChangedHandcuffed {file = "tsp_animate_ace\functions\captive.sqf";};};};
-    class ace_dragging {class functions {class startCarryLocal {file = "tsp_animate_ace\functions\carry.sqf";};};};
 };
 
 //-- ACE Actions - Overwrite Tapping
@@ -136,7 +135,7 @@ class CfgGesturesMale {
 		class tsp_animate_shock_loop_wrfl: tsp_animate_shock_out_wrfl {file = "tsp_animate_ace\gestures\shock_loop.rtm"; looped = true;};
 
 		//-- Captive
-		class tsp_animate_captive: tsp_animate_breach {mask = "HandsWeapon"; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {0}; looped = true; file = "tsp_animate_ace\gestures\captive.rtm";};
+		class tsp_animate_captive: tsp_animate_breach {mask = "HandsWeapon"; leftHandIKCurve[] = {0}; rightHandIKCurve[] = {0}; enableOptics = 0; looped = true; file = "tsp_animate_ace\gestures\captive.rtm";};
 		class tsp_animate_captor_wnon: tsp_animate_captive {mask = "leftArm"; file = "tsp_animate_ace\gestures\captor.rtm";};
 		class tsp_animate_captor_wrfl: tsp_animate_captor_wnon {mask = "HandsWeapon"; rightHandIKCurve[] = {1};};
 		class tsp_animate_captor_wpst: tsp_animate_captor_wnon {mask = "HandsWeapon";};

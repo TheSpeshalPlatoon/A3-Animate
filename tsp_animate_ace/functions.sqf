@@ -11,7 +11,7 @@ tsp_fnc_animate_captive = {
     {[_captive, _x] remoteExec ["disableAI", 0]} forEach ["ANIM", "MOVE"];
     [_captive, "tsp_animate_captive"] remoteExec ["playActionNow", 0]; 
     _captive attachTo [_unit, [-0.15,0.7,0]];  
-    waitUntil {isNull attachedTo _captive || stance _unit == "PRONE"};
+    waitUntil {sleep 0.1; isNull attachedTo _captive || stance _unit == "PRONE" || !("captor" in gestureState _unit)};
     _unit allowSprint true; [_unit] call tsp_fnc_gesture_stop; 
     _unit removeEventHandler ["AnimStateChanged", _eh]; 
     {[_captive, _x] remoteExec ["enableAI", 0]} forEach ["ANIM", "MOVE"]; 
@@ -55,4 +55,5 @@ tsp_fnc_animate_grenade = {
     tsp_animate_throwing = nil; sleep 0.7;
     if (count (_unit getVariable ["tsp_gestureReturn", []]) > 0 && "grenade" in gestureState _unit) then {(_unit getVariable ["tsp_gestureReturn", []]) spawn tsp_fnc_gesture_play};
 };
+
 //ACE_player getVariable "ace_advanced_throwing_throwMod"

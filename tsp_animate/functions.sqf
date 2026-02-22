@@ -160,7 +160,7 @@ tsp_fnc_animate_drop = {
 
 tsp_fnc_animate_tap = {
     params ["_unit", ["_target", objNull], ["_side", -1], ["_mode", if ((getCameraViewDirection (_this#0))#2 < -0.2) then {"leg"} else {"shoulder"}]];
-    _targets = [_unit, eyePos _unit, [0,15,30,45,60,-15,-30,-45,-60], 3, getCameraViewDirection _unit] call tsp_fnc_obstruction select {alive (_x#0) && _x#0 isKindOf "CAManBase"};
+    _targets = [_unit, eyePos _unit, getCameraViewDirection _unit, 3, 120] call tsp_fnc_obstruction select {alive (_x#0) && _x#0 isKindOf "CAManBase"};
     if (_target isEqualTo objNull && count _targets > 0) then {_target = _targets#0#0};
     if (_target isEqualTo objNull || "leg" in gestureState _unit || "shoulder" in gestureState _unit) exitWith {};
     if (_side == -1) then {_side = [0,1] select([ACE_player, _target] call BIS_fnc_relativeDirTo < 180)};
@@ -225,18 +225,20 @@ tsp_fnc_animate_tactical = {
     if (_modeO != "" && _modeO in gestureState _unit) then {_mode = "stop"}; 
     if (_modeO == "ready" && ("ready" in gestureState _unit || "port" in gestureState _unit)) then {_mode = "stop"};
        
-    if (_mode in ["", "stop"] && tsp_cba_animate_poll > 0 && vehicle _unit == _unit) then {
+    if (_mode in ["", "stop"] && tsp_cba_animate_poll > 0 && vehicle _unit == _unit && isNil "tsp_animate_spam") then {
         _length = ([_unit] call tsp_fnc_length) max 0.7; if ("animate_tactical" in gestureState _unit) then {_length = _length + 0.2};
         _dir = _unit weaponDirection currentWeapon _unit; if ("animate_tactical" in gestureState _unit) then {_dir = if (freelook) then {vectorDirVisual _unit} else {getCameraViewDirection _unit}};
-        _friends = [_unit, _unit modelToWorldWorld (_unit selectionPosition ["Neck", "Memory"]), [0,3,-5,-10], _length * tsp_cba_animate_friend, _dir] call tsp_fnc_obstruction;
+        _friends = [_unit, _unit modelToWorldWorld (_unit selectionPosition ["Neck", "Memory"]), _dir, _length * tsp_cba_animate_friend, 7, 2, 5] call tsp_fnc_obstruction;
         _friends = _friends select {[side group (_x#0), side group _unit] call BIS_fnc_sideIsFriendly && (_x#0) isKindOf "Man"};
-        _objects = [_unit, eyePos _unit, [0], _length * tsp_cba_animate_object, _dir] call tsp_fnc_obstruction; 
+        if (missionNameSpace getVariable ["ace_medical_gui_menuPFH", -1] != -1) then {_friends = ["Medical"]};
+        _objects = [_unit, eyePos _unit, _dir, _length * tsp_cba_animate_object, 0] call tsp_fnc_obstruction; 
         _objects = _objects select {!([side group (_x#0), side group _unit] call BIS_fnc_sideIsFriendly && (_x#0) isKindOf "Man")};
         _canBeObstructed = ([gestureState _unit] call tsp_fnc_gesture_sanitize == "" || _mode == "stop") && !weaponLowered _unit;
         if (count _friends > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "friend"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.4; tsp_tactical_delay = nil}}; 
-        if (count _objects > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "object"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.4; tsp_tactical_delay = nil}}; 
+        if (count _objects > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "object"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.4; tsp_tactical_delay = nil}};
+        if (count _friends == 0) then {_friends = [_unit, _unit modelToWorldWorld (_unit selectionPosition ["Neck", "Memory"]), _dir, (_length * tsp_cba_animate_friend) + 0.1, 10, 2, 5] call tsp_fnc_obstruction};
         if (count (_friends+_objects) == 0 && ("friend" in gestureState _unit || "object" in gestureState _unit)) exitWith {_mode = ""; [_unit] call tsp_fnc_gesture_stop}; 
-    };
+    };  // [] spawn {tsp_animate_spam = true; sleep 0.5; tsp_animate_spam = nil}
 
     if (_mode == "stop") exitWith {[_unit] call tsp_fnc_gesture_stop};  //-- If still "stop" and not friend/object - cancel, else continue to obstruct
     if (_mode == "" || _mode in gestureState _unit) exitWith {}; [_unit] call tsp_fnc_animate_effect;

@@ -12,12 +12,12 @@ tsp_fnc_animate_captive = {
     [_captive, "tsp_animate_captive"] remoteExec ["playActionNow", 0]; 
     _captive attachTo [_unit, [-0.15,0.7,0]];  
     waitUntil {sleep 0.1; isNull attachedTo _captive || stance _unit == "PRONE" || !("captor" in gestureState _unit)};
+    _unit setVariable ["ace_captives_isEscorting", false, true];
     _unit allowSprint true; [_unit] call tsp_fnc_gesture_stop; 
     _unit removeEventHandler ["AnimStateChanged", _eh]; 
     {[_captive, _x] remoteExec ["enableAI", 0]} forEach ["ANIM", "MOVE"]; 
     [_captive, ["ace_AmovPercMstpScapWnonDnon", 0, 0, false]] remoteExec ["switchMove"];
-    [_captive, "tsp_common_stop"] remoteExec ["playActionNow", 0]; 
-    _unit setVariable ["ace_captives_isEscorting", false, true];
+    sleep 0.4; [_captive, "tsp_common_stop"] remoteExec ["playActionNow", 0]; 
 };
 
 tsp_fnc_animate_carry = {

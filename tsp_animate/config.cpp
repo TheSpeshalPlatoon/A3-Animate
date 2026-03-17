@@ -419,11 +419,11 @@ class CfgGesturesMale {
 		class tsp_animate_suicide_wrfl_loop: tsp_animate_suicide_wrfl_in {file = "tsp_animate\gestures\suicide_wrfl_loop.rtm"; looped = true;};
 
 		//-- Inspect
-		class tsp_animate_inspect_wrfl: tsp_animate_suicide_wrfl_in {file = "tsp_animate\gestures\inspect_wrfl.rtm";};
-		class tsp_animate_inspect_wpst: tsp_animate_suicide_wpst_in {file = "tsp_animate\gestures\inspect_wpst.rtm";};
+		class tsp_animate_inspect_wrfl: tsp_animate_suicide_wrfl_in {file = "tsp_animate\gestures\inspect_wrfl.rtm"; speed = 0.4;};
+		class tsp_animate_inspect_wpst: tsp_animate_suicide_wpst_in {file = "tsp_animate\gestures\inspect_wpst.rtm"; speed = 0.4;};
 		
 		//-- Throw
-		class tsp_animate_throw_wrfl: GestureNo {file = "tsp_animate\gestures\throw_wrfl.rtm"; speed = 0.5; mask="weaponSpine"; looped = true; cancel = true; enableOptics = 0;};
+		class tsp_animate_throw_wrfl: GestureNo {file = "tsp_animate\gestures\throw_wrfl.rtm"; speed = 0.5; mask="weaponSpine"; looped = true; cancel = true; enableOptics = 0; leftHandIKCurve[] = {1}; rightHandIKCurve[] = {1};};
 		class tsp_animate_throw_wrfl_wind: tsp_animate_throw_wrfl {file = "tsp_animate\gestures\throw_wrfl_wind.rtm";};
 		class tsp_animate_throw_wrfl_wound: tsp_animate_throw_wrfl {file = "tsp_animate\gestures\throw_wrfl_wound.rtm";};
 		class tsp_animate_throw_wrfl_out: tsp_animate_throw_wrfl {file = "tsp_animate\gestures\throw_wrfl_out.rtm"; speed = 1.5; mask="upperTorso"; looped = false;};

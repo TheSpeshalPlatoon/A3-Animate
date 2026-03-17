@@ -47,8 +47,8 @@
 ["tsp_cba_animate_drop_infinite", "CHECKBOX", ["Infinite Droppables", "Make it so you dont consume the item dropped."], ["TSP Animate", "Items"], false] call CBA_fnc_addSetting;
 
 //-- CONTROLS
-["TSP Animate", "tsp_animate_walk_scrollUp", "Walking Speed Up", {[playa, animationState playa, 0.2] call tsp_fnc_animate_walk}, {}, [0xF8, [false, true, false]]] call CBA_fnc_addKeybind;
-["TSP Animate", "tsp_animate_walk_scrollDown", "Walking Speed Down", {[playa, animationState playa, -0.2] call tsp_fnc_animate_walk}, {}, [0xF9, [false, true, false]]] call CBA_fnc_addKeybind;
+["TSP Animate", "tsp_animate_walk_scrollUp", "Walking Speed Up", {if (isNil "tsp_earplug_mouseZ") then {[playa, animationState playa, 0.2] call tsp_fnc_animate_walk}}, {}, [0xF8, [false, true, false]]] call CBA_fnc_addKeybind;
+["TSP Animate", "tsp_animate_walk_scrollDown", "Walking Speed Down", {if (isNil "tsp_earplug_mouseZ") then {[playa, animationState playa, -0.2] call tsp_fnc_animate_walk}}, {}, [0xF9, [false, true, false]]] call CBA_fnc_addKeybind;
 ["TSP Animate", "tsp_animate_walk_reset", "Walking Speed Reset", {[playa, animationState playa, -10, 1] call tsp_fnc_animate_walk}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 ["TSP Animate", "tsp_animate_walk_max", "Walking Speed Max", {[playa, animationState playa, +10, 1] call tsp_fnc_animate_walk}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 

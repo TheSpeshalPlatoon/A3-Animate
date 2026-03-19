@@ -80,7 +80,7 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
         tsp_future pushBack [time + _time, [_unit], {params ["_unit"]; [_unit, "tsp_animate_sling_sling"] remoteExec ["playActionNow"]}];  //-- Play animation
         tsp_future pushBack [time + _time + 0.2, [_unit, !_drawPistol && !_drawLauncher && !_unsling], {
             params ["_unit", "_unarmed"]; _rifle = (getUnitLoadout _unit)#0;
-            _unit setVariable ["tsp_holder", [_unit, primaryWeapon _unit, true, true, "tsp_holder", !_unarmed, vehicle _unit == _unit] call tsp_fnc_throw];
+            _unit setVariable ["tsp_holder", [_unit, primaryWeapon _unit, true, true, "tsp_holder", !_unarmed, isNil "tsp_server_animate" || vehicle _unit != _unit] call tsp_fnc_throw];
             (_unit getVariable "tsp_holder") setDamage 1; (_unit getVariable "tsp_holder") attachTo [_unit, tsp_cba_animate_sling_pos#0, "Spine3", true]; 
             [_unit getVariable "tsp_holder", tsp_cba_animate_sling_pos#1] call BIS_fnc_setObjectRotation;
             [_unit getVariable "tsp_holder", false] remoteExec ["hideObjectGlobal"];

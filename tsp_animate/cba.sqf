@@ -77,13 +77,13 @@
 
 [["TSP Animate", "Sling"], "tsp_animate_sling_sling", "Sling/Unsling/Swap", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (_current == _primary && _primary != "" && count _slung > 1 && stance playa != "PRONE" && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true, false, false, false, true] call tsp_fnc_animate_sling};  //-- Swap
-    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
+    if (_current == _primary && _primary != "" && count _slung > 1 && stance playa != "PRONE" && (count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0 || !tsp_cba_animate_sling_required)) exitWith {[playa, true, false, false, false, true] call tsp_fnc_animate_sling};  //-- Swap
+    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && (count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0 || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
     if (count _slung > 1 && stance playa != "PRONE" && primaryWeapon playa == "") exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
 }, {}, [2, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Sling"], "tsp_animate_sling_slingo", "Sling", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && ("tsp_sling" in items playa || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
+    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && (count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0 || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
 }, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Sling"], "tsp_animate_sling_unslingo", "Unsling", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};

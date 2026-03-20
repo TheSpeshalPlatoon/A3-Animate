@@ -51,8 +51,8 @@ addUserActionEventHandler ["ShowMap", "Activate", {[] spawn {sleep 0.01; if (tsp
 ["if (tsp_cba_animate_door && ['door', _this#4] call BIS_fnc_inString || ['gate', _this#4] call BIS_fnc_inString) then {[playa] spawn tsp_fnc_animate_door};"] spawn tsp_fnc_scroll;
 
 if (tsp_cba_animate_sling) then {player addEventHandler ["Respawn", {params ["_unit", "_corpse"]; [_unit] spawn tsp_fnc_animate_sling_actions}]; [player] call tsp_fnc_animate_sling_actions};
-if (tsp_cba_animate_sling_add) then {addMissionEventHandler ["EntityCreated", {params ["_entity"]; if (local _entity && _entity isKindOf "CAManBase" && !("tsp_sling" in items _entity)) then {_entity addItem "tsp_sling"}}]};
-if (tsp_cba_animate_sling_add && isServer) then {{if !("tsp_sling" in items _x) then {_x addItem "tsp_sling"}} forEach allUnits}; 
+if (tsp_cba_animate_sling_add) then {addMissionEventHandler ["EntityCreated", {params ["_entity"]; if (local _entity && _entity isKindOf "CAManBase" && !(count (TSP_slingItems arrayIntersect items _entity + primaryWeaponItems _entity) > 0)) then {_entity addItem "tsp_sling"}}]};
+if (tsp_cba_animate_sling_add && isServer) then {{if !(count (TSP_slingItems arrayIntersect items _x + primaryWeaponItems _x) > 0) then {_x addItem "tsp_sling"}} forEach allUnits}; 
 if (tsp_cba_animate_sling_arsenal) then {[missionNamespace, "arsenalOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call BIS_fnc_addScriptedEventHandler};
 if (tsp_cba_animate_sling_arsenal) then {["ace_arsenal_displayOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call CBA_fnc_addEventHandler};
 
@@ -62,7 +62,7 @@ addMissionEventHandler ["Draw3D", {
     [tsp_old, currentWeapon playa] params ["_old", "_new"]; tsp_old = _new;  //-- Exit if no switch or unarmed or no sling
 	if !(currentWeapon playa != _old && _new != "" && playa getVariable ["tsp_slung", []] isEqualTo []) exitWith {};
     if !(tsp_cba_animate_sling && stance playa in ["CROUCH","STAND"] && vehicle playa == playa && isNil 'ace_arsenal_center' && isNil 'bis_fnc_arsenal_center') exitWith {};
-    if (tsp_cba_animate_sling_required && !("tsp_sling" in items playa)) exitWith {};
+    if (tsp_cba_animate_sling_required && count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0) exitWith {};
     if (_new == secondaryWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, false, true] call tsp_fnc_animate_sling};  //-- Rifle > launcher
     if (_new == handgunWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, true] call tsp_fnc_animate_sling};          //-- Rifle > pistol
 }];

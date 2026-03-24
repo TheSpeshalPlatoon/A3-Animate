@@ -67,6 +67,8 @@ tsp_fnc_animate_walk = {
     if (!("mwlksras" in _anim) && !("mwlkslow" in _anim) && !(isNil "tsp_walk_set")) then {tsp_walk_set = nil; _unit setAnimSpeedCoef 1};
 };
 
+TSP_slingItems = keys (uiNamespace getVariable 'TSP_slingItems');
+
 tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AWAY
     params ["_unit", ["_sling", false], ["_holster", false], ["_drawPistol", false], ["_drawLauncher", false], ["_unsling", false], ["_time", 0], ["_slung", (_this#0) getVariable ["tsp_slung", []]]];
     _knife = if (!isNil "tsp_fnc_melee_weapon") then {!([_unit, handGunWeapon _unit] call tsp_fnc_melee_weapon in ["", "pistol"])} else {false};
@@ -131,9 +133,9 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
 
 tsp_fnc_animate_sling_actions = {
     params ["_unit", ["_common", "[currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ['tsp_slung',[]]] params ['_current', '_primary', '_handgun', '_slung']; tsp_cba_animate_sling_scroll && stance playa in ['STAND', 'CROUCH'] && "]];
-    _unit addAction ["Sling Rifle", {[playa, true] spawn tsp_fnc_animate_sling}, nil, 0, false, true, "", (_common + "_current == _primary && _primary != '' && count _slung < 1 && 'tsp_sling' in items playa"), 0.1];
+    _unit addAction ["Sling Rifle", {[playa, true] spawn tsp_fnc_animate_sling}, nil, 0, false, true, "", (_common + "_current == _primary && _primary != '' && count _slung < 1 && count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0"), 0.1]; // 'tsp_sling' in items playa
     _unit addAction ["Unsling Rifle", {[playa, false, currentWeapon playa == handgunWeapon playa, false, false, true] spawn tsp_fnc_animate_sling}, nil, 0, false, true, "", (_common + "_primary == '' && count _slung > 1"), 0.1];
-    _unit addAction ["Swap Rifles", {[playa, true, false, false, false, true] spawn tsp_fnc_animate_sling}, nil, 0, false, true, "", (_common + "_current == _primary && _primary != '' && count _slung > 0 && 'tsp_sling' in items playa"), -.1];
+    _unit addAction ["Swap Rifles", {[playa, true, false, false, false, true] spawn tsp_fnc_animate_sling}, nil, 0, false, true, "", (_common + "_current == _primary && _primary != '' && count _slung > 0 && count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0"), -.1];
 };
 
 tsp_fnc_animate_drop = {

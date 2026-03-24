@@ -7,13 +7,14 @@ class CfgPatches {
 
 //-- FUNCTIONS
 class Extended_PreInit_EventHandlers {class tsp_animate_cba {init = "[] call compileScript ['\tsp_animate\cba.sqf']";}; class tsp_animate_functions {init = "[] call compileScript ['\tsp_animate\functions.sqf']";};};
+class Extended_PreStart_EventHandlers {class tsp_animate_prestart {init = "call compileScript ['\tsp_animate\prestart.sqf']";}};
 class Extended_PostInit_EventHandlers {class tsp_animate_init {init = "['CBA_settingsInitialized', {[] spawn compileScript ['\tsp_animate\init.sqf']}] call CBA_fnc_addEventHandler;";};};  
 
 //-- ITEMS
 class CfgWeapons {
 	class CBA_MiscItem;
 	class CBA_MiscItem_ItemInfo;
-	class tsp_sling: CBA_MiscItem {scope = 2; displayName = "Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};};
+	class tsp_sling: CBA_MiscItem {scope = 2; displayName = "Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; tsp_isSling = 1; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};};
 	//class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling";};
 };
 

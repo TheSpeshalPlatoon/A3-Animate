@@ -7,15 +7,18 @@ class CfgPatches {
 
 //-- FUNCTIONS
 class Extended_PreInit_EventHandlers {class tsp_animate_cba {init = "[] call compileScript ['\tsp_animate\cba.sqf']";}; class tsp_animate_functions {init = "[] call compileScript ['\tsp_animate\functions.sqf']";};};
-class Extended_PreStart_EventHandlers {class tsp_animate_prestart {init = "call compileScript ['\tsp_animate\prestart.sqf']";}};
 class Extended_PostInit_EventHandlers {class tsp_animate_init {init = "['CBA_settingsInitialized', {[] spawn compileScript ['\tsp_animate\init.sqf']}] call CBA_fnc_addEventHandler;";};};  
 
 //-- ITEMS
 class CfgWeapons {
 	class CBA_MiscItem;
 	class CBA_MiscItem_ItemInfo;
-	class tsp_sling: CBA_MiscItem {scope = 2; displayName = "Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; tsp_isSling = 1; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};};
-	//class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling";};
+	class tsp_sling: CBA_MiscItem {
+		scope = 2; displayName = "2-Point Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; 
+		sling[] = {{-0.65, 0.85, 0.72}, {-90, 40, 70}}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
+	};
+	class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling"; picture = "\tsp_animate\gui\1point.paa"; sling[] = {{-0.75,1.07,0.07}, {-80,8,75}};};
+	class tsp_sling_lanyard: tsp_sling {displayName = "Lanyard"; picture = "\tsp_animate\gui\lanyard.paa"; sling[] = {{1.05,0.8,-0.1}, {10,20,90}};};
 };
 
 //-- ACE Actions - has to be here for stuff at bottom of cba.sqf

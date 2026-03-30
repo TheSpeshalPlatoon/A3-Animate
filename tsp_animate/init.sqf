@@ -34,7 +34,7 @@ addUserActionEventHandler ["Compass", "Activate", {[] spawn {sleep 0.01; if (tsp
     [playa, "", "tsp_animate_compass_loop", getText(configFile>>'CfgWeapons'>>playa getSlotItemName 609>>'model'), "leftHand", [0.06,0.02,0.01], [70,90,0], {!visibleCompass}] spawn tsp_fnc_gesture_item;
     [playa] call tsp_fnc_animate_effect; 
 }}}];
-addUserActionEventHandler ["Watch", "Activate", {[] spawn {sleep 0.01; if (tsp_cba_animate_watch && call tsp_fnc_watch) then {        
+addUserActionEventHandler ["Watch", "Activate", {[] spawn {sleep 0.01; if (tsp_cba_animate_watch && call tsp_fnc_watch) then {
     [playa, "", "tsp_animate_watch_loop", "", "leftHand", [0,0,999], [0,0,0], {!(call tsp_fnc_watch)}] spawn tsp_fnc_gesture_item;
     [playa] call tsp_fnc_animate_effect; 
 }}}];
@@ -50,19 +50,23 @@ addUserActionEventHandler ["ShowMap", "Activate", {[] spawn {sleep 0.01; if (tsp
 
 ["if (tsp_cba_animate_door && ['door', _this#4] call BIS_fnc_inString || ['gate', _this#4] call BIS_fnc_inString) then {[playa] spawn tsp_fnc_animate_door};"] spawn tsp_fnc_scroll;
 
-if (tsp_cba_animate_sling) then {player addEventHandler ["Respawn", {params ["_unit", "_corpse"]; [_unit] spawn tsp_fnc_animate_sling_actions}]; [player] call tsp_fnc_animate_sling_actions};
-if (tsp_cba_animate_sling_add) then {addMissionEventHandler ["EntityCreated", {params ["_entity"]; if (local _entity && _entity isKindOf "CAManBase" && !(count (TSP_slingItems arrayIntersect items _entity + primaryWeaponItems _entity) > 0)) then {_entity addItem "tsp_sling"}}]};
-if (tsp_cba_animate_sling_add && isServer) then {{if !(count (TSP_slingItems arrayIntersect items _x + primaryWeaponItems _x) > 0) then {_x addItem "tsp_sling"}} forEach allUnits}; 
+if (tsp_cba_animate_sling) then {{[player, _x] call tsp_fnc_animate_sling_actions} forEach tsp_slings};
+if (tsp_cba_animate_sling) then {player addEventHandler ["Respawn", {{[player, _x] call tsp_fnc_animate_sling_actions} forEach tsp_slings}]};
+if (tsp_cba_animate_sling) then {player addEventhandler ["Take", {[player] call tsp_fnc_animate_sling}]};
+if (tsp_cba_animate_sling) then {player addEventhandler ["Put", {[player] call tsp_fnc_animate_sling}]};
 if (tsp_cba_animate_sling_arsenal) then {[missionNamespace, "arsenalOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call BIS_fnc_addScriptedEventHandler};
 if (tsp_cba_animate_sling_arsenal) then {["ace_arsenal_displayOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call CBA_fnc_addEventHandler};
+if (tsp_cba_animate_sling_add) then {addMissionEventHandler ["EntityCreated", {params ["_unit"]; if (local _unit && _unit isKindOf "CAManBase" && count [_unit] call tsp_fnc_animate_sling_get == 0) then {_entity addItem "tsp_sling"}}]};
+if (tsp_cba_animate_sling_add && isServer) then {{if (count [_x] call tsp_fnc_animate_sling_get == 0) then {_x addItem "tsp_sling"}} forEach allUnits}; 
 
 tsp_old = currentWeapon playa; tsp_future = [];
-addMissionEventHandler ["Draw3D", {
+addMissionEventHandler ["Draw3D", {  //-- Need that next frame accuracy for ts
     if (count tsp_future > 0) exitWith {{_x params ["_time", "_params", "_code"]; if (time > _time) then {_params call _code; tsp_future = tsp_future select {_x#2 isNotEqualTo _code}}} forEach tsp_future};
-    [tsp_old, currentWeapon playa] params ["_old", "_new"]; tsp_old = _new;  //-- Exit if no switch or unarmed or no sling
-	if !(currentWeapon playa != _old && _new != "" && playa getVariable ["tsp_slung", []] isEqualTo []) exitWith {};
-    if !(tsp_cba_animate_sling && stance playa in ["CROUCH","STAND"] && vehicle playa == playa && isNil 'ace_arsenal_center' && isNil 'bis_fnc_arsenal_center') exitWith {};
-    if (tsp_cba_animate_sling_required && count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0) exitWith {};
+    [tsp_old, currentWeapon playa] params ["_old", "_new"]; tsp_old = _new;
+	if !(currentWeapon playa != _old && _new != "") exitWith {};  //-- Exit if not switching
+    if !(tsp_cba_animate_sling && stance playa in ["CROUCH","STAND"] && vehicle playa == playa) exitWith {};  //-- Enabled, stance, not in vehicle
+    if !(isNil 'ace_arsenal_center' && isNil 'bis_fnc_arsenal_center') exitWith {};  //-- No drawing in arsenal
+    if (count ([playa] call tsp_fnc_animate_sling_get) == 0) exitWith {};  //-- Exit if you dont have a free sling
     if (_new == secondaryWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, false, true] call tsp_fnc_animate_sling};  //-- Rifle > launcher
     if (_new == handgunWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, true] call tsp_fnc_animate_sling};          //-- Rifle > pistol
 }];

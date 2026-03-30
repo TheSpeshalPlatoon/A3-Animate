@@ -1,2 +1,0 @@
-private _slings = ("getNumber (_x >> 'tsp_isSling') == 1" configClasses (configFile >> "CfgWeapons") apply {configName _x});
-uiNamespace setVariable ["TSP_slingItems", compileFinal (_slings createHashMapFromArray [])];

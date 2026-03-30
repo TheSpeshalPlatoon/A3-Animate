@@ -30,7 +30,12 @@
 ["tsp_cba_animate_sling", "CHECKBOX", ["Sling System", "Enable/Disable sling system."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_style", "LIST", ["Sling Style", "What gesture set to use."], ["TSP Animate", "Sling"], [["","adhd","israeli"], ["Simpleton","ADHD","Israeli"], 1]] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_scroll", "CHECKBOX", ["Sling Scroll Menu", "Scroll menu actions for slings."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
-["tsp_cba_animate_sling_pos", "EDITBOX", ["Sling Position", "Attachment position and rotation for 2 point sling."], ["TSP Animate", "Sling"], '[[-0.65, 0.85, 0.72], [-90, 40, 70]]', false, {tsp_cba_animate_sling_pos = call compile tsp_cba_animate_sling_pos}] call CBA_fnc_addSetting;
+tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >> "CfgWeapons") apply {configName _x};
+{  //-- Add setting for each sling item
+    _name = "Sling Position ("+getText (configFile >> "CfgWeapons" >> _x >> "displayName")+")"; 
+    _position = [configfile >> "CfgWeapons" >> _x, "sling", "[[-0.65, 0.85, 0.72], [-90, 40, 70]]"] call BIS_fnc_returnConfigEntry;
+    ["tsp_cba_animate_"+_x, "EDITBOX", [_name, "Position, rotation."], ["TSP Animate", "Sling"], str _position, false] call CBA_fnc_addSetting;
+} forEach tsp_slings;
 ["tsp_cba_animate_sling_add", "CHECKBOX", ["Add Slings", "Attempt to add slings to all units."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_required", "CHECKBOX", ["Require Sling", "Whether a sling is required to use sling system."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_sprint", "CHECKBOX", ["Enable Sprinting", "Disable sprinting with slung weapon."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
@@ -76,18 +81,17 @@
 [["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_keyup_aim", "Cancel (Aim - Cant, Over - Key Up)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, false, true, true] call tsp_fnc_animate_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
 
 [["TSP Animate", "Sling"], "tsp_animate_sling_sling", "Sling/Unsling/Swap", {
-    [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (_current == _primary && _primary != "" && count _slung > 1 && stance playa != "PRONE" && (count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0 || !tsp_cba_animate_sling_required)) exitWith {[playa, true, false, false, false, true] call tsp_fnc_animate_sling};  //-- Swap
-    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && (count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0 || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
-    if (count _slung > 1 && stance playa != "PRONE" && primaryWeapon playa == "") exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
+    [currentWeapon playa, primaryWeapon playa, handgunWeapon playa] params ["_current", "_primary", "_handgun"]; if (!tsp_cba_animate_sling || stance playa == "PRONE") exitWith {};
+    if (_current == _primary && _primary != "" && (count ([playa] call tsp_fnc_animate_sling_get) > 0)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
+    if (primaryWeapon playa == "" && count ([playa, false] call tsp_fnc_animate_sling_get) > 0) exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
 }, {}, [2, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Sling"], "tsp_animate_sling_slingo", "Sling", {
-    [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (_current == _primary && _primary != "" && count _slung < 1 && stance playa != "PRONE" && (count (TSP_slingItems arrayIntersect items playa + primaryWeaponItems playa) > 0 || !tsp_cba_animate_sling_required)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
+    [currentWeapon playa, primaryWeapon playa, handgunWeapon playa] params ["_current", "_primary", "_handgun"]; if (!tsp_cba_animate_sling || stance playa == "PRONE") exitWith {};
+    if (_current == _primary && _primary != "" && (count ([playa] call tsp_fnc_animate_sling_get) > 0)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
 }, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Sling"], "tsp_animate_sling_unslingo", "Unsling", {
-    [currentWeapon playa, primaryWeapon playa, handgunWeapon playa, playa getVariable ["tsp_slung",[]]] params ["_current", "_primary", "_handgun", "_slung"]; if (!tsp_cba_animate_sling) exitWith {};
-    if (count _slung > 1 && stance playa != "PRONE") exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
+    [currentWeapon playa, primaryWeapon playa, handgunWeapon playa] params ["_current", "_primary", "_handgun"]; if (!tsp_cba_animate_sling || stance playa == "PRONE") exitWith {};
+    if (primaryWeapon playa == "" && count ([playa, false] call tsp_fnc_animate_sling_get) > 0) exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
 }, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
   
 [["TSP Animate", "Items"], "tsp_animate_throw", "Throw Weapon", {if (tsp_cba_animate_throw) then {[playa, true] spawn tsp_fnc_animate_throw}}, {}, [20, [false, false, true]]] call CBA_fnc_addKeybind;

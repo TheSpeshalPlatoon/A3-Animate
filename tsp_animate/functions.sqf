@@ -67,6 +67,16 @@ tsp_fnc_animate_walk = {
     if (!("mwlksras" in _anim) && !("mwlkslow" in _anim) && !(isNil "tsp_walk_set")) then {tsp_walk_set = nil; _unit setAnimSpeedCoef 1};
 };
 
+tsp_fnc_animate_sling_rifle = {  //[player, "tsp_sling_lanyard", false, ["SMG_05_F","muzzle_snds_L","","",["30Rnd_9x21_Mag_SMG_02",30],[],""]] call tsp_fnc_animate_sling_rifle;
+    params ["_unit", "_slingClass", "_unarmed", ["_rifle", (getUnitLoadout (_this#0))#0]];  //-- Get rifle before we throw it
+    _unit setVariable [_slingClass+"holder", [_unit, _rifle#0, true, true, "tsp_holder", !_unarmed, isNil "tsp_server_animate" || vehicle _unit != _unit] call tsp_fnc_throw];
+    (_unit getVariable _slingClass+"holder") setDamage 1;
+    (_unit getVariable _slingClass+"holder") attachTo [_unit, call compile (missionNameSpace getVariable ("tsp_cba_animate_"+_slingClass))#0, "Spine3", true]; 
+    [_unit getVariable _slingClass+"holder", call compile (missionNameSpace getVariable ("tsp_cba_animate_"+_slingClass))#1] call BIS_fnc_setObjectRotation;
+    _unit setVariable [_slingClass+"weapon", [_unit getVariable _slingClass+"holder", _rifle]];  //-- This var stores [_holder, _rifle]
+    if (_unarmed && vehicle _unit == _unit) then {_unit switchMove (animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"])};
+};
+
 tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AWAY
     params ["_unit", ["_sling", false], ["_holster", false], ["_drawPistol", false], ["_drawLauncher", false], ["_unsling", false], ["_slingClass", "auto"], ["_unslingClass", "auto"], ["_time", 0]];
     _knife = if (!isNil "tsp_fnc_melee_weapon") then {!([_unit, handGunWeapon _unit] call tsp_fnc_melee_weapon in ["", "pistol"])} else {false};
@@ -75,21 +85,10 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
         [[_unit] call tsp_fnc_animate_sling_get, _unit getVariable [primaryWeapon _unit+"pref", ""]] params ["_slings", "_preference"];
         if (_slingClass == "auto") then {_slingClass = if (_preference != "" && _preference in _slings) then {_preference} else {_slings#0}};  //-- If weapon has preference
         _unit setVariable [primaryWeapon _unit+"pref", _slingClass];  //-- Set preference
-        if (_drawPistol && !_knife && tsp_cba_animate_sling_style == "adhd") then {  //-- Chamber check
-            [_unit, "tsp_animate_sling_check"] remoteExec ["playActionNow"];
-            playSound3D ["A3\Sounds_F\weapons\Other\dry5-rifle.wss", _unit, false, getPosASL _unit, 5, 1, 10];
-            _time = _time + 0.1;
-        };
+        if (_drawPistol && !_knife && tsp_cba_animate_sling_style == "adhd") then {[_unit, "tsp_animate_sling_check"] remoteExec ["playActionNow"]};   //-- Chamber check
+        if (_drawPistol && !_knife && tsp_cba_animate_sling_style == "adhd") then {playSound3D ["A3\Sounds_F\weapons\Other\dry5-rifle.wss", _unit, false, getPosASL _unit, 5, 1, 10]; _time = _time + 0.1};
         tsp_future pushBack [time + _time, [_unit], {params ["_unit"]; [_unit, "tsp_animate_sling_sling"] remoteExec ["playActionNow"]}];  //-- Play animation
-        tsp_future pushBack [time + _time + 0.2, [_unit, _slingClass, !_drawPistol && !_drawLauncher && !_unsling], {
-            params ["_unit", "_slingClass", "_unarmed"]; _rifle = (getUnitLoadout _unit)#0;  //-- Get rifle before we throw it
-            _unit setVariable [_slingClass+"holder", [_unit, primaryWeapon _unit, true, true, "tsp_holder", !_unarmed, isNil "tsp_server_animate" || vehicle _unit != _unit] call tsp_fnc_throw];
-            (_unit getVariable _slingClass+"holder") setDamage 1; (_unit getVariable _slingClass+"holder") attachTo [_unit, call compile (missionNameSpace getVariable ("tsp_cba_animate_"+_slingClass))#0, "Spine3", true]; 
-            [_unit getVariable _slingClass+"holder", call compile (missionNameSpace getVariable ("tsp_cba_animate_"+_slingClass))#1] call BIS_fnc_setObjectRotation;
-            [_unit getVariable _slingClass+"holder", false] remoteExec ["hideObjectGlobal"];
-            _unit setVariable [_slingClass+"weapon", [_unit getVariable _slingClass+"holder", _rifle]];
-            if (_unarmed && vehicle _unit == _unit) then {_unit switchMove (animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"])};
-        }];
+        tsp_future pushBack [time + _time + 0.2, [_unit, _slingClass, !_drawPistol && !_drawLauncher && !_unsling], {_this call tsp_fnc_animate_sling_rifle}];  //-- Moved out
         _time = _time + 0.2;
     };
     if (_holster) then {

@@ -39,9 +39,9 @@ if (!isNil "ace_advanced_fatigue_setAnimExclusions") then {ace_advanced_fatigue_
 
 //-- No ACE weapon dropping when uncon with slings
 player addEventHandler ["AnimStateChanged", {
-    params ["_unit", "_anim"]; 
-    if ("tsp_sling" in items _unit && isNil "tsp_ace_sling") then {tsp_ace_sling = ace_medical_dropWeaponUnconsciousChance; ace_medical_dropWeaponUnconsciousChance = 0};
-    if (!("tsp_sling" in items _unit) && !(isNil "tsp_ace_sling")) then {ace_medical_dropWeaponUnconsciousChance = tsp_ace_sling; tsp_ace_sling = nil};
+    params ["_unit", "_anim"]; _slings = tsp_slings arrayIntersect (items _unit + primaryWeaponItems _unit);
+    if (count _slings > 0 && isNil "tsp_ace_sling") then {tsp_ace_sling = ace_medical_dropWeaponUnconsciousChance; ace_medical_dropWeaponUnconsciousChance = 0};
+    if (count _slings == 0 && !(isNil "tsp_ace_sling")) then {ace_medical_dropWeaponUnconsciousChance = tsp_ace_sling; tsp_ace_sling = nil};
 }];
 
 //-- Carry item animation

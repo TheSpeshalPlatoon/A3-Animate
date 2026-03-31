@@ -32,8 +32,7 @@
 ["tsp_cba_animate_sling_scroll", "CHECKBOX", ["Sling Scroll Menu", "Scroll menu actions for slings."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
 tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >> "CfgWeapons") apply {configName _x};
 {  //-- Add setting for each sling item
-    _name = "Sling Position ("+getText (configFile >> "CfgWeapons" >> _x >> "displayName")+")"; 
-    _position = [configfile >> "CfgWeapons" >> _x, "sling", "[[-0.65, 0.85, 0.72], [-90, 40, 70]]"] call BIS_fnc_returnConfigEntry;
+    _name = "Sling Position ("+getText (configFile >> "CfgWeapons" >> _x >> "displayName")+")"; _position = getArray (configfile >> "CfgWeapons" >> _x >> "sling");
     ["tsp_cba_animate_"+_x, "EDITBOX", [_name, "Position, rotation."], ["TSP Animate", "Sling"], str _position, false] call CBA_fnc_addSetting;
 } forEach tsp_slings;
 ["tsp_cba_animate_sling_add", "CHECKBOX", ["Add Slings", "Attempt to add slings to all units."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
@@ -83,7 +82,7 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
 [["TSP Animate", "Sling"], "tsp_animate_sling_sling", "Sling/Unsling/Swap", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa] params ["_current", "_primary", "_handgun"]; if (!tsp_cba_animate_sling || stance playa == "PRONE") exitWith {};
     if (_current == _primary && _primary != "" && (count ([playa] call tsp_fnc_animate_sling_get) > 0)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
-    if (primaryWeapon playa == "" && count ([playa, false] call tsp_fnc_animate_sling_get) > 0) exitWith {[playa, false, _current == _handgun, false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
+    if (primaryWeapon playa == "" && count ([playa, false] call tsp_fnc_animate_sling_get) > 0) exitWith {[playa, false, _current == _handgun && _current != "", false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
 }, {}, [2, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Sling"], "tsp_animate_sling_slingo", "Sling", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa] params ["_current", "_primary", "_handgun"]; if (!tsp_cba_animate_sling || stance playa == "PRONE") exitWith {};

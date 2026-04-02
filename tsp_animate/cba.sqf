@@ -81,6 +81,7 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
 
 [["TSP Animate", "Sling"], "tsp_animate_sling_sling", "Sling/Unsling/Swap", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa] params ["_current", "_primary", "_handgun"]; if (!tsp_cba_animate_sling || stance playa == "PRONE") exitWith {};
+    if (_current == _primary && _primary != "" && (count ([playa] call tsp_fnc_animate_sling_get) > 0) && (count ([playa, false] call tsp_fnc_animate_sling_get) > 0)) exitWith {[playa, true, false, false, false, true] call tsp_fnc_animate_sling};  //-- Swap
     if (_current == _primary && _primary != "" && (count ([playa] call tsp_fnc_animate_sling_get) > 0)) exitWith {[playa, true] call tsp_fnc_animate_sling};  //-- Sling
     if (primaryWeapon playa == "" && count ([playa, false] call tsp_fnc_animate_sling_get) > 0) exitWith {[playa, false, _current == _handgun && _current != "", false, false, true] call tsp_fnc_animate_sling};  //-- Unsling
 }, {}, [2, [false, false, false]]] call CBA_fnc_addKeybind;
@@ -95,7 +96,7 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
   
 [["TSP Animate", "Items"], "tsp_animate_throw", "Throw Weapon", {if (tsp_cba_animate_throw) then {[playa, true] spawn tsp_fnc_animate_throw}}, {}, [20, [false, false, true]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Items"], "tsp_animate_throw_quick", "Throw Weapon (Quick)", {if (tsp_cba_animate_throw) then {[playa, false, 5, 8] spawn tsp_fnc_animate_throw}}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Items"], "tsp_animate_drop", "Drop Weapon", {if (tsp_cba_animate_throw) then {([playa, currentWeapon playa] call tsp_fnc_throw) setVelocityModelSpace [2,3,0]}}, {}, [20, [false, true, true]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Items"], "tsp_animate_drop", "Drop Weapon", {if (tsp_cba_animate_throw) then {([playa, [currentWeapon playa]] call tsp_fnc_throw) setVelocityModelSpace [2,3,0]}}, {}, [20, [false, true, true]]] call CBA_fnc_addKeybind;
 
 {
     _x params ["_name", "_class"];

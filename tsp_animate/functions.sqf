@@ -69,12 +69,12 @@ tsp_fnc_animate_walk = {
 
 tsp_fnc_animate_sling_rifle = {  //[player, "tsp_sling_lanyard", false, ["SMG_05_F","muzzle_snds_L","","",["30Rnd_9x21_Mag_SMG_02",30],[],""]] call tsp_fnc_animate_sling_rifle;
     params ["_unit", "_slingClass", "_unarmed", ["_rifle", (getUnitLoadout (_this#0))#0]];  //-- Get rifle before we throw it
-    _unit setVariable [_slingClass+"holder", [_unit, _rifle#0, true, true, "tsp_holder", !_unarmed, isNil "tsp_server_animate" || vehicle _unit != _unit] call tsp_fnc_throw];
+    _unit setVariable [_slingClass+"holder", [_unit, _rifle, true, true, "tsp_holder", !_unarmed, isNil "tsp_server_animate" || vehicle _unit != _unit] call tsp_fnc_throw];
     (_unit getVariable _slingClass+"holder") setDamage 1;
     (_unit getVariable _slingClass+"holder") attachTo [_unit, call compile (missionNameSpace getVariable ("tsp_cba_animate_"+_slingClass))#0, "Spine3", true]; 
     [_unit getVariable _slingClass+"holder", call compile (missionNameSpace getVariable ("tsp_cba_animate_"+_slingClass))#1] call BIS_fnc_setObjectRotation;
     _unit setVariable [_slingClass+"weapon", [_unit getVariable _slingClass+"holder", _rifle]];  //-- This var stores [_holder, _rifle]
-    if (_unarmed && vehicle _unit == _unit) then {_unit switchMove (animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"])};
+    if (_unarmed && vehicle _unit == _unit) then {_unit switchMove (animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"] regexReplace ["mtac", "mwlk"])};
 };
 
 tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AWAY
@@ -127,6 +127,7 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
             if (vehicle _unit == _unit && stance _unit == "CROUCH") then {[_unit, "amovpknlmstpslowwrfldnon_amovpknlmstpsraswrfldnon"] remoteExec ["switchMove"]};
             if (vehicle _unit == _unit && stance _unit != "CROUCH") then {[_unit, "amovpercmstpslowwrfldnon_amovpercmstpsraswrfldnon"] remoteExec ["switchMove"]};
             if (vehicle _unit == _unit && !_holster) then {_unit switchMove (if (stance _unit == "CROUCH") then {"amovpknlmstpslowwrfldnon_amovpknlmstpsraswrfldnon"} else {"amovpercmstpslowwrfldnon_amovpercmstpsraswrfldnon"})};
+            if (_sling) then {[_unit, "tsp_animate_sling_swap"] remoteExec ["playActionNow"]};  //-- Dont overwrite if we slung a rifle beforehand
             _unit setVariable [_unslingClass+"weapon", []]; [_unit, primaryWeapon _unit] remoteExec ["selectWeapon"];
         }]
     };

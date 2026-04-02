@@ -50,10 +50,9 @@ tsp_fnc_animate_grenade = {
     [_unit, "", "tsp_animate_grenade_"+_mode+"_wnon_laut_loop", getText(configFile >> "CfgAmmo" >> _grenade >> "model"), _hand, _pos, _angle, {!(_unit getVariable "ace_advanced_throwing_inHand") || stance _unit == "PRONE"}, false] spawn tsp_fnc_gesture_item;
     [_unit, 1, "A3\Sounds_F\characters\stances\grenade_throw2.wss", 1] call tsp_fnc_animate_effect;
     while {sleep 0.001; _unit getVariable "ace_advanced_throwing_inHand" && !tsp_animate_grenade_flag} do {tsp_ace_throwType = _unit getVariable ["ace_advanced_throwing_throwMod", 1]};  //-- Have to do this cause ace_advanced_throwing_throwMod resets
-    if (isNil "tsp_animate_throwing" || tsp_animate_grenade_flag) exitWith {};  //-- Throw canceled
+    if (isNil "tsp_animate_throwing" || tsp_animate_grenade_flag) exitWith {}; tsp_animate_throwing = nil;  //-- Throw canceled
     _unit playActionNow ([_unit, "tsp_animate_grenade_"+_mode+"_wnon_laut_"+(if (tsp_ace_throwType > 0.5) then {"normal"} else {"high"})] call tsp_fnc_gesture_variant);
-    tsp_animate_throwing = nil; sleep 0.7;
-    if (count (_unit getVariable ["tsp_gestureReturn", []]) > 0 && "grenade" in gestureState _unit) then {(_unit getVariable ["tsp_gestureReturn", []]) spawn tsp_fnc_gesture_play};
+    sleep 0.7; if (count (_unit getVariable ["tsp_gestureReturn", []]) > 0 && "grenade" in gestureState _unit) then {(_unit getVariable ["tsp_gestureReturn", []]) spawn tsp_fnc_gesture_play};
 };
 
 //ACE_player getVariable "ace_advanced_throwing_throwMod"

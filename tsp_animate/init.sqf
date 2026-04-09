@@ -56,8 +56,10 @@ if (tsp_cba_animate_sling) then {player addEventhandler ["Take", {[player] call 
 if (tsp_cba_animate_sling) then {player addEventhandler ["Put", {[player] call tsp_fnc_animate_sling}]};
 if (tsp_cba_animate_sling_arsenal) then {[missionNamespace, "arsenalOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call BIS_fnc_addScriptedEventHandler};
 if (tsp_cba_animate_sling_arsenal) then {["ace_arsenal_displayOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call CBA_fnc_addEventHandler};
-if (tsp_cba_animate_sling_add) then {addMissionEventHandler ["EntityCreated", {params ["_unit"]; if (local _unit && _unit isKindOf "CAManBase" && count ([_unit] call tsp_fnc_animate_sling_get) == 0) then {_unit addItem "tsp_sling"}}]};
-if (tsp_cba_animate_sling_add && isServer) then {{if (count ([_x] call tsp_fnc_animate_sling_get) == 0) then {_x addItem "tsp_sling"}} forEach allUnits}; 
+if (tsp_cba_animate_sling_default != "" && isServer) then {
+    addMissionEventHandler ["EntityCreated", {params ["_unit"]; if (_unit isKindOf "CAManBase" && count ([_unit] call tsp_fnc_animate_sling_get) == 0) then {_unit addItem tsp_cba_animate_sling_default}}];
+    [] spawn {waitUntil {time > 3}; {if (count ([_x] call tsp_fnc_animate_sling_get) == 0) then {_x addItem tsp_cba_animate_sling_default}} forEach allUnits}; 
+};
 
 tsp_old = currentWeapon playa; tsp_future = [];
 addMissionEventHandler ["Draw3D", {  //-- Need that next frame accuracy for ts

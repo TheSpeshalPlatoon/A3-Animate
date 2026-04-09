@@ -35,7 +35,7 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
     _name = "Sling Position ("+getText (configFile >> "CfgWeapons" >> _x >> "displayName")+")"; _position = getArray (configfile >> "CfgWeapons" >> _x >> "sling");
     ["tsp_cba_animate_"+_x, "EDITBOX", [_name, "Position, rotation."], ["TSP Animate", "Sling"], str _position, false] call CBA_fnc_addSetting;
 } forEach tsp_slings;
-["tsp_cba_animate_sling_add", "CHECKBOX", ["Add Slings", "Attempt to add slings to all units."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sling_default", "EDITBOX", ["Default Sling", "Default sling to add to units. Example: tsp_sling"], ["TSP Animate", "Sling"], "", false, {}] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_required", "CHECKBOX", ["Require Sling", "Whether a sling is required to use sling system."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_sprint", "CHECKBOX", ["Enable Sprinting", "Disable sprinting with slung weapon."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_arsenal", "CHECKBOX", ["Unsling in Arsenal", "Unsling weapon when opening arsenal."], ["TSP Animate", "Sling"], false] call CBA_fnc_addSetting;
@@ -96,7 +96,7 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
   
 [["TSP Animate", "Items"], "tsp_animate_throw", "Throw Weapon", {if (tsp_cba_animate_throw) then {[playa, true] spawn tsp_fnc_animate_throw}}, {}, [20, [false, false, true]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Items"], "tsp_animate_throw_quick", "Throw Weapon (Quick)", {if (tsp_cba_animate_throw) then {[playa, false, 5, 8] spawn tsp_fnc_animate_throw}}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Items"], "tsp_animate_drop", "Drop Weapon", {if (tsp_cba_animate_throw) then {([playa, [currentWeapon playa]] call tsp_fnc_throw) setVelocityModelSpace [2,3,0]}}, {}, [20, [false, true, true]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Items"], "tsp_animate_drop", "Drop Weapon", {if (tsp_cba_animate_throw) then {([playa, currentWeapon playa] call tsp_fnc_throw) setVelocityModelSpace [2,3,0]}}, {}, [20, [false, true, true]]] call CBA_fnc_addKeybind;
 
 {
     _x params ["_name", "_class"];

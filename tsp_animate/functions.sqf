@@ -75,6 +75,7 @@ tsp_fnc_animate_sling_rifle = {  //[player, "tsp_sling_lanyard", false, ["SMG_05
     [_unit getVariable _slingClass+"holder", call compile (missionNameSpace getVariable ("tsp_cba_animate_"+_slingClass))#1] call BIS_fnc_setObjectRotation;
     _unit setVariable [_slingClass+"weapon", [_unit getVariable _slingClass+"holder", _rifle]];  //-- This var stores [_holder, _rifle]
     if (_unarmed && vehicle _unit == _unit) then {_unit switchMove (animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"] regexReplace ["mtac", "mwlk"])};
+    if (_unarmed && vehicle _unit == _unit) then {[_unit, (animationState _unit regexReplace ["wrfl", "wnon"] regexReplace ["sras", "snon"] regexReplace ["slow", "snon"] regexReplace ["mtac", "mwlk"])] remoteExec ["switchMove"]};
 };
 
 tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AWAY
@@ -141,15 +142,15 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
 
 tsp_fnc_animate_sling_get = {
     params ["_unit", ["_free", true], ["_inventory", tsp_slings arrayIntersect items (_this#0) + primaryWeaponItems (_this#0)]]; 
-    if (_free) exitWith {(if (tsp_cba_animate_sling_required) then {_inventory} else {["tsp_sling"]}) select {count (_unit getVariable [_x+'weapon', []]) == 0}};
-    if (!_free) exitWith {(if (tsp_cba_animate_sling_required) then {tsp_slings} else {["tsp_sling"]}) select {count (_unit getVariable [_x+'weapon', []]) > 0}};
+    if (_free) exitWith {(if (tsp_cba_animate_sling_required) then {_inventory} else {tsp_slings}) select {count (_unit getVariable [_x+'weapon', []]) == 0}};
+    if (!_free) exitWith {tsp_slings select {count (_unit getVariable [_x+'weapon', []]) > 0}};
 };
 
 tsp_fnc_animate_sling_actions = {
     params ["_unit", "_class"]; _name = getText (configFile >> "CfgWeapons" >> _class >> "displayName");
     _common = "[currentWeapon playa, primaryWeapon playa, handgunWeapon playa, '"+_class+"', playa getVariable ['"+_class+"weapon',[]]] params ['_current', '_primary', '_handgun', '_class', '_slung'];  tsp_cba_animate_sling_scroll && stance playa in ['STAND', 'CROUCH'] && ";
-    _unit addAction ["Sling Rifle ("+_name+")", "[playa, true, false, false, false, false, '"+_class+"'] spawn tsp_fnc_animate_sling", nil, 0, false, true, "", (_common + "_current == _primary && _primary != '' && count _slung < 1 && _class in (items playa + primaryWeaponItems playa)"), 0.1];
-    _unit addAction ["Unsling Rifle ("+_name+")", "[playa, false, currentWeapon playa == handgunWeapon playa, false, false, true, 'auto', '"+_class+"'] spawn tsp_fnc_animate_sling", nil, 0, false, true, "", (_common + "_primary == '' && count _slung > 1"), 0.1];
+    _unit addAction ["Sling Rifle ("+_name+")", "[playa, true, false, false, false, false, '"+_class+"'] spawn tsp_fnc_animate_sling", nil, 0, false, true, "", (_common + "_current == _primary && _primary != '' && count _slung < 1 && (!tsp_cba_animate_sling_required || _class in (items playa + primaryWeaponItems playa))"), 0.1];
+    _unit addAction ["Unsling Rifle ("+_name+")", "[playa, false, currentWeapon playa == handgunWeapon playa && currentWeapon playa != '', false, false, true, 'auto', '"+_class+"'] spawn tsp_fnc_animate_sling", nil, 0, false, true, "", (_common + "_primary == '' && count _slung > 1"), 0.1];
 };
 
 tsp_fnc_animate_drop = {

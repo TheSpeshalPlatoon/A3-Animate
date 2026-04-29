@@ -1,7 +1,22 @@
 tsp_fnc_animate_effect = {
-    params ["_unit", ["_shake", 1], ["_sound", "A3\Sounds_F\characters\stances\adjust_short"+str(round random 5 max 1)+".wss"], ["_volume", 0.1], ["_distance", 20]];
-    playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound, 1, _distance];  //concrete_adjust_stand_side//adjust_short//lift_rifle
-    if (isPlayer _unit) then {[_shake*tsp_cba_animate_shake, 2, 5] remoteExec ["tsp_fnc_shake", _unit]};
+    params ["_unit", ["_shake", 1], ["_sound", "A3\Sounds_F\characters\stances\adjust_short"+str(round random 5 max 1)+".wss"], ["_volume", 0.1], ["_distance", 20], ["_type", 0]];
+    switch (_type) do {
+        case 0: {
+            playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound, 1, _distance];
+        };
+        case 1: {
+            playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound_map, 1, _distance];
+        };
+        case 2: {
+            playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound_openclose, 1, _distance];
+        };
+        case 3: {
+            playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound_takeput, 1, _distance];
+        };
+        default {
+            playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound, 1, _distance];
+        };
+    };  //concrete_adjust_stand_side//adjust_short//lift_rifle
 };
 
 tsp_fnc_animate_dance = {

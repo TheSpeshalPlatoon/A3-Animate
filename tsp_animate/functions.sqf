@@ -17,6 +17,7 @@ tsp_fnc_animate_effect = {
             playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound, 1, _distance];
         };
     };  //concrete_adjust_stand_side//adjust_short//lift_rifle
+    if (isPlayer _unit) then {[_shake*tsp_cba_animate_shake, 2, 5] remoteExec ["tsp_fnc_shake", _unit]};
 };
 
 tsp_fnc_animate_dance = {

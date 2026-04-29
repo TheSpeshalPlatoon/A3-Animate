@@ -11,10 +11,10 @@ player addEventHandler ["InventoryOpened", {tsp_animate_attach = [currentWeapon 
 player addEventhandler ["Take", {if (tsp_cba_animate_attachment) then {[_this#0, _this#2, "mount"] call tsp_fnc_animate_attachment}}];
 player addEventhandler ["Put",  {if (tsp_cba_animate_attachment) then {[_this#0, _this#2, "dismount"] call tsp_fnc_animate_attachment}}];
 
-player addEventHandler ["InventoryOpened", {[playa, 0.5, "tsp_animate\snd\inventory_open.ogg", 5] call tsp_fnc_animate_effect}];
-player addEventHandler ["InventoryClosed", {[playa, 0.5, "tsp_animate\snd\inventory_close.ogg", 5] call tsp_fnc_animate_effect}];
-player addEventHandler ["Take", {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\take.ogg", 5] call tsp_fnc_animate_effect}}];
-player addEventHandler ["Put", {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\put.ogg", 5] call tsp_fnc_animate_effect}}];
+player addEventHandler ["InventoryOpened", {if (tsp_cba_animate_invOCsound) then {[playa, 0.5, "tsp_animate\snd\inventory_open.ogg", 5] call tsp_fnc_animate_effect}}];
+player addEventHandler ["InventoryClosed", {if (tsp_cba_animate_invOCsound) then {[playa, 0.5, "tsp_animate\snd\inventory_close.ogg", 5] call tsp_fnc_animate_effect}}];
+player addEventHandler ["Take", {if (tsp_cba_animate_invTPsound) then {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\take.ogg", 5] call tsp_fnc_animate_effect}}}];
+player addEventHandler ["Put", {if (tsp_cba_animate_invTPsound) then {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\put.ogg", 5] call tsp_fnc_animate_effect}}}];
 
 player addEventHandler ["GestureChanged", {params ["_unit", "_gesture"]; if ("reload" in _gesture) then {_unit setVariable ["tsp_gestureReturn", ""]}}];  //-- Reload clears return gesture memory
 

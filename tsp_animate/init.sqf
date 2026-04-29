@@ -26,7 +26,7 @@ player addEventHandler ["AnimStateChanged", {
 
 if (tsp_cba_animate_commands) then {(group player) call tsp_fnc_animate_commands; addMissionEventHandler ["GroupCreated", {_this call tsp_fnc_animate_commands}]};
 
-["if (tsp_cba_animate_uav && 'Open UAV' in (_this#4)) then {[playa,0.5,'A3\Missions_F_Oldman\Data\sound\beep.ogg',0.1] call tsp_fnc_animate_effect; [playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.04,0.02,-0.07], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item};"] spawn tsp_fnc_scroll;
+["if (tsp_cba_animate_uav && 'Open UAV' in (_this#4)) then {[playa,0.5,'A3\Missions_F_Oldman\Data\sound\beep.ogg',0.1, 20, 4] call tsp_fnc_animate_effect; [playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.04,0.02,-0.07], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item};"] spawn tsp_fnc_scroll;
 addMissionEventHandler ["PlayerViewChanged", {if (_this#5 isNotEqualTo objNull && tsp_cba_animate_uav) then {[playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.04,0.02,-0.07], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item}}];
 
 addUserActionEventHandler ["NightVision", "Activate", {if (tsp_cba_animate_nvg) then {[playa] spawn tsp_fnc_animate_nvg; [playa] call tsp_fnc_animate_effect}}];

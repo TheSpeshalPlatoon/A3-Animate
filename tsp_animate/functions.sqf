@@ -13,6 +13,9 @@ tsp_fnc_animate_effect = {
         case 3: {
             playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound_takeput, 1, _distance];
         };
+        case 4: {
+            playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound_uav, 1, _distance];
+        };
         default {
             playSound3D [_sound, _unit, true, getPosASL _unit, _volume*tsp_cba_animate_sound, 1, _distance];
         };

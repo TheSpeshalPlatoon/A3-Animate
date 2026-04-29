@@ -11,10 +11,10 @@ player addEventHandler ["InventoryOpened", {tsp_animate_attach = [currentWeapon 
 player addEventhandler ["Take", {if (tsp_cba_animate_attachment) then {[_this#0, _this#2, "mount"] call tsp_fnc_animate_attachment}}];
 player addEventhandler ["Put",  {if (tsp_cba_animate_attachment) then {[_this#0, _this#2, "dismount"] call tsp_fnc_animate_attachment}}];
 
-player addEventHandler ["InventoryOpened", {if (tsp_cba_animate_invOCsound) then {[playa, 0.5, "tsp_animate\snd\inventory_open.ogg", 5] call tsp_fnc_animate_effect}}];
-player addEventHandler ["InventoryClosed", {if (tsp_cba_animate_invOCsound) then {[playa, 0.5, "tsp_animate\snd\inventory_close.ogg", 5] call tsp_fnc_animate_effect}}];
-player addEventHandler ["Take", {if (tsp_cba_animate_invTPsound) then {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\take.ogg", 5] call tsp_fnc_animate_effect}}}];
-player addEventHandler ["Put", {if (tsp_cba_animate_invTPsound) then {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\put.ogg", 5] call tsp_fnc_animate_effect}}}];
+player addEventHandler ["InventoryOpened", {if (tsp_cba_animate_sound_inventoryOpenClose) then {[playa, 0.5, "tsp_animate\snd\inventory_open.ogg", 5] call tsp_fnc_animate_effect}}];
+player addEventHandler ["InventoryClosed", {if (tsp_cba_animate_sound_inventoryOpenClose) then {[playa, 0.5, "tsp_animate\snd\inventory_close.ogg", 5] call tsp_fnc_animate_effect}}];
+player addEventHandler ["Take", {if (tsp_cba_animate_sound_inventoryTakePut) then {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\take.ogg", 5] call tsp_fnc_animate_effect}}}];
+player addEventHandler ["Put", {if (tsp_cba_animate_sound_inventoryTakePut) then {if (!isNull (findDisplay 602)) then {[playa, 0.5, "tsp_animate\snd\put.ogg", 5] call tsp_fnc_animate_effect}}}];
 
 player addEventHandler ["GestureChanged", {params ["_unit", "_gesture"]; if ("reload" in _gesture) then {_unit setVariable ["tsp_gestureReturn", ""]}}];  //-- Reload clears return gesture memory
 
@@ -45,7 +45,7 @@ addUserActionEventHandler ["ShowMap", "Activate", {[] spawn {sleep 0.01; if (tsp
     if ("ItemGPS" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\a3\Weapons_F\Ammo\mag_gps.p3d", "leftHand", [-0.02,0.03,0], [-70,-60,0], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item};
     if ("ACE_microDAGR" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\z\ace\addons\microdagr\data\MicroDAGR.p3d", "leftHand", [0.01,0.035,0], [-80,-50,0], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item};        
     [playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\A3\Structures_F\Items\Documents\Map_unfolded_F.p3d", "leftHand", [-0.01,0.01,-0.01], [50,170,-90], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item;
-    [playa, 1, "tsp_animate\snd\map_open.ogg", 0.7] call tsp_fnc_animate_effect; waitUntil {!visibleMap}; [playa, 1, "tsp_animate\snd\map_close.ogg", 0.7] call tsp_fnc_animate_effect;
+    if (tsp_cba_animate_sound_map) then {[playa, 1, "tsp_animate\snd\map_open.ogg", 0.7] call tsp_fnc_animate_effect; waitUntil {!visibleMap}; [playa, 1, "tsp_animate\snd\map_close.ogg", 0.7] call tsp_fnc_animate_effect;};
 }}}];
 
 ["if (tsp_cba_animate_door && ['door', _this#4] call BIS_fnc_inString || ['gate', _this#4] call BIS_fnc_inString) then {[playa] spawn tsp_fnc_animate_door};"] spawn tsp_fnc_scroll;

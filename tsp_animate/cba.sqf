@@ -1,7 +1,8 @@
 #include "\a3\editor_f\Data\Scripts\dikCodes.h"; disableSerialization;
 
 //-- SETTINGS
-["tsp_cba_animate_invsound", "CHECKBOX", ["Inventory Open/Close Sound", "Enable/Disable sound playing when open/close inventory."], "TSP Animate", true] call CBA_fnc_addSetting;
+["tsp_cba_animate_invOCsound", "CHECKBOX", ["Inventory Open/Close Sound", "Enable/Disable sound playing when open/close inventory."], "TSP Animate", true] call CBA_fnc_addSetting;
+["tsp_cba_animate_invTPsound", "CHECKBOX", ["Inventory Take/Put Sound", "Enable/Disable sound playing when take/put inventory items."], "TSP Animate", true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sound", "SLIDER", ["Sound Volume", "Sound effect volume."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_shake", "SLIDER", ["Shake Intensity", "Camera shake intensity."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_ladder", "CHECKBOX", ["Shooting from Ladders", "Enable/Disable shooting from ladders."], "TSP Animate", true] call CBA_fnc_addSetting;

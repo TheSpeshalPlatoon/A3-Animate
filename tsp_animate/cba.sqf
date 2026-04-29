@@ -8,7 +8,7 @@
 ["tsp_cba_animate_sound_inventoryOpenClose", "CHECKBOX", ["Inventory Open/Close Sound", "Enable/Disable sound playing when open/close inventory."], ["TSP Animate", "Sounds"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sound_inventoryTakePut", "CHECKBOX", ["Inventory Take/Put Sound", "Enable/Disable sound playing when Take/Put inventory items."], ["TSP Animate", "Sounds"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sound_map", "CHECKBOX", ["Map Open/Close Sound", "Enable/Disable sound playing when open/close map."], ["TSP Animate", "Sounds"], true] call CBA_fnc_addSetting;
-["tsp_cba_animate_sound", "SLIDER", ["Sound Volume", "Sound effect volume."], ["TSP Animate", "Sounds"], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound", "SLIDER", ["Sound Volume", "Overall animate sound effect volume."], ["TSP Animate", "Sounds"], [0, 10, 1], false] call CBA_fnc_addSetting;
 
 ["tsp_cba_animate_tactical", "CHECKBOX", ["Tactical Stance System", "Enable/Disable tactical stance system."], ["TSP Animate", "Tactical"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_style", "LIST", ["Tactical Style", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 0]] call CBA_fnc_addSetting;

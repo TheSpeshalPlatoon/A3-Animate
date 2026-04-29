@@ -1,14 +1,14 @@
 #include "\a3\editor_f\Data\Scripts\dikCodes.h"; disableSerialization;
 
 //-- SETTINGS
-["tsp_cba_animate_shake", "SLIDER", ["Shake Intensity", "Camera shake intensity."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_ladder", "CHECKBOX", ["Shooting from Ladders", "Enable/Disable shooting from ladders."], "TSP Animate", true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_commands", "CHECKBOX", ["Command Gestures", "Enable/Disable AI command gestures."], "TSP Animate", true] call CBA_fnc_addSetting;
 
-["tsp_cba_animate_sound", "SLIDER", ["Overall Sound Volume", "Sound effect volume that played when doing something. Set 0 to mute it."], ["TSP Animate", Sounds], [0, 10, 1], false] call CBA_fnc_addSetting;
-["tsp_cba_animate_sound_openclose", "SLIDER", ["Inventory Open/Close Volume", "Sound effect volume that played when open/closing the inventory. Set 0 to mute it."], ["TSP Animate", Sounds], [0, 10, 1], false] call CBA_fnc_addSetting;
-["tsp_cba_animate_sound_takeput", "SLIDER", ["Inventory Take/Put Volume", "Sound effect volume that played when take/put items. Set 0 to mute it."], ["TSP Animate", Sounds], [0, 10, 1], false] call CBA_fnc_addSetting;
-["tsp_cba_animate_sound_map", "SLIDER", ["Map Open/Close Volume", "Sound effect volume that played when open/closing the map. Set 0 to mute it."], ["TSP Animate", Sounds], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_shake", "SLIDER", ["Shake Intensity", "Camera shake intensity."], ["TSP Animate", "Effect"], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound", "SLIDER", ["Overall Sound Volume", "Sound effect volume that played when doing something. Set 0 to mute it."], ["TSP Animate", "Effect"], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_openclose", "SLIDER", ["Inventory Open/Close Volume", "Sound effect volume that played when open/closing the inventory. Set 0 to mute it."], ["TSP Animate", "Effect"], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_takeput", "SLIDER", ["Inventory Take/Put Volume", "Sound effect volume that played when take/put items. Set 0 to mute it."], ["TSP Animate", "Effect"], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_map", "SLIDER", ["Map Open/Close Volume", "Sound effect volume that played when open/closing the map. Set 0 to mute it."], ["TSP Animate", "Effect"], [0, 10, 1], false] call CBA_fnc_addSetting;
 
 ["tsp_cba_animate_tactical", "CHECKBOX", ["Tactical Stance System", "Enable/Disable tactical stance system."], ["TSP Animate", "Tactical"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_style", "LIST", ["Tactical Style", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 0]] call CBA_fnc_addSetting;

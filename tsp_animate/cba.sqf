@@ -1,10 +1,16 @@
 #include "\a3\editor_f\Data\Scripts\dikCodes.h"; disableSerialization;
 
 //-- SETTINGS
-["tsp_cba_animate_sound", "SLIDER", ["Sound Volume", "Sound effect volume."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_shake", "SLIDER", ["Shake Intensity", "Camera shake intensity."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_ladder", "CHECKBOX", ["Shooting from Ladders", "Enable/Disable shooting from ladders."], "TSP Animate", true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_commands", "CHECKBOX", ["Command Gestures", "Enable/Disable AI command gestures."], "TSP Animate", true] call CBA_fnc_addSetting;
+
+["tsp_cba_animate_sound", "SLIDER", ["Multiplier", "Master sound effect multiplier."], ["TSP Animate", "Sounds"], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_map", "SLIDER", ["Map Volume", "Sound effect volume for open/close map."], ["TSP Animate", "Sounds"], [0, 10, 2], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_uav", "SLIDER", ["UAV Volume", "Sound effect volume for open/close UAV terminal."], ["TSP Animate", "Sounds"], [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_inv", "SLIDER", ["Inventory Volume", "Sound effect volume for open/close inventory."], ["TSP Animate", "Sounds"], [0, 10, 3], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_put", "SLIDER", ["Take/Put Volume", "Sound effect volume for take/put item."], ["TSP Animate", "Sounds"], [0, 10, 3], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_sound_other", "SLIDER", ["Others", "Sound effect volume for other actions."], ["TSP Animate", "Sounds"], [0, 10, 0.1], false] call CBA_fnc_addSetting;
 
 ["tsp_cba_animate_tactical", "CHECKBOX", ["Tactical Stance System", "Enable/Disable tactical stance system."], ["TSP Animate", "Tactical"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_style", "LIST", ["Tactical Style", "What gesture set to use."], ["TSP Animate", "Tactical"], [["","loose_","butt_","retro_"], ["Basic Bitch","Loosey Goosey","Tip to Butt","Retro"], 0]] call CBA_fnc_addSetting;
@@ -32,8 +38,8 @@
 ["tsp_cba_animate_sling_scroll", "CHECKBOX", ["Sling Scroll Menu", "Scroll menu actions for slings."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;
 tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >> "CfgWeapons") apply {configName _x};
 {  //-- Add setting for each sling item
-    _name = "Sling Position ("+getText (configFile >> "CfgWeapons" >> _x >> "displayName")+")"; _position = getArray (configfile >> "CfgWeapons" >> _x >> "sling");
-    ["tsp_cba_animate_"+_x, "EDITBOX", [_name, "Position, rotation."], ["TSP Animate", "Sling"], str _position, false] call CBA_fnc_addSetting;
+    _name = getText (configFile >> "CfgWeapons" >> _x >> "displayName"); _sling = getArray (configfile >> "CfgWeapons" >> _x >> "sling");
+    ["tsp_cba_animate_"+_x, "EDITBOX", [_name, "Bone, position, rotation, animations."], ["TSP Animate", "Sling"], str _sling, false] call CBA_fnc_addSetting;
 } forEach tsp_slings;
 ["tsp_cba_animate_sling_default", "EDITBOX", ["Default Sling", "Default sling to add to units. Example: tsp_sling"], ["TSP Animate", "Sling"], "", false, {}] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sling_required", "CHECKBOX", ["Require Sling", "Whether a sling is required to use sling system."], ["TSP Animate", "Sling"], true] call CBA_fnc_addSetting;

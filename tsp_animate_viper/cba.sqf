@@ -4,10 +4,10 @@
     [["TSP Animate", "Animations"], "tsp_" + _name, _name, compile ("if (" + _condition + ") then {" + _statement + "}"), {}, [_key, [false, false, false]]] call CBA_fnc_addKeybind;
 } forEach [
     ["Frag", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_frag'"],
-    ["Shotgun", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_shotgun'"],
+    ["Ballistic", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_ballistic'"],
     ["Ready", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_ready'"],
     ["Peek", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_peek'"],
-    ["Abort", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_abort'"],
+    ["Danger", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_doors'>>'tsp_animate_danger'"],
     ["Halt", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_formations'>>'tsp_animate_halt'"],
     ["Column", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_formations'>>'tsp_animate_column'"],
     ["Line", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'tsp_animate_formations'>>'tsp_animate_line'"],

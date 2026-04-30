@@ -15,13 +15,14 @@ class CfgWeapons {
 	class CBA_MiscItem_ItemInfo;
 	class tsp_sling: CBA_MiscItem {
 		scope = 2; displayName = "2-Point Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; 
-		sling[] = {{-0.65, 0.85, 0.72}, {-90, 40, 70}}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
+		sling[] = {"Spine3", {-0.95,0.52,0.5}, {80,60,-180}, "tsp_animate_sling_sling", ""}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
 	};
-	class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling"; picture = "\tsp_animate\gui\1point.paa"; sling[] = {{-0.75,1.07,0.07}, {-80,8,75}};};
-	class tsp_sling_lanyard: tsp_sling {displayName = "Lanyard"; picture = "\tsp_animate\gui\lanyard.paa"; sling[] = {{1.05,0.8,-0.1}, {10,20,90}};};
+	class tsp_sling_3point: tsp_sling {displayName = "3-Point Sling"; picture = "\tsp_animate\gui\3point.paa"; sling[] = {"Spine3", {0.8,0.2,-0.66}, {80,125,-20}, "tsp_animate_sling_3point", ""};};
+	class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling"; picture = "\tsp_animate\gui\1point.paa"; sling[] = {"Spine3", {-0.8,0.9,0}, {10,75,-90}, "tsp_animate_sling_sling", ""};};
+	class tsp_sling_lanyard: tsp_sling {displayName = "Lanyard"; picture = "\tsp_animate\gui\lanyard.paa"; sling[] = {"Pelvis", {0.72,0.85,-0.2}, {-90,80,90}, "tsp_animate_sling_lanyard", ""};};
 };
 
-//-- ACE Actions - has to be here for stuff at bottom of cba.sqf
+//-- ACE Actions - has to be here in main tsp_animate.pbo for stuff at bottom of cba.sqf
 class CfgVehicles {
 	class Man;
 	class CAManBase: Man {
@@ -355,6 +356,8 @@ class CfgMovesBasic {
 
 		//-- Weapon
 		tsp_animate_sling_sling[] = {"tsp_animate_sling_sling", "Gesture"};
+		tsp_animate_sling_3point[] = {"tsp_animate_sling_3point", "Gesture"};
+		tsp_animate_sling_lanyard[] = {"tsp_animate_sling_lanyard", "Gesture"};
 		tsp_animate_sling_unsling[] = {"tsp_animate_sling_unsling", "Gesture"};
 		tsp_animate_sling_swap[] = {"tsp_animate_sling_swap", "Gesture"};
 		tsp_animate_sling_check[] = {"tsp_animate_sling_check", "Gesture"};
@@ -554,6 +557,8 @@ class CfgGesturesMale {
 
 		//-- Weapon
 		class tsp_animate_sling_sling: tsp_animate_tactical_compress_wrfl_lhig {interpolationSpeed = 10; speed = 3; looped = false; file = "tsp_animate\sling\sling.rtm"; rightHandIKCurve[] = {0,1,0.7,0};};
+		class tsp_animate_sling_3point: tsp_animate_sling_sling {file = "tsp_animate\sling\3point.rtm"; speed = 3.5; leftHandIKCurve[] = {0,1,0.7,0};};		
+		class tsp_animate_sling_lanyard: tsp_animate_sling_sling {file = "tsp_animate\sling\lanyard.rtm"; speed = 3.5; leftHandIKCurve[] = {0,1,0.7,0};};
 		class tsp_animate_sling_unsling: tsp_animate_sling_sling {file = "tsp_animate\sling\unsling.rtm";};
 		class tsp_animate_sling_swap: tsp_animate_sling_unsling {file = "tsp_animate\sling\swap.rtm"; speed = 1.2; rightHandIKCurve[] = {1}; leftHandIKCurve[] = {1};};
 		class tsp_animate_sling_check: tsp_animate_sling_sling {file = "tsp_animate\sling\check.rtm"; rightHandIKCurve[] = {1}; leftHandIKCurve[] = {1};};

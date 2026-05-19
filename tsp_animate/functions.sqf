@@ -174,7 +174,8 @@ tsp_fnc_animate_tap = {
     if (_target isEqualTo objNull || "leg" in gestureState _unit || "shoulder" in gestureState _unit) exitWith {};
     if (_side == -1) then {_side = [0,1] select([ACE_player, _target] call BIS_fnc_relativeDirTo < 180)};
     [_unit, "", "tsp_animate_"+_mode+"_wnon_laut", "", "tsp" in gestureState _unit, true, true] spawn tsp_fnc_gesture_play;
-    [[name _unit, "Squeezed your " + (["right", "left"] select _side) + " " + _mode], tsp_fnc_hint] remoteExec ["call", _target];
+	_force = ["(Soft)", "", "(Hard)"]#(missionNameSpace getVariable ["tsp_animate_tap_force", 1]);
+    [[name _unit, "Squeezed your " + (["right", "left"] select _side) + " " + _mode + " " + _force], tsp_fnc_hint] remoteExec ["call", _target];
     [_unit, 5, "", 0] call tsp_fnc_animate_effect; sleep 0.3; 
     [_target, 5, "A3\Sounds_F\characters\footsteps\int_carpet\carpet_int_sprint_HPF_"+str(round random 8 max 1)+".wss", 1] call tsp_fnc_animate_effect;
 };
@@ -243,8 +244,8 @@ tsp_fnc_animate_tactical = {
         _objects = [_unit, eyePos _unit, _dir, _length * tsp_cba_animate_object, 0] call tsp_fnc_obstruction; 
         _objects = _objects select {!([side group (_x#0), side group _unit] call BIS_fnc_sideIsFriendly && (_x#0) isKindOf "Man")};
         _canBeObstructed = ([gestureState _unit] call tsp_fnc_gesture_sanitize == "" || _mode == "stop") && !weaponLowered _unit;
-        if (count _friends > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "friend"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.4; tsp_tactical_delay = nil}}; 
-        if (count _objects > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "object"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.4; tsp_tactical_delay = nil}};
+        if (count _friends > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "friend"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.7; tsp_tactical_delay = nil}}; 
+        if (count _objects > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "object"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.7; tsp_tactical_delay = nil}};
         if (count _friends == 0) then {_friends = [_unit, _unit modelToWorldWorld (_unit selectionPosition ["Neck", "Memory"]), _dir, (_length * tsp_cba_animate_friend) + 0.1, 10, 2, 5] call tsp_fnc_obstruction};
         if (count (_friends+_objects) == 0 && ("friend" in gestureState _unit || "object" in gestureState _unit)) exitWith {_mode = ""; [_unit] call tsp_fnc_gesture_stop}; 
     };

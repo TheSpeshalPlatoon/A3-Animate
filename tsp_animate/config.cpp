@@ -15,9 +15,9 @@ class CfgWeapons {
 	class CBA_MiscItem_ItemInfo;
 	class tsp_sling: CBA_MiscItem {
 		scope = 2; displayName = "2-Point Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; 
-		sling[] = {"Spine3", {-0.95,0.52,0.5}, {80,60,-180}, "tsp_animate_sling_sling", ""}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
+		sling[] = {"Spine3", {-0.9,0.53,0.5}, {80,50,-180}, "tsp_animate_sling_sling", ""}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
 	};
-	class tsp_sling_3point: tsp_sling {displayName = "3-Point Sling"; picture = "\tsp_animate\gui\3point.paa"; sling[] = {"Spine3", {0.8,0.2,-0.66}, {80,125,-20}, "tsp_animate_sling_3point", ""};};
+	class tsp_sling_3point: tsp_sling {displayName = "3-Point Sling"; picture = "\tsp_animate\gui\3point.paa"; sling[] = {"Spine3", {0.7,0.15,-0.8}, {80,130,-20}, "tsp_animate_sling_3point", ""};};
 	class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling"; picture = "\tsp_animate\gui\1point.paa"; sling[] = {"Spine3", {-0.8,0.9,0}, {10,75,-90}, "tsp_animate_sling_sling", ""};};
 	class tsp_sling_lanyard: tsp_sling {displayName = "Lanyard"; picture = "\tsp_animate\gui\lanyard.paa"; sling[] = {"Pelvis", {0.72,0.85,-0.2}, {-90,80,90}, "tsp_animate_sling_lanyard", ""};};
 };
@@ -457,7 +457,7 @@ class CfgGesturesMale {
 		class tsp_animate_tactical_readyalt_wrfl_lhig: tsp_animate_tactical_readybase_wrfl_lhig {file = "tsp_animate\tactical\readyAlt_wrfl_lhig.rtm"; mask = "handsWeapon";};
 		class tsp_animate_tactical_readyalt_wrfl_llow: tsp_animate_tactical_readybase_wrfl_llow {file = "tsp_animate\tactical\readyAlt_wrfl_llow.rtm"; mask = "handsWeapon";};
 
-		class tsp_animate_tactical_friend_wrfl_lhig: tsp_animate_tactical_readybase_wrfl_lhig {file = "tsp_animate\tactical\friend_wrfl_lhig.rtm"; mask = "handsWeapon";};
+		class tsp_animate_tactical_friend_wrfl_lhig: tsp_animate_tactical_readybase_wrfl_lhig {file = "tsp_animate\tactical\friend_wrfl_lhig.rtm"; mask = "handsWeapon"; };
 		class tsp_animate_tactical_friend_wrfl_llow: tsp_animate_tactical_friend_wrfl_lhig {file = "tsp_animate\tactical\friend_wrfl_llow.rtm";};
 		
 		class tsp_animate_tactical_object_wrfl_lhig: tsp_animate_tactical_readybase_wrfl_lhig {file = "tsp_animate\tactical\object_wrfl_lhig.rtm"; mask = "readyRifle"; disableWeapons = false;};

@@ -13,11 +13,9 @@ if (!isNil "ace_advanced_fatigue_setAnimExclusions") then {ace_advanced_fatigue_
     "AmovPercMwlkSlowWpstDb","AmovPercMwlkSlowWpstDbr","AmovPercMwlkSlowWpstDbl","AmovPercMwlkSlowWpstDr"
 ]};
 
-//-- Overwrite ACE incremental door control
-["ACE3 Common", "ace_interaction_openDoor", "Incemental Door Opening", {
-	if (!([ACE_player, objNull, []] call ace_common_fnc_canInteractWith) || ace_interaction_isOpeningDoor || {[2] call ace_interaction_fnc_getDoor select 1 == ''}) exitWith {false};
-	if (tsp_cba_animate_door) then {[ACE_player, "doorACE"] call tsp_fnc_animate_door}; call ace_interaction_fnc_openDoor;
-}, {ace_interaction_isOpeningDoor = false; if ("door" in gestureState ACE_player) then {[ACE_player] call tsp_fnc_gesture_stop}},[57, [false, true, false]], false] call CBA_fnc_addKeybind;
+//-- ACE incremental door opening
+["ace_interaction_doorOpeningStarted", {[ACE_player, "doorACE"] call tsp_fnc_animate_door}] call CBA_fnc_addEventHandler; 
+["ace_interaction_doorOpeningStarted", {if ("door" in gestureState ACE_player) then {[ACE_player] call tsp_fnc_gesture_stop}}] call CBA_fnc_addEventHandler; 
 
 //-- Overwrite ACE throwing control
 ["ACE3 Weapons", "ace_advanced_throwing_prepare", "Prepare", {

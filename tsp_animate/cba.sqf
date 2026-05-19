@@ -122,6 +122,8 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
 [["TSP Animate", "Tap/Squeeze"], "tsp_animate_tap", "Shoulder/Leg", {if (tsp_cba_animate_tap) then {[playa] spawn tsp_fnc_animate_tap}}, {}, [20, [true, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Tap/Squeeze"], "tsp_animate_shoulder", "Shoulder", {if (tsp_cba_animate_tap) then {[playa,objNull,-1,"shoulder"] spawn tsp_fnc_animate_tap}}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Tap/Squeeze"], "tsp_animate_leg", "Leg", {if (tsp_cba_animate_tap) then {[playa,objNull,-1,"leg"] spawn tsp_fnc_animate_tap}}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Tap/Squeeze"], "tsp_animate_tap_up", "Strength Up", {tsp_animate_tap_force = ((missionNameSpace getVariable ["tsp_animate_tap_force", 1]) + 1) min 2 max 0; ["Tap Force", ["Soft", "Normal", "Hard"]#tsp_animate_tap_force] call tsp_fnc_hint}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Tap/Squeeze"], "tsp_animate_tap_down", "Strength Down", {tsp_animate_tap_force = ((missionNameSpace getVariable ["tsp_animate_tap_force", 1]) - 1) min 2 max 0; ["Tap Force", ["Soft", "Normal", "Hard"]#tsp_animate_tap_force] call tsp_fnc_hint}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 
 {
     _x params ["_name", "_path", ["_key", 0]]; 

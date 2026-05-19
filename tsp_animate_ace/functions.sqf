@@ -22,13 +22,17 @@ tsp_fnc_animate_captive = {
 
 tsp_fnc_animate_carry = {
     params ["_unit", ["_duration", tsp_cba_animate_carry]];
-    _targets = (_unit nearEntities [["CAManBase"], 3]) select {animationState _x == "ainjpfalmstpsnonwrfldnon_carried_up"};
-    {[_x, 10/_duration] remoteExec ["setAnimSpeedCoef"]} forEach [_unit, _targets#0];
-    sleep _duration; {[_x, 1] remoteExec ["setAnimSpeedCoef"]} forEach [_unit, _targets#0];
+    _target = _unit getVariable ["ace_dragging_carriedObject", objNull];
+    {[_x, 10/_duration] remoteExec ["setAnimSpeedCoef"]} forEach [_unit, _target];
+    sleep _duration; {[_x, 1] remoteExec ["setAnimSpeedCoef"]} forEach [_unit, _target];
     [_unit, "blockThrow", "ace_dragging", true] call ace_common_fnc_statusEffect_set;
+    _position = _target getVariable ["ace_dragging_carryPosition", [0, 0, 0]];
+    _direction = _target getVariable ["ace_dragging_carryDirection", 0];
+    _target attachTo [_unit, _position, "LeftShoulder"];
+    ["ace_common_setDir", [_target, _direction], _target] call CBA_fnc_targetEvent;
     _unit setVariable ["ace_dragging_isCarrying", true, true];
-    _unit setVariable ["ace_dragging_carriedObject", _targets#0, true];
-    [ace_dragging_fnc_startCarryPFH, 0.2, [_unit, _targets#0, time]] call CBA_fnc_addPerFrameHandler;
+    _unit setVariable ["ace_dragging_carriedObject", _target, true];
+    [ace_dragging_fnc_startCarryPFH, 0.2, [_unit, _target, time]] call CBA_fnc_addPerFrameHandler;
 };
 
 tsp_fnc_animate_clacker = {

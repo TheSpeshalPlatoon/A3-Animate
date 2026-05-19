@@ -1,6 +1,6 @@
 class CfgPatches {
 	class tsp_animate_ace {
-		requiredAddons[] = {"tsp_core", "tsp_animate", "cba_common", "ace_common", "ace_interaction", "ace_captives", "ace_gestures"};		
+		requiredAddons[] = {"tsp_core", "tsp_animate", "cba_common", "ace_common", "ace_interaction", "ace_captives", "ace_gestures"};
         skipWhenMissingDependencies = 1;
 		units[] = {};
 	};

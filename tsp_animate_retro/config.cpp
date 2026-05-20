@@ -141,12 +141,12 @@ class CfgGesturesMale {
 		class tsp_animate_tactical_retro_compress_wrfl_lhig: tsp_animate_tactical_compress_wrfl_lhig {};
 		class tsp_animate_tactical_retro_compress_wrfl_llow: tsp_animate_tactical_compress_wrfl_llow {};
 
-		class tsp_animate_tactical_retro_portbase_wrfl_lhig: tsp_animate_tactical_portbase_wrfl_lhig {};
-		class tsp_animate_tactical_retro_portbase_wrfl_llow: tsp_animate_tactical_portbase_wrfl_llow {};
-		class tsp_animate_tactical_retro_portmove_wrfl_lhig: tsp_animate_tactical_portmove_wrfl_lhig {};
-		class tsp_animate_tactical_retro_portmove_wrfl_llow: tsp_animate_tactical_portmove_wrfl_llow {};
-		class tsp_animate_tactical_retro_portchill_wrfl_lhig: tsp_animate_tactical_portchill_wrfl_lhig {};
-		class tsp_animate_tactical_retro_portchill_wrfl_llow: tsp_animate_tactical_portchill_wrfl_llow {};
+		class tsp_animate_tactical_retro_portbase_wrfl_lhig: tsp_animate_tactical_portbase_wrfl_lhig {mask = "readyRifle"; file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};
+		class tsp_animate_tactical_retro_portbase_wrfl_llow: tsp_animate_tactical_portbase_wrfl_llow {mask = "readyRifle"; file = "tsp_animate\tactical\ready_wrfl_llow.rtm"; leftHandIKCurve[] = {1};};
+		class tsp_animate_tactical_retro_portmove_wrfl_lhig: tsp_animate_tactical_portmove_wrfl_lhig {mask = "readyRifle"; file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};
+		class tsp_animate_tactical_retro_portmove_wrfl_llow: tsp_animate_tactical_portmove_wrfl_llow {mask = "readyRifle"; file = "tsp_animate\tactical\ready_wrfl_llow.rtm"; leftHandIKCurve[] = {1};};
+		class tsp_animate_tactical_retro_portchill_wrfl_lhig: tsp_animate_tactical_portchill_wrfl_lhig {mask = "readyRifle"; file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};
+		class tsp_animate_tactical_retro_portchill_wrfl_llow: tsp_animate_tactical_portchill_wrfl_llow {mask = "readyRifle"; file = "tsp_animate\tactical\ready_wrfl_llow.rtm"; leftHandIKCurve[] = {1};};
 
 		class tsp_animate_tactical_retro_sprint_wrfl_lhig_in: tsp_animate_tactical_sprint_wrfl_lhig_in {file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};
 		class tsp_animate_tactical_retro_sprint_wrfl_lhig_out: tsp_animate_tactical_sprint_wrfl_lhig_out {file = "tsp_animate\tactical\ready_wrfl_lhig.rtm"; leftHandIKCurve[] = {1};};

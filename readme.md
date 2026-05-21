@@ -7,20 +7,20 @@ This addon relies on components from tsp_core which can be found in the [Core Re
 
 ## 📕 Content
 This mod adds a tactical stance animation system alongside various other animations and gestures to the game.
-- Tactical Stance System
-↳ Ready (High/Low)
-↳ Compress (High/Low)
-↳ Port (High/Low)
-↳ Sprint (High/Low)
-↳ Door (Works with High/Low Ready/Compress)
-↳ Shoulder Tap (Requires ACE, Works with High/Low Ready/Compress)
-↳ Leg Squeeze (Requires ACE, Works with High/Low Ready/Compress)
-↳ Automatic friend/obstruction detection.  
-↳ Different Tactical Style sets for different weapons. 
-- Sling System
-↳ Weapon Slinging (Rifle Only)
-↳ 2-point sling, 1-point sling, lanyard
-↳ Holster/Quickdraw Animation
+- Tactical Stance System  
+↳ Ready (High/Low)  
+↳ Compress (High/Low)  
+↳ Port (High/Low)  
+↳ Sprint (High/Low)  
+↳ Door (Works with High/Low Ready/Compress)  
+↳ Shoulder Tap (Requires ACE, Works with High/Low Ready/Compress)  
+↳ Leg Squeeze (Requires ACE, Works with High/Low Ready/Compress)  
+↳ Automatic friend/obstruction detection.    
+↳ Different Tactical Style sets for different weapons.   
+- Sling System  
+↳ Weapon Slinging (Rifle Only)  
+↳ 3-point, 2-point sling, 1-point sling, lanyard  
+↳ Holster/Quickdraw Animation  
 - Adjustable Walking Speed
 - Weapon Throwing
 - Weapon Canting (Rifle Only)

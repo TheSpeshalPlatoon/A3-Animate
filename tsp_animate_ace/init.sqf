@@ -15,7 +15,7 @@ if (!isNil "ace_advanced_fatigue_setAnimExclusions") then {ace_advanced_fatigue_
 
 //-- ACE incremental door opening
 ["ace_interaction_doorOpeningStarted", {[ACE_player, "doorACE"] call tsp_fnc_animate_door}] call CBA_fnc_addEventHandler; 
-["ace_interaction_doorOpeningStarted", {if ("door" in gestureState ACE_player) then {[ACE_player] call tsp_fnc_gesture_stop}}] call CBA_fnc_addEventHandler; 
+["ace_interaction_doorOpeningStopped", {if ("door" in gestureState ACE_player) then {[ACE_player] call tsp_fnc_gesture_stop}}] call CBA_fnc_addEventHandler; 
 
 //-- Overwrite ACE throwing control
 ["ACE3 Weapons", "ace_advanced_throwing_prepare", "Prepare", {

@@ -15,7 +15,7 @@ class CfgWeapons {
 	class CBA_MiscItem_ItemInfo;
 	class tsp_sling: CBA_MiscItem {
 		scope = 2; displayName = "2-Point Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; 
-		sling[] = {"Spine3", {-0.9,0.53,0.5}, {80,50,-180}, "tsp_animate_sling_sling", ""}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
+		sling[] = {"Spine3", {-0.83,0.58,0.51}, {80,50,-180}, "tsp_animate_sling_sling", ""}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
 	};
 	class tsp_sling_3point: tsp_sling {displayName = "3-Point Sling"; picture = "\tsp_animate\gui\3point.paa"; sling[] = {"Spine3", {0.7,0.15,-0.8}, {80,130,-20}, "tsp_animate_sling_3point", ""};};
 	class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling"; picture = "\tsp_animate\gui\1point.paa"; sling[] = {"Spine3", {-0.8,0.9,0}, {10,75,-90}, "tsp_animate_sling_sling", ""};};

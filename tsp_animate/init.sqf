@@ -73,5 +73,13 @@ addMissionEventHandler ["Draw3D", {  //-- Need that next frame accuracy for ts
     if (_new == handgunWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, true] call tsp_fnc_animate_sling};          //-- Rifle > pistol
 }];
 
+player addEventHandler ["Killed", {
+    {
+        (player getVariable [_x+"weapon", []]) params ["_holder", "_rifle"];
+        _drop = createVehicle ["WeaponHolderSimulated", [0, 0, 0], [], 0, "CAN_COLLIDE"];
+		_drop addWeaponWithAttachmentsCargoGlobal [_rifle, 1];
+        _drop attachTo [_holder, [-0.1,-1,0.1]]; deleteVehicle _holder;
+    } forEach ([player, false] call tsp_fnc_animate_sling_get);
+}];
 player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; [_unit] call tsp_fnc_animate_tactical}];
 while {tsp_cba_animate_poll > 0} do {[playa, ""] call tsp_fnc_animate_tactical; sleep tsp_cba_animate_poll};

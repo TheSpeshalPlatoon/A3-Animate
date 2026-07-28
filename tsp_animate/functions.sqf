@@ -81,7 +81,7 @@ tsp_fnc_animate_sling_rifle = {  //[player, "tsp_sling_lanyard", false, ["SMG_05
 
 tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AWAY
     params ["_unit", ["_sling", false], ["_holster", false], ["_drawPistol", false], ["_drawLauncher", false], ["_unsling", false], ["_slingClass", "auto"], ["_unslingClass", "auto"], ["_time", 0]];
-    _knife = if (!isNil "tsp_fnc_melee_weapon") then {!([_unit, handGunWeapon _unit] call tsp_fnc_melee_weapon in ["", "pistol"])} else {false};
+    _knife = if (!isNil "tsp_fnc_melee_weapon") then {!([_unit, handGunWeapon _unit] call tsp_fnc_melee_weapon in ["", "pistol"])} else {false};    
     if ("sling" in gestureState _unit) exitWith {};  //-- No slinging while doing slinging action
     if (_sling) then {
         [[_unit] call tsp_fnc_animate_sling_get, _unit getVariable [primaryWeapon _unit+"pref", ""]] params ["_slings", "_preference"];
@@ -101,10 +101,10 @@ tsp_fnc_animate_sling = {  //-- FUCK FUCK FUCK FUCK I DONT LIKE IT MAKE IT GO AW
         _time = 0.7;
     };
     if (_drawPistol) then {
-        tsp_future pushBack [time + _time, [_unit], {
-            params ["_unit"];
+        tsp_future pushBack [time + _time, [_unit, _knife], {
+            params ["_unit", "_knife"];
             if (vehicle _unit == _unit) then {[_unit, animationState _unit regexReplace ["wrfl", "wpst"]] remoteExec ["switchMove"]};  //-- Using blendfactor breaks leaning, thanks BI!
-            if (_knife) exitWith {[_unit, "ready"] spawn tsp_fnc_melee_action};
+            if (_knife) exitWith {[_unit, "ready"] spawn tsp_fnc_melee_action; _unit spawn {sleep 0.1; [_this] call tsp_fnc_melee_moveset_poll}};
             [_unit, "tsp_animate_sling_draw" + (if (tsp_cba_animate_sling_style == "israeli") then {"_israeli"} else {""})] remoteExec ["playActionNow"];
             if (tsp_cba_animate_sling_style == "israeli") then {playSound3D ["A3\Sounds_F\weapons\Other\reload_bolt_1.wss", _unit, false, getPosASL _unit, 5, 1, 10]};
         }];
@@ -288,4 +288,16 @@ tsp_fnc_animate_commands = {  //gestureFreeze//tsp_animate_halt
         if (_formation in ["VEE","WEDGE"]) exitWith {(leader _group) playActionNow "tsp_animate_wedge"};
         if (_formation in ["DIAMOND"]) exitWith {(leader _group) playActionNow "ace_gestures_freeze"};
     }];
+};
+
+tsp_fnc_animate_slide = {
+    params ["_unit"]; _start = _unit modelToWorldVisualWorld [0, 0, 0]; _end = _unit modelToWorldVisualWorld [0, 0, -100];  
+    _hits = lineIntersectsSurfaces [_start, _end, _unit, objNull, true, 1, "GEOM", "NONE"]; if (_hits isEqualTo []) exitWith {};
+    _anim = if (currentWeapon _unit == primaryWeapon _unit && primaryWeapon _unit != "") then {"ladderRifleSlide"} else {"ladderUnarmedSlide"};
+    [_unit, [_anim, 0, 0, false]] remoteExec ["switchMove"]; tsp_ladder_params = [_unit, _start, _hits#0#0, diag_tickTime, (_start distance (_hits#0#0)) / 5];
+    onEachFrame {
+        tsp_ladder_params params ["_unit", "_start", "_end", "_startTime", "_duration"]; _progress = (diag_tickTime - _startTime) / _duration; 
+        if (!alive _unit || _progress >= 1) exitWith {onEachFrame {}; _unit setPosASL _end; _unit switchMove ""};
+        _unit setVelocityTransformation [_start, _end, [0,0,0], [0,0,0], vectorDir _unit, vectorDir _unit, vectorUp _unit, vectorUp _unit, _progress]; 
+    };    
 };

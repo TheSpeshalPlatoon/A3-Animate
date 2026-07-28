@@ -202,7 +202,7 @@ class CfgMovesBasic {
 			ladderOnDown = "ladderPistolOn";
 			ladderOnUp = "ladderPistolOn";
 			default = "ladderPistolStatic";
-			stop = "ladderPistolStatic";
+			stop = "ladderPistolStatic";			
 		};
 	};
     class ManActions {
@@ -653,6 +653,9 @@ class CfgMovesMaleSdr: CfgMovesBasic {
 		class ladderPistolDownLoop: LadderRifleDownLoop {actions = "ladderPistolActions"; InterpolateTo[] = {"Unconscious",0.02,"ladderPistolStatic",0.1,"ladderPistolDownOff",0.1,"ladderPistolUpLoop",0.1}; showHandGun = 1;};
 		class ladderPistolTopOff: LadderRifleTopOff {actions = "ladderPistolActions"; ConnectTo[] = {"AmovPercMstpSrasWpstDnon",1}; InterpolateTo[] = {"AmovPercMstpSrasWpstDnon",1,"Unconscious",0.02};};
 		class ladderPistolDownOff: LadderRifleDownOff {actions = "ladderPistolActions"; ConnectTo[] = {"AmovPercMstpSrasWpstDnon",1}; InterpolateTo[] = {"AmovPercMstpSrasWpstDnon",1,"Unconscious",0.02};};
+
+		class ladderRifleSlide: LadderRifleDownLoop {actions = "NoActions"; file = "tsp_animate\anim\slideRifle.rtm"; InterpolateTo[] = {"Unconscious",0.02};};
+		class ladderUnarmedSlide: LadderRifleDownLoop {actions = "NoActions"; file = "tsp_animate\anim\slideUnarmed.rtm"; InterpolateTo[] = {"Unconscious",0.02};};
 
 		class mountside: default {speed = 0.3;};
 		class dismountside: default {speed = 0.2;};

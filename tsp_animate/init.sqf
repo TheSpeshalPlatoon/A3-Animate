@@ -20,8 +20,9 @@ player addEventHandler ["GestureChanged", {params ["_unit", "_gesture"]; if ("re
 
 player addEventHandler ["AnimStateChanged", {
     params ["_unit", "_anim"];
-    if (tsp_cba_animate_ladder && _anim == "LadderCivilStatic" && currentWeapon _unit == handgunWeapon _unit && handgunWeapon _unit != "") then {[_unit, "LadderPistolstatic"] remoteExec ["switchMove"]};
+    if (tsp_cba_animate_ladder && _anim == "ladderpistoltopoff") then {_unit setPosATL ((getPosATL _unit) vectorAdd ((vectorDir _unit) vectorMultiply 0.3))};
     if (tsp_cba_animate_ladder && _anim in ["ladderpistoltopoff", "ladderpistoldownoff"]) then {[_unit, "AmovPercMstpSlowWpstDnon_AmovPercMstpSrasWpstDnon"] remoteExec ["switchMove"]};
+    if (tsp_cba_animate_ladder && _anim == "LadderCivilStatic" && currentWeapon _unit == handgunWeapon _unit && handgunWeapon _unit != "") then {[_unit, "LadderPistolstatic"] remoteExec ["switchMove"]};
 }];
 
 if (tsp_cba_animate_commands) then {(group player) call tsp_fnc_animate_commands; addMissionEventHandler ["GroupCreated", {_this call tsp_fnc_animate_commands}]};

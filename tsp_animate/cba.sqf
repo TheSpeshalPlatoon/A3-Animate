@@ -5,6 +5,7 @@
 ["tsp_cba_animate_ladder", "CHECKBOX", ["Shooting from Ladders", "Enable/Disable shooting from ladders."], "TSP Animate", true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_slide", "CHECKBOX", ["Ladder Sliding", "Enable/Disable sliding down ladders."], "TSP Animate", true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_commands", "CHECKBOX", ["Command Gestures", "Enable/Disable AI command gestures."], "TSP Animate", true] call CBA_fnc_addSetting;
+["tsp_cba_animate_ffv", "CHECKBOX", ["Additional FFV", "Enable/Disable additional FFV seats."], "TSP Animate", false] call CBA_fnc_addSetting;
 
 ["tsp_cba_animate_sound", "SLIDER", ["Multiplier", "Master sound effect multiplier."], ["TSP Animate", "Sounds"], [0, 10, 1], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_sound_map", "SLIDER", ["Map Volume", "Sound effect volume for open/close map."], ["TSP Animate", "Sounds"], [0, 10, 2], false] call CBA_fnc_addSetting;
@@ -63,6 +64,7 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
 ["TSP Animate", "tsp_animate_walk_reset", "Walking Speed Reset", {[playa, animationState playa, -10, 1] call tsp_fnc_animate_walk}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 ["TSP Animate", "tsp_animate_walk_max", "Walking Speed Max", {[playa, animationState playa, +10, 1] call tsp_fnc_animate_walk}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
 ["TSP Animate", "tsp_animate_slide", "Ladder Slide", {if (tsp_cba_animate_slide) then {[playa] spawn tsp_fnc_animate_slide}}, {}, [31, [true, false, false]]] call CBA_fnc_addKeybind;
+["TSP Animate", "tsp_animate_ffv", "FFV", {if (tsp_cba_animate_ffv) then {[playa] call tsp_fnc_animate_ffv}}, {}, [33, [false, false, false]]] call CBA_fnc_addKeybind;
 
 [["TSP Animate", "Tactical"], "tsp_animate_scrollUp", "Stance Up", {[playa, "scrollUp"] spawn tsp_fnc_animate_scroll}, {}, [0, [false, true, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Tactical"], "tsp_animate_scrollDown", "Stance Down", {[playa, "scrollDown"] spawn tsp_fnc_animate_scroll}, {}, [0, [false, true, false]]] call CBA_fnc_addKeybind;

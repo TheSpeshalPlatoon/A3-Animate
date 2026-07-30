@@ -301,3 +301,25 @@ tsp_fnc_animate_slide = {
         _unit setVelocityTransformation [_start, _end, [0,0,0], [0,0,0], vectorDir _unit, vectorDir _unit, vectorUp _unit, vectorUp _unit, _progress]; 
     };    
 };
+
+tsp_fnc_animate_ffv = {
+    params ["_unit"]; 
+    if ("_ffv" in animationState _unit) exitWith {_unit switchMove (animationState _unit regexReplace ["_ffv", ""]); _unit playActionNow "tsp_common_stop"};
+    _ffv = isClass (configFile >> "CfgMovesMaleSdr" >> "States" >> (animationState _unit + "_ffv"));
+    if (_ffv && handgunWeapon _unit != "") then {_unit switchMove (animationState _unit + "_ffv"); _unit playActionNow "tsp_animate_ffv"; _unit selectWeapon handgunWeapon _unit}; 
+    if (!isNil "tsp_animate_ffv_click") exitWith {}; tsp_animate_ffv_click = true;   
+    (findDisplay 46) displayAddEventHandler ["MouseButtonDown", {params ["_display", "_button"]; if (_button == 0) then {[playa] call tsp_fnc_animate_ffv_fire}}];
+};
+
+tsp_fnc_animate_ffv_fire = {
+    params ["_unit"];
+	if !("ffv" in animationState _unit) exitWith {};
+	if (currentWeapon _unit == "" || currentMagazine _unit == "" || _unit ammo currentWeapon _unit <= 0 || time < tsp_animate_ffv) exitWith {};
+	_unit setAmmo [currentWeapon _unit, (_unit ammo currentWeapon _unit) - 1];	
+	_bullet = (getText (configFile >> "CfgMagazines" >> currentMagazine _unit >> "ammo")) createVehicle [0,0,0];
+	_bullet setPosASL (eyePos _unit vectorAdd ((_unit weaponDirection currentWeapon _unit) vectorMultiply 0.3));
+	_bullet setVelocity ((_unit weaponDirection currentWeapon _unit) vectorMultiply 2000); 
+    tsp_animate_ffv = time + (getNumber (configFile >> "CfgWeapons" >> currentWeapon _unit >> (getArray (configFile >> "CfgWeapons" >> currentWeapon _unit >> "modes"))#0 >> "reloadTime"));
+	playSound3D [[_unit] call tsp_fnc_soundset, _unit, true, getPosASL _unit, 1, 1, 50]; [5, 1, 5] spawn tsp_fnc_shake;
+    if (!isNil "tsp_fnc_light_muzzle") then {[_unit] spawn tsp_fnc_light_muzzle};
+};

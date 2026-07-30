@@ -63,7 +63,7 @@ if (tsp_cba_animate_sling_default != "" && isServer) then {
 };
 
 tsp_old = currentWeapon playa; tsp_future = [];
-addMissionEventHandler ["Draw3D", {  //-- Need that next frame accuracy for ts
+addMissionEventHandler ["Draw3D", {  //-- Need that next frame accuracy for slings
     if (count tsp_future > 0) exitWith {{_x params ["_time", "_params", "_code"]; if (time > _time) then {_params call _code; tsp_future = tsp_future select {_x#2 isNotEqualTo _code}}} forEach tsp_future};
     [tsp_old, currentWeapon playa] params ["_old", "_new"]; tsp_old = _new;
 	if !(currentWeapon playa != _old && _new != "") exitWith {};  //-- Exit if not switching
@@ -73,8 +73,7 @@ addMissionEventHandler ["Draw3D", {  //-- Need that next frame accuracy for ts
     if (_new == secondaryWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, false, true] call tsp_fnc_animate_sling};  //-- Rifle > launcher
     if (_new == handgunWeapon playa && _old == primaryWeapon playa && _old != "") exitWith {[playa, true, false, true] call tsp_fnc_animate_sling};          //-- Rifle > pistol
 }];
-
-player addEventHandler ["Killed", {
+player addEventHandler ["Killed", {  //-- Sling dropping
     {
         (player getVariable [_x+"weapon", []]) params ["_holder", "_rifle"];
         _drop = createVehicle ["WeaponHolderSimulated", [0, 0, 0], [], 0, "CAN_COLLIDE"];
@@ -82,5 +81,9 @@ player addEventHandler ["Killed", {
         _drop attachTo [_holder, [-0.1,-1,0.1]]; deleteVehicle _holder;
     } forEach ([player, false] call tsp_fnc_animate_sling_get);
 }];
+
+["vehicle", {playa playActionNow "tsp_common_stop"}] call CBA_fnc_addPlayerEventHandler;
+["turret", {playa playActionNow "tsp_common_stop"}] call CBA_fnc_addPlayerEventHandler;
+
 player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; [_unit] call tsp_fnc_animate_tactical}];
 while {tsp_cba_animate_poll > 0} do {[playa, ""] call tsp_fnc_animate_tactical; sleep tsp_cba_animate_poll};

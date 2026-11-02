@@ -2,6 +2,7 @@
 
 //-- SETTINGS
 ["tsp_cba_animate_shake", "SLIDER", ["Shake Intensity", "Camera shake intensity."], "TSP Animate", [0, 10, 1], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_react", "SLIDER", ["Hit Reactions", "Hit reaction chance."], "TSP Animate", [0, 1, 0.3], false] call CBA_fnc_addSetting;
 ["tsp_cba_animate_ladder", "CHECKBOX", ["Shooting from Ladders", "Enable/Disable shooting from ladders."], "TSP Animate", true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_slide", "CHECKBOX", ["Ladder Sliding", "Enable/Disable sliding down ladders."], "TSP Animate", true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_commands", "CHECKBOX", ["Command Gestures", "Enable/Disable AI command gestures."], "TSP Animate", true] call CBA_fnc_addSetting;

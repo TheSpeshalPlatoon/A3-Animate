@@ -4,12 +4,12 @@
 ["tsp_cba_animate_captive", "CHECKBOX", ["Captive", "Enable/disable animation when using escorting ACE Captive."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_grenade", "CHECKBOX", ["Grenade", "Enable/disable grenade throw animation."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
 ["tsp_cba_animate_lift", "CHECKBOX", ["Lift", "Enable/disable ACE object lifting animation."], ["TSP Animate", "ACE"], true] call CBA_fnc_addSetting;
-["tsp_cba_animate_carry", "SLIDER", ["Carry Duration", "How long it takes to carry someone."], ["TSP Animate", "ACE"], [0, 10, 5], false] call CBA_fnc_addSetting;
+["tsp_cba_animate_carry", "SLIDER", ["Carry Duration", "How long it takes to carry someone."], ["TSP Animate", "ACE"], [0, 10, 5]] call CBA_fnc_addSetting;
 ["tsp_cba_animate_drop_ace", "CHECKBOX", ["Droppable ACE actions", "Show droppable ACE actions."], ["TSP Animate", "ACE"], false] call CBA_fnc_addSetting;
 
 {
     _x params ["_name", "_path", ["_key", 0]]; [getText (call compile (_path + " >> 'condition'")), getText (call compile (_path + " >> 'statement'"))] params ["_condition", "_statement"];
-    ["tsp_cba_animate_" + _name, "CHECKBOX", [_name, "Enable/disable this animation."], ["TSP Animate", "Animations"], true, false] call CBA_fnc_addSetting;
+    ["tsp_cba_animate_" + _name, "CHECKBOX", [_name, "Enable/disable this animation."], ["TSP Animate", "Animations"], true] call CBA_fnc_addSetting;
     [["TSP Animate", "Animations (ACE)"], "tsp_" + _name, _name, compile ("if (" + _condition + ") then {" + _statement + "}"), {}, [_key, [false, false, false]]] call CBA_fnc_addKeybind;
 } forEach [
     ["Advance", "configFile>>'CfgVehicles'>>'CAManBase'>>'ACE_SelfActions'>>'ACE_Animations'>>'ace_gestures_cat_gestures'>>'ace_gestures_Advance'"], 

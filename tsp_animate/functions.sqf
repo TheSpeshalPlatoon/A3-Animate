@@ -21,7 +21,7 @@ tsp_fnc_animate_suicide = {
 
 tsp_fnc_animate_inspect = {
     params ["_unit"];
-    [_unit, "", "tsp_animate_inspect_wnon"] spawn tsp_fnc_gesture_play;
+    [_unit, "", "tsp_animate_inspect_wnon", "tsp_common_stop", true, true] spawn tsp_fnc_gesture_play;
     if (!isNil "ace_reload_fnc_displayAmmo") then {_unit call ace_reload_fnc_displayAmmo; sleep 2; [_unit, currentWeapon _unit] call ace_overheating_fnc_displayTemperature};
 };
 
@@ -55,8 +55,10 @@ tsp_fnc_animate_attachment = {
 
 tsp_fnc_animate_nvg = {
     params ["_unit", ["_gesture", "tsp_animate_nightvision_up"], ["_vision", currentVisionMode (_this#0)]]; 
-    if ((cameraView == "GUNNER" && [_unit] call tsp_fnc_vision)) exitWith {}; [_unit] call tsp_fnc_animate_effect;
+    if ((cameraView == "GUNNER" && [_unit] call tsp_fnc_vision)) exitWith {};  //-- If in vehicle optic and change vision mode, then nah
+    if (count ((getArray (configFile >> "CfgWeapons" >> hmd _unit >> "visionMode")) select {_x != "Normal"}) == 0) exitWith {};  //-- If no "real" nvgs equipped
     [_unit, "", if (_vision == 1) then {"tsp_animate_nightvision_up"} else {"tsp_animate_nightvision_down"}, "", "tsp" in gestureState _unit, false, true] spawn tsp_fnc_gesture_play;
+    [_unit] call tsp_fnc_animate_effect;
 };
 
 tsp_fnc_animate_walk = {
@@ -189,8 +191,8 @@ tsp_fnc_animate_door = {
 tsp_fnc_animate_scroll = {
     params ["_unit", ["_mode", "scrollUp"]]; if (!isNil "tsp_tactical_delay") exitWith {};
     getArray (configFile >> "CfgGesturesMale" >> "States" >> gestureState _unit >> _mode) params [["_nextMode", ""], ["_nextLevel", ""]];
-    if ("ready" in _nextMode && tsp_animate_combat && stance _unit == "STAND") then {_nextMode = "readycombat"};
-    if ("ready" in _nextMode && !tsp_animate_combat && tsp_animate_walk && stance _unit == "STAND") then {_nextMode = "readyalt"};
+    if ("ready" in _nextMode && _unit combatPace [] == "Toggle" && stance _unit == "STAND") then {_nextMode = "readycombat"};
+    if ("ready" in _nextMode && _unit combatPace [] != "Toggle" && isWalking _unit && stance _unit == "STAND") then {_nextMode = "readyalt"};
     if (_nextMode != "") then {[_unit, "", "tsp_animate_tactical_"+_nextMode+"_wnon_"+_nextLevel, "tsp_common_stop", true, true, false] spawn tsp_fnc_gesture_play};
     tsp_tactical_delay = true; sleep 0.08; tsp_tactical_delay = nil; 
 };
@@ -222,12 +224,12 @@ tsp_fnc_animate_tactical = {
 
     if (_mode == "ready" || (_mode == "" && "tactical" in gestureState _unit && ("ready" in gestureState _unit || "port" in gestureState _unit))) then {
         _mode = "readybase";
-        if (tsp_animate_combat && stance _unit == "STAND") then {_mode = "readycombat"};
-        if (!tsp_animate_combat && tsp_animate_walk && stance _unit == "STAND") then {_mode = "readyalt"};
+        if (_unit combatPace [] == "Toggle" && stance _unit == "STAND") then {_mode = "readycombat"};
+        if (_unit combatPace [] != "Toggle" && isWalking _unit && stance _unit == "STAND") then {_mode = "readyalt"};
         _port = "slow" in animationState _unit && (stance _unit == "STAND" || speed _unit == 0);
         if (_port && "mtac" in animationState _unit) then {_mode = "portmove"};
         if (_port && "mwlk" in animationState _unit) then {_mode = "portmove"};
-        if (_port && "mstp" in animationState _unit) then {_mode = if (tsp_animate_combat) then {"portbase"} else {"portchill"}};
+        if (_port && "mstp" in animationState _unit) then {_mode = if (_unit combatPace [] == "Toggle") then {"portbase"} else {"portchill"}};
         if (_port && ("mrun" in animationState _unit || "_ver2" in animationState _unit)) then {_mode = "portchill"};
     };
 
@@ -291,22 +293,40 @@ tsp_fnc_animate_commands = {  //gestureFreeze//tsp_animate_halt
 };
 
 tsp_fnc_animate_slide = {
-    params ["_unit"]; _start = _unit modelToWorldVisualWorld [0, 0, 0]; _end = _unit modelToWorldVisualWorld [0, 0, -100];  
+    params ["_unit"]; if !("ladder" in animationState _unit) exitWith {};
+    _start = _unit modelToWorldVisualWorld [0, 0, 0]; _end = _unit modelToWorldVisualWorld [0, 0, -100];  
     _hits = lineIntersectsSurfaces [_start, _end, _unit, objNull, true, 1, "GEOM", "NONE"]; if (_hits isEqualTo []) exitWith {};
     _anim = if (currentWeapon _unit == primaryWeapon _unit && primaryWeapon _unit != "") then {"ladderRifleSlide"} else {"ladderUnarmedSlide"};
     [_unit, [_anim, 0, 0, false]] remoteExec ["switchMove"]; tsp_ladder_params = [_unit, _start, _hits#0#0, diag_tickTime, (_start distance (_hits#0#0)) / 5];
     onEachFrame {
         tsp_ladder_params params ["_unit", "_start", "_end", "_startTime", "_duration"]; _progress = (diag_tickTime - _startTime) / _duration; 
-        if (!alive _unit || _progress >= 1) exitWith {onEachFrame {}; _unit setPosASL _end; _unit switchMove ""};
+        if (!alive _unit || _progress >= 1) exitWith {onEachFrame {}; _unit setPosASL _end; [_unit, ""] remoteExec ["switchMove"]};
         _unit setVelocityTransformation [_start, _end, [0,0,0], [0,0,0], vectorDir _unit, vectorDir _unit, vectorUp _unit, vectorUp _unit, _progress]; 
-    };    
+    };
+};
+
+tsp_fnc_animate_react = {
+	params ["_unit"];
+    if !(stance _unit in ["CROUCH", "STAND"]) exitWith {};
+    if ("right" in animationState _unit || "left" in animationState _unit) exitWith {};
+    if (count (["mtac", "mwlk", "mrun", "meva"] select {_x in animationState _unit}) == 0) exitWith {};
+	if (stance _unit == "STAND" && "df" in animationState _unit) then {[_unit, ["amovpercmsprslowwrfldf_amovppnemstpsraswrfldnon", 0, 0, false]] remoteExec ["switchMove"]};
+	if (stance _unit == "STAND" && "dr" in animationState _unit) then {[_unit, ["amovpercmstpsraswrfldnon_aadjppnemstpsraswrfldright", 0, 0, false]] remoteExec ["switchMove"]};
+	if (stance _unit == "STAND" && "dl" in animationState _unit) then {[_unit, ["amovpercmstpsraswrfldnon_aadjppnemstpsraswrfldleft", 0, 0, false]] remoteExec ["switchMove"]};
+	if (stance _unit == "CROUCH" && "dr" in animationState _unit) then {[_unit, ["amovpknlmstpsraswrfldnon_aadjppnemstpsraswrfldright", 0, 0, false]] remoteExec ["switchMove"]};
+	if (stance _unit == "CROUCH" && "dl" in animationState _unit) then {[_unit, ["amovpknlmstpsraswrfldnon_aadjppnemstpsraswrfldleft", 0, 0, false]] remoteExec ["switchMove"]};
+    [5*tsp_cba_animate_shake, 2, 5] spawn tsp_fnc_shake;
 };
 
 tsp_fnc_animate_ffv = {
     params ["_unit"]; 
     if ("_ffv" in animationState _unit) exitWith {_unit switchMove (animationState _unit regexReplace ["_ffv", ""]); _unit playActionNow "tsp_common_stop"};
     _ffv = isClass (configFile >> "CfgMovesMaleSdr" >> "States" >> (animationState _unit + "_ffv"));
-    if (_ffv && handgunWeapon _unit != "") then {_unit switchMove (animationState _unit + "_ffv"); _unit playActionNow "tsp_animate_ffv"; _unit selectWeapon handgunWeapon _unit}; 
+    if (_ffv && handgunWeapon _unit != "") then {
+        [_unit, animationState _unit + "_ffv"] remoteExec ["switchMove"]; 
+        [_unit, "tsp_animate_ffv"] remoteExec ["playActionNow"];
+        _unit selectWeapon handgunWeapon _unit
+    }; 
     if (!isNil "tsp_animate_ffv_click") exitWith {}; tsp_animate_ffv_click = true;   
     (findDisplay 46) displayAddEventHandler ["MouseButtonDown", {params ["_display", "_button"]; if (_button == 0) then {[playa] call tsp_fnc_animate_ffv_fire}}];
 };

@@ -1,9 +1,7 @@
 if !(isNil "ZUI_fnc_init") then {waitUntil {speed player > 0}};  //-- Random Infant Skirmish compat
 
-tsp_animate_combat = false; addUserActionEventHandler ["TactToggle", "Activate", {tsp_animate_combat = !tsp_animate_combat; [playa] call tsp_fnc_animate_tactical}];  //-- Detect if doing tactical pace
-tsp_animate_walk = false; addUserActionEventHandler ["WalkRunToggle", "Activate", {tsp_animate_walk = !tsp_animate_walk; [playa] call tsp_fnc_animate_tactical}];    //-- Detect if doing slow walk
-player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; if ("mtac" in _anim) then {tsp_animate_walk = false; tsp_animate_combat = true}}];
-player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; if ("mrun" in _anim) then {tsp_animate_walk = false; tsp_animate_combat = false}}];
+addUserActionEventHandler ["TactToggle", "Activate", {[playa, ""] spawn tsp_fnc_animate_tactical}];  //-- Faster input
+addUserActionEventHandler ["WalkRunToggle", "Activate", {[playa, ""] spawn tsp_fnc_animate_tactical}];  //-- Faster input
 player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; if ("mwlk" in _anim) then {tsp_animate_walk = true}}];
 player addEventHandler ["AnimStateChanged", {params ["_unit", "_anim"]; [_unit, _anim] call tsp_fnc_animate_walk}];
 
@@ -25,12 +23,14 @@ player addEventHandler ["AnimStateChanged", {
     if (tsp_cba_animate_ladder && _anim == "LadderCivilStatic" && currentWeapon _unit == handgunWeapon _unit && handgunWeapon _unit != "") then {[_unit, "LadderPistolstatic"] remoteExec ["switchMove"]};
 }];
 
+player addEventHandler ["HandleDamage", {params ["_unit", "_selection", "_damage"]; if ("leg" in _selection && _damage > 0.5 && random 1 < tsp_cba_animate_react) then {[_unit] call tsp_fnc_animate_react}}];
+
 if (tsp_cba_animate_commands) then {(group player) call tsp_fnc_animate_commands; addMissionEventHandler ["GroupCreated", {_this call tsp_fnc_animate_commands}]};
 
 ["if (tsp_cba_animate_uav && 'Open UAV' in (_this#4)) then {[playa,0.5,'A3\Missions_F_Oldman\Data\sound\beep.ogg',tsp_cba_animate_sound_uav] call tsp_fnc_animate_effect; [playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.04,0.02,-0.07], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item};"] spawn tsp_fnc_scroll;
 addMissionEventHandler ["PlayerViewChanged", {if (_this#5 isNotEqualTo objNull && tsp_cba_animate_uav) then {[playa, 'tsp_animate_map_in', 'tsp_animate_map_loop', '\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d', 'leftHand', [-0.04,0.02,-0.07], [200,-50,10], {isNull findDisplay 160 && getConnectedUAVUnit playa isEqualTo objNull}] spawn tsp_fnc_gesture_item}}];
 
-addUserActionEventHandler ["NightVision", "Activate", {if (tsp_cba_animate_nvg) then {[playa] spawn tsp_fnc_animate_nvg; [playa] call tsp_fnc_animate_effect}}];
+addUserActionEventHandler ["NightVision", "Activate", {if (tsp_cba_animate_nvg) then {[playa] spawn tsp_fnc_animate_nvg}}];
 addUserActionEventHandler ["Compass", "Activate", {[] spawn {sleep 0.01; if (tsp_cba_animate_compass && visibleCompass) then {
     [playa, "", "tsp_animate_compass_loop", getText(configFile>>'CfgWeapons'>>playa getSlotItemName 609>>'model'), "leftHand", [0.06,0.02,0.01], [70,90,0], {!visibleCompass}] spawn tsp_fnc_gesture_item;
     [playa] call tsp_fnc_animate_effect; 
@@ -41,11 +41,11 @@ addUserActionEventHandler ["Watch", "Activate", {[] spawn {sleep 0.01; if (tsp_c
 }}}];
 addUserActionEventHandler ["ShowMap", "Activate", {[] spawn {sleep 0.01; if (tsp_cba_animate_map && visibleMap && isNull findDisplay 312) then {
     [playa] call tsp_fnc_animate_effect;
-    if ("tsp_trijatta" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\tsp_tracker\trijatta.p3d", "leftHand", [-0.06,0,-0.06], [80,-35,0], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item};
-    if ("tsp_fbcb2" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d", "leftHand", [-0.07,0.01,-0.05], [200,-50,10], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item};
-    if ("ItemGPS" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\a3\Weapons_F\Ammo\mag_gps.p3d", "leftHand", [-0.02,0.03,0], [-70,-60,0], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item};
-    if ("ACE_microDAGR" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\z\ace\addons\microdagr\data\MicroDAGR.p3d", "leftHand", [0.01,0.035,0], [-80,-50,0], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item};        
-    [playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\A3\Structures_F\Items\Documents\Map_unfolded_F.p3d", "leftHand", [-0.01,0.01,-0.01], [50,170,-90], {sleep 0.2;!visibleMap}] spawn tsp_fnc_gesture_item;
+    if ("tsp_trijatta" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\tsp_tracker\trijatta.p3d", "leftHand", [-0.06,0,-0.06], [80,-35,0], {sleep 0.1;!visibleMap}] spawn tsp_fnc_gesture_item};
+    if ("tsp_fbcb2" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\A3\Props_F_Exp_A\Military\Equipment\Tablet_02_F.p3d", "leftHand", [-0.07,0.01,-0.05], [200,-50,10], {sleep 0.1;!visibleMap}] spawn tsp_fnc_gesture_item};
+    if ("ItemGPS" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\a3\Weapons_F\Ammo\mag_gps.p3d", "leftHand", [-0.02,0.03,0], [-70,-60,0], {sleep 0.1;!visibleMap}] spawn tsp_fnc_gesture_item};
+    if ("ACE_microDAGR" in assignedItems playa) exitWith {[playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\z\ace\addons\microdagr\data\MicroDAGR.p3d", "leftHand", [0.01,0.035,0], [-80,-50,0], {sleep 0.1;!visibleMap}] spawn tsp_fnc_gesture_item};        
+    [playa, "tsp_animate_map_in", "tsp_animate_map_loop", "\A3\Structures_F\Items\Documents\Map_unfolded_F.p3d", "leftHand", [-0.01,0.01,-0.01], [50,170,-90], {sleep 0.1;!visibleMap}] spawn tsp_fnc_gesture_item;
     [playa, 1, "tsp_animate\snd\map_open.ogg", tsp_cba_animate_sound_map] call tsp_fnc_animate_effect; waitUntil {!visibleMap}; [playa, 1, "tsp_animate\snd\map_close.ogg", tsp_cba_animate_sound_map] call tsp_fnc_animate_effect;
 }}}];
 
@@ -57,7 +57,7 @@ if (tsp_cba_animate_sling) then {player addEventhandler ["Take", {[player] call 
 if (tsp_cba_animate_sling) then {player addEventhandler ["Put", {[player] call tsp_fnc_animate_sling}]};
 if (tsp_cba_animate_sling_arsenal) then {[missionNamespace, "arsenalOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call BIS_fnc_addScriptedEventHandler};
 if (tsp_cba_animate_sling_arsenal) then {["ace_arsenal_displayOpened", {[playa, false, true, false, false, true] call tsp_fnc_animate_sling}] call CBA_fnc_addEventHandler};
-if (tsp_cba_animate_sling_default != "" && isServer) then {
+if (tsp_cba_animate_sling_default != "" && isServer) then {  //-- Spawn with slings
     addMissionEventHandler ["EntityCreated", {params ["_unit"]; if (_unit isKindOf "CAManBase" && count ([_unit] call tsp_fnc_animate_sling_get) == 0) then {_unit addItem tsp_cba_animate_sling_default}}];
     [] spawn {waitUntil {time > 3}; {if (count ([_x] call tsp_fnc_animate_sling_get) == 0) then {_x addItem tsp_cba_animate_sling_default}} forEach allUnits}; 
 };

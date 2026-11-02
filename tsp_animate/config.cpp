@@ -15,7 +15,7 @@ class CfgWeapons {
 	class CBA_MiscItem_ItemInfo;
 	class tsp_sling: CBA_MiscItem {
 		scope = 2; displayName = "2-Point Sling"; picture = "\tsp_animate\gui\sling.paa"; model = "tsp_animate\sling.p3d"; 
-		sling[] = {"Spine3", {-0.83,0.58,0.51}, {80,50,-180}, "tsp_animate_sling_sling", ""}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 1;};
+		sling[] = {"Spine3", {-0.83,0.58,0.51}, {80,50,-180}, "tsp_animate_sling_sling", ""}; class ItemInfo: CBA_MiscItem_ItemInfo {mass = 0.1;};
 	};
 	class tsp_sling_3point: tsp_sling {displayName = "3-Point Sling"; picture = "\tsp_animate\gui\3point.paa"; sling[] = {"Spine3", {0.7,0.15,-0.8}, {80,130,-20}, "tsp_animate_sling_3point", ""};};
 	class tsp_sling_1point: tsp_sling {displayName = "1-Point Sling"; picture = "\tsp_animate\gui\1point.paa"; sling[] = {"Spine3", {-0.8,0.9,0}, {10,75,-90}, "tsp_animate_sling_sling", ""};};
@@ -172,13 +172,13 @@ class CfgVehicles {
 				};
 				class tsp_animate_inspect {
 					displayName = "Inspect"; icon = "tsp_animate\gui\inspect.paa"; 
-					condition = "tsp_cba_animate_inspect && (vehicle playa==playa || {_x in animationState playa} count ['_aim','_idle'] > 0) && stance playa != 'PRONE' && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
+					condition = "tsp_cba_animate_inspect && (vehicle playa==playa || '_aim' in animationState playa) && stance playa != 'PRONE' && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
 					exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"};
 					statement = "[playa] call tsp_fnc_animate_effect; [playa] spawn tsp_fnc_animate_inspect";
 				};
 				class tsp_animate_suicide {
 					displayName = "Suicide"; icon = "tsp_animate\gui\suicide.paa";
-					condition = "tsp_cba_animate_suicide && (vehicle playa==playa || {_x in animationState playa} count ['_aim','_idle'] > 0) && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
+					condition = "tsp_cba_animate_suicide && (vehicle playa==playa || '_aim' in animationState playa) && !('freefall' in animationState playa) && ([gestureState playa] call tsp_fnc_gesture_sanitize=='' || 'tactical' in gestureState playa) && (currentWeapon playa != '' && (currentWeapon playa==primaryWeapon playa || currentWeapon playa==handgunWeapon playa))";
 					exceptions[] = {"isNotInside","isNotSitting","isNotSwimming","isNotEscorting"};
 					statement = "[playa] call tsp_fnc_animate_effect; [playa] spawn tsp_fnc_animate_suicide";
 				};

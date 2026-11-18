@@ -200,7 +200,7 @@ tsp_fnc_animate_scroll = {
 tsp_fnc_animate_stop = {
     params ["_unit", ["_aim", false], ["_compress", false], ["_cant", false], ["_over", false], ["_gesture", gestureState (_this#0)]];
     if (!("tactical" in _gesture) || (!_compress && "compress" in _gesture) || (!_cant && "cant" in _gesture) || (!_over && "over" in _gesture)) exitWith {};  //-- Nothing to stop
-    if (("friend" in _gesture) || ("object" in _gesture) || ("door" in _gesture)) exitWith {};  //-- Cant stop there
+    if (("friend" in _gesture) || ("object" in _gesture) || ("door" in _gesture) || !isNil "tsp_grenade_mode") exitWith {};  //-- Cant stop there
     [_unit] call tsp_fnc_gesture_stop; [_unit] call tsp_fnc_animate_effect;
     if (_aim && cameraView == "INTERNAL") then {_unit switchCamera "GUNNER"}; 
 };
@@ -248,7 +248,10 @@ tsp_fnc_animate_tactical = {
         _canBeObstructed = ([gestureState _unit] call tsp_fnc_gesture_sanitize == "" || _mode == "stop") && !weaponLowered _unit;
         if (count _friends > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "friend"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.7; tsp_tactical_delay = nil}}; 
         if (count _objects > 0 && _canBeObstructed && isNil "tsp_tactical_delay") exitWith {_mode = "object"; _level = "laut"; [] spawn {tsp_tactical_delay = true; sleep 0.7; tsp_tactical_delay = nil}};
-        if (count _friends == 0) then {_friends = [_unit, _unit modelToWorldWorld (_unit selectionPosition ["Neck", "Memory"]), _dir, (_length * tsp_cba_animate_friend) + 0.1, 10, 2, 5] call tsp_fnc_obstruction};
+        if (count _friends == 0) then {
+            _friends = [_unit, _unit modelToWorldWorld (_unit selectionPosition ["Neck", "Memory"]), _dir, (_length * tsp_cba_animate_friend) + 0.1, 10, 2, 5] call tsp_fnc_obstruction;
+            _friends = _friends select {[side group (_x#0), side group _unit] call BIS_fnc_sideIsFriendly && (_x#0) isKindOf "Man"};
+        };
         if (count (_friends+_objects) == 0 && ("friend" in gestureState _unit || "object" in gestureState _unit)) exitWith {_mode = ""; [_unit] call tsp_fnc_gesture_stop}; 
     };
 

@@ -167,7 +167,7 @@ class CfgGesturesMale {
 		class tsp_animate_grenade_left_wpst_llow_normal: tsp_animate_grenade_left_wpst_llow_loop {looped = false; file = "tsp_animate_ace\grenade\left_normal_llow.rtm";};
 		class tsp_animate_grenade_left_wpst_llow_high: tsp_animate_grenade_left_wpst_llow_normal {file = "tsp_animate_ace\grenade\left_high_llow.rtm";};
 
-		class tsp_animate_grenade_right_wnon_lnon_loop: tsp_animate_grenade_left_wrfl_lhig_loop {mask = "bothArmsSpine"; rightHandIKCurve[] = {0}; file = "tsp_animate_ace\grenade\right_loop_llow.rtm";};
+		class tsp_animate_grenade_right_wnon_lnon_loop: tsp_animate_grenade_left_wrfl_lhig_loop {mask = "bothArmsSpine"; rightHandIKCurve[] = {0}; speed = 1.5; file = "tsp_animate_ace\grenade\right_loop_llow.rtm";};
 		class tsp_animate_grenade_right_wnon_lnon_normal: tsp_animate_grenade_right_wnon_lnon_loop {looped = false; file = "tsp_animate_ace\grenade\right_normal_llow.rtm";};
 		class tsp_animate_grenade_right_wnon_lnon_high: tsp_animate_grenade_right_wnon_lnon_normal {file = "tsp_animate_ace\grenade\right_high_llow.rtm";};
 

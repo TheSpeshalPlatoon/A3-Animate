@@ -83,12 +83,13 @@ tsp_slings = "count (getArray (_x >> 'sling')) > 0" configClasses (configFile >>
 }, {}, [0xF1, [false, true, false]]] call CBA_fnc_addKeybind;
 
 //-- tsp_animate_key exists so that it only activates on release
-[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel", "Cancel (Ready)", {[playa, false] call tsp_fnc_animate_stop}, {}, [0xF0, [false, false, false]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel", "Cancel (Ready)", {[playa] call tsp_fnc_animate_stop}, {}, [0xF0, [false, false, false]]] call CBA_fnc_addKeybind;
 [["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_compress", "Cancel (Ready, Compress)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, false, true, false, false] call tsp_fnc_animate_stop}}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_keyup", "Cancel (Cant, Over)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, false, false, true, true] call tsp_fnc_animate_stop}}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_aim", "Cancel (Aim - Ready)", {[playa, true] call tsp_fnc_animate_stop}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_compress_aim", "Cancel (Aim - Ready, Compress)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, true, false, false] call tsp_fnc_animate_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
-[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_keyup_aim", "Cancel (Aim - Cant, Over - Key Up)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, false, true, true] call tsp_fnc_animate_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_cantover", "Cancel (Cant, Over)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, false, false, true, true] call tsp_fnc_animate_stop}}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
+
+[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_aim", "Cancel (Ready - Aim)", {[playa, true] call tsp_fnc_animate_stop}, {}, [0, [false, false, false]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_compress_aim", "Cancel (Ready, Compress - Aim)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, true, false, false] call tsp_fnc_animate_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
+[["TSP Animate", "Tactical - Cancel"], "tsp_animate_cancel_cantover_aim", "Cancel (Cant, Over - Aim)", {[] spawn {tsp_animate_key = true; sleep 0.3; tsp_animate_key = nil}}, {if (!isNil "tsp_animate_key") then {[playa, true, false, true, true] call tsp_fnc_animate_stop}}, [0xF1, [false, false, false]]] call CBA_fnc_addKeybind;
 
 [["TSP Animate", "Sling"], "tsp_animate_sling_sling", "Sling/Unsling/Swap", {
     [currentWeapon playa, primaryWeapon playa, handgunWeapon playa] params ["_current", "_primary", "_handgun"]; if (!tsp_cba_animate_sling || stance playa == "PRONE") exitWith {};

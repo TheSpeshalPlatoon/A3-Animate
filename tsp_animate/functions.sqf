@@ -208,7 +208,7 @@ tsp_fnc_animate_stop = {
 tsp_fnc_animate_gate = {
     params ["_unit", ["_anims", ["amov", "aadj", "aovr", "_aim"]]];  //-- _aim is FFV, "_idle" also is
     ({_x in animationState _unit} count _anims > 0) && !("salute" in animationState _unit) &&  //-- Aim is FFV
-    ("tactical" in gestureState _unit || "melee" in gestureState _unit || [gestureState _unit] call tsp_fnc_gesture_sanitize == "") &&  //-- Only if doing tactical, melee, or ""
+    ("tactical" in gestureState _unit || "melee" in gestureState _unit || "door" in gestureState _unit || [gestureState _unit] call tsp_fnc_gesture_sanitize == "") &&  //-- Only if doing tactical, melee, or ""
     !("melee" in currentWeapon _unit) && !(currentWeapon _unit in [binocular _unit, secondaryWeapon _unit]) &&  //-- Not with launchers or binoculars
     !(cameraView == "GUNNER" && ([_unit] call tsp_fnc_vision || count (primaryWeaponItems _unit select {_x in tsp_cba_animate_black}) > 0)) &&  //-- Not while aiming with some weapons
     stance _unit in ["STAND","CROUCH"] && tsp_cba_animate_tactical  //vehicle _unit == _unit && 
